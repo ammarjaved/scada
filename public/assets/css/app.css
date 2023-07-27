@@ -1,0 +1,48 @@
+input,
+select {
+margin-bottom: 5% !important;
+border-radius: 0px !important;
+border: 1px solid #999999 !important;
+}
+button
+{
+    border-radius: 0px !important;
+}
+
+#dropdownMenuButton1:hover{border: 0px !important;}
+.index-page th{background-color: #e4e3e3 !important;}
+
+.container {
+padding: 5% 3% !important;
+}
+body {
+    background-color: #f5f6f8 !important;
+    /* font-family: "Nunito", sans-serif; */
+}
+strong, label{font-weight:600 !important}
+
+#full-screen-logo{
+    display: block;
+    margin: 4px 20px;
+}
+#screen-logo{
+    display: none;
+    margin: 4px 20px;
+}
+@media only screen and (max-width: 445px) {
+.container {
+padding: 7% 4% !important;
+}
+th{
+    font-size: 13px !important;
+}
+td{
+    font-size: 12px !important;
+}
+#full-screen-logo{
+    display: none;
+}
+#screen-logo{
+    display: block;
+}
+}
