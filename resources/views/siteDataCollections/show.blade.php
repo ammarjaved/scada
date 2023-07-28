@@ -1,4 +1,4 @@
-@extends('layout.app', ['page_title' => 'Create'])
+@extends('layouts.app', ['page_title' => 'Create'])
 
 @section('content')
     <style>
@@ -16,7 +16,21 @@
         }
     </style>
 
-
+<section class="content-header">
+    <div class="container-  ">
+      <div class="row mb-2" style="flex-wrap:nowrap">
+        <div class="col-sm-6">
+          <h3>Site Data</h3>
+        </div>
+        <div class="col-sm-6 text-right">
+          <ol class="breadcrumb float-right">
+            <li class="breadcrumb-item"><a href="{{route('site-data-collection.index')}}" >index</a></li>
+            <li class="breadcrumb-item active">show</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
     <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
 
         <h3 class="text-center mb-4"> Site Data Collections</h3>
@@ -210,6 +224,10 @@
 
             </div>
         </div>
+
+        @foreach ($data->siteImg as $data)
+
+        <h3 class="text-center my-3 text-capitalize">{{$data->status}} Images</h3>
 
         <div class="row">
             <div class="col-md-3">
@@ -598,7 +616,7 @@
                 @endif
             </div>
         </div>
-
+        @endforeach
         <div class="row">
 
             <div class="col-md-3 ">
@@ -658,7 +676,15 @@
                 <input value="{{ $data->rating }} " class="form-control" disabled>
             </div>
 
-        </div>
+        </div><div class="text-center">
+        @if ($data->estWork != '')
+
+            <a href="{{route('estimation-work.show',$data->estWork->id)}}" class="btn btn-success">Goto Estimation Work</a>
+
+        @else
+        <a href="{{route('estimation-work.create' )}}" class="btn btn-success">Create Estimation Work</a>
+        @endif
+</div>
 
     </div>
 

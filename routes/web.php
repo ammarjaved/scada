@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\updateSiteDataImages;
-use App\Http\Controllers\web\siteDateCollection;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\updateSiteDataImages;
+use App\Http\Controllers\web\estimationWork;
+use App\Http\Controllers\web\siteDateCollection;
+
 use SebastianBergmann\Environment\Runtime;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +25,11 @@ Route::view('/', "welcome");
 Route::resource('site-data-collection',siteDateCollection::class);
 
 Route::resource('update-site-data-images',updateSiteDataImages::class);
+Route::resource('estimation-work',estimationWork::class);
+Route::post('update-site-data-images/{id}/edit/{status}',[updateSiteDataImages::class,'edit']);
 
 Route::view('test','welcome');
+
 Route::post('test',[siteDateCollection::class,'store']);
+
+Route::view('admin','admin');

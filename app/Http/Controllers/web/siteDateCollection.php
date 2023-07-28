@@ -3,15 +3,27 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\EstimationWork;
 use App\Models\SiteDataCollection;
+use App\Models\SiteImage;
 use Exception;
 use Illuminate\Http\Request;
+use App\Repositories\SiteVisitRepository;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class siteDateCollection extends Controller
 {
+
+
+    private $siteRepository;
+
+
+    public function __construct(SiteVisitRepository $siteRepository)
+    {
+        $this->siteRepository = $siteRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +32,22 @@ class siteDateCollection extends Controller
     public function index()
     {
         //
-        $datas = SiteDataCollection::all();
+        $datas = SiteDataCollection::withCount([
+            'siteImg as count_before' => function ($query) {
+                $query->where('status', 'before');
+            },
+            'siteImg as count_after' => function ($query) {
+                $query->where('status', 'after');
+            },
+            'siteImg as count_during' => function ($query) {
+                $query->where('status', 'during');
+            },
+        ])->get();
+
+
+        // return $siteDataCollections;
+        // $datas = SiteDataCollection::all();
+
         return view('siteDataCollections.index', ['datas' => $datas]);
     }
 
@@ -43,35 +70,17 @@ class siteDateCollection extends Controller
      */
     public function store(Request $request)
     {
-        //
-
-        // $file = $request->file('img');
-        // $file_name = time().'_'.$file->getClientOriginalName();
-        // $img = \Image::make($file);
-        // $img->save(\public_path('assets/images/'.$file_name),5);
-        // return back();
-       
-          
-        $destinationPath = 'assets/images/';
 
         try {
-            if($request->has('image')){
-            foreach ($request->image as $key => $file) {
-                if ($request->hasFile('image.' . $key)) {
-                  
-                    $file = $request->file('image.' . $key);
-                    $img_exc = $file->getClientOriginalExtension();
-                    $filename = $key . '-' . strtotime(now()) . '.' . $img_exc;
-                    $file->move($destinationPath, $filename);
-                    $request[$key] = $destinationPath . $filename;
-                }
-            }
-        }
-            SiteDataCollection::create($request->all());
+            $data = SiteDataCollection::create($request->all());
+
+             $this->siteRepository->addImages($request->image , $data->id , 'before');
+
             return redirect()
                 ->route('site-data-collection.index')
                 ->with('success', 'Inserted Foam successfully');
         } catch (Exception $e) {
+            return $e->getMessage();
             return redirect()
                 ->route('site-data-collection.index')
                 ->with('failed', 'Inserted Foam failed');
@@ -87,8 +96,8 @@ class siteDateCollection extends Controller
     public function show($id)
     {
         //
-        $data = SiteDataCollection::find($id);
-        return view('siteDataCollections.show',['data'=>$data]);
+       $data = SiteDataCollection::with("estWork")->with("siteImg")->find($id);
+        return $data ? view('siteDataCollections.show',['data'=>$data]) : abort(404);
     }
 
     /**
@@ -112,28 +121,17 @@ class siteDateCollection extends Controller
      */
     public function update(Request $request, $id)
     {
-        $destinationPath = 'assets/images/';
+
         try {
-            if($request->has('image')){
-            foreach ($request->image as $key => $file) {
-                if ($request->hasFile('image.' . $key)) {
-                    
-                    $file = $request->file('image.' . $key);
-                    $img_exc = $file->getClientOriginalExtension();
-                    $filename = $key . '-' . strtotime(now()) . '.' . $img_exc;
-                    $file->move($destinationPath, $filename);
-                    $request[$key] = $destinationPath . $filename;
-                }
-            }
-        }
+
             SiteDataCollection::find($id)->update($request->all());
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Inserted Foam successfully');
+                ->with('success', 'Update Foam successfully');
         } catch (Exception $e) {
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('failed', 'Inserted Foam failed');
+                ->with('failed', 'Request failed');
         }
     }
 
@@ -148,15 +146,21 @@ class siteDateCollection extends Controller
         //
         try{
 
-        SiteDataCollection::find($id)->delete();
-  
+       SiteDataCollection::find($id)->delete();
+
+
+        EstimationWork::where('site_data_id',$id)->delete();
+        $img= SiteImage::where('site_data_id',$id)->delete();
+        // if($img){
+        //     $this->siteRepository->removeImg($img);
+        // }
         return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Inserted Foam successfully');
+                ->with('success', 'Remove successfully');
         } catch (Exception $e) {
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('failed', 'Inserted Foam failed');
+                ->with('failed', 'Request failed');
         }
     }
 

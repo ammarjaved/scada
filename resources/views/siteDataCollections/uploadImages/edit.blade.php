@@ -1,7 +1,7 @@
-@extends('layout.app', ['page_title' => 'Create'])
+@extends('layouts.app', ['page_title' => 'Create'])
 
 @section('content')
-    
+
 
     <style>
         input,
@@ -18,53 +18,34 @@
             width: 100px;
         }
 
- 
-    #overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
-  display: none; /* Hide the overlay by default */
-  z-index: 9999; /* Higher z-index to ensure it displays on top of other content */
-}
 
 
-.loading-spinner {
 
-  position: absolute;
-  top: 47%;
-  left: 42%;
-  transform: translate(-50%, -50%);
-  width: 45px;
-  height: 45px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top: 4px solid #264394;
-  animation: spin 2s linear infinite;
-}
-
-
-  
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
- 
 
 
 
 
 
     </style>
-  <div id="overlay">
-    <div class="loading-spinner"></div>
-  </div>
 
+  <section class="content-header">
+    <div class="container-  ">
+      <div class="row mb-2" style="flex-wrap:nowrap">
+        <div class="col-sm-6">
+          <h3>Site Data</h3>
+        </div>
+        <div class="col-sm-6 text-right">
+          <ol class="breadcrumb float-right">
+            <li class="breadcrumb-item"><a href="{{route('site-data-collection.index')}}" >index</a></li>
+            <li class="breadcrumb-item active">upload images</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
     <div class="container bg-white shadow my-4 " style="border-radius: 10px">
 
-        <h3 class="text-center mb-4">UPDATE Site Data Collections</h3>
+        <h3 class="text-center mb-4">Update Site Data <span class="text-capitalize"> {{$status}}</span>  Images</h3>
         <form action="{{ route('update-site-data-images.update',$data->id)}}" method="post" enctype="multipart/form-data">
             @csrf
             @method("PATCH")
@@ -77,9 +58,16 @@
                 </div>
 
                 <div class="col-md-4 mb-4">
-                   {{$data->nama_pe ? $data->nama_pe :  '-'}}
+                   {{$data->siteData ? $data->siteData->nama_pe :  '-'}}
+                   <input type="hidden" name="site_data_id" id="" value="{{$data->site_data_id}}">
                 </div>
 
+            </div>
+
+            <div class="row">
+                <div class="col-md-3"><label for="">STATUS </label></div>
+                <div class="col-md-4"><input type="hidden"  name="status" value="{{$status}}" id="status">
+                <input type="text"  disabled class="form-control text-captaliz" value="{{$status}}" name="" id=""></div>
             </div>
 
 
@@ -95,8 +83,8 @@
                     @if (file_exists(public_path(($data->depan_pe))) && $data->depan_pe != '')
 <a href="{{ URL::asset($data->depan_pe) }}" data-lightbox="roadtrip">
                         <img src="{{ URL::asset($data->depan_pe) }}" alt=""></a>                    @endif
-                
-                
+
+
 
                 </div>
             </div>
@@ -444,7 +432,7 @@
                         <img src="{{ URL::asset($data->full_depan_pe) }}" alt=""></a>                    @endif
                 </div>
             </div>
-            
+
             <div class="text-center">
                 <button class="btn btn-success mt-4" onclick="showLoading()" style="cursor: pointer !important"
                     type="submit">Submit</button>
@@ -478,7 +466,7 @@
         function showLoading() {
             const overlay = document.getElementById('overlay');
     overlay.style.display = 'block';
-    
+
   }
     </script>
 @endsection
