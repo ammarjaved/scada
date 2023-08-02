@@ -9,16 +9,14 @@ use App\Models\SiteImage;
 use Exception;
 use Illuminate\Http\Request;
 use App\Repositories\SiteVisitRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class siteDateCollection extends Controller
 {
-
-
     private $siteRepository;
-
 
     public function __construct(SiteVisitRepository $siteRepository)
     {
@@ -43,7 +41,6 @@ class siteDateCollection extends Controller
                 $query->where('status', 'during');
             },
         ])->get();
-
 
         // return $siteDataCollections;
         // $datas = SiteDataCollection::all();
@@ -70,12 +67,12 @@ class siteDateCollection extends Controller
      */
     public function store(Request $request)
     {
-
         try {
             $data = SiteDataCollection::create($request->all());
 
-             $this->siteRepository->addImages($request->image , $data->id , 'before');
+            $this->siteRepository->addImages($request->image, $data->id, 'before');
 
+            DB::statement("INSERT INTO site_data_collections (geom) VALUES (ST_GeomFromText('POINT($request->log $request->lat)'))");
             return redirect()
                 ->route('site-data-collection.index')
                 ->with('success', 'Inserted Foam successfully');
@@ -96,8 +93,10 @@ class siteDateCollection extends Controller
     public function show($id)
     {
         //
-       $data = SiteDataCollection::with("estWork")->with("siteImg")->find($id);
-        return $data ? view('siteDataCollections.show',['data'=>$data]) : abort(404);
+        $data = SiteDataCollection::with('estWork')
+            ->with('siteImg')
+            ->find($id);
+        return $data ? view('siteDataCollections.show', ['data' => $data]) : abort(404);
     }
 
     /**
@@ -109,7 +108,7 @@ class siteDateCollection extends Controller
     public function edit($id)
     {
         $data = SiteDataCollection::find($id);
-        return view('siteDataCollections.edit',['data'=>$data]);
+        return view('siteDataCollections.edit', ['data' => $data]);
     }
 
     /**
@@ -121,9 +120,7 @@ class siteDateCollection extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
-
             SiteDataCollection::find($id)->update($request->all());
             return redirect()
                 ->route('site-data-collection.index')
@@ -144,17 +141,15 @@ class siteDateCollection extends Controller
     public function destroy($id)
     {
         //
-        try{
+        try {
+            SiteDataCollection::find($id)->delete();
 
-       SiteDataCollection::find($id)->delete();
-
-
-        EstimationWork::where('site_data_id',$id)->delete();
-        $img= SiteImage::where('site_data_id',$id)->delete();
-        // if($img){
-        //     $this->siteRepository->removeImg($img);
-        // }
-        return redirect()
+            EstimationWork::where('site_data_id', $id)->delete();
+            $img = SiteImage::where('site_data_id', $id)->delete();
+            // if($img){
+            //     $this->siteRepository->removeImg($img);
+            // }
+            return redirect()
                 ->route('site-data-collection.index')
                 ->with('success', 'Remove successfully');
         } catch (Exception $e) {
@@ -163,6 +158,4 @@ class siteDateCollection extends Controller
                 ->with('failed', 'Request failed');
         }
     }
-
-
 }

@@ -28,6 +28,8 @@ class SiteVisitRepository {
         $data = SiteImage::where('site_data_id', $id)->where('status', $status)->first();
 
         if ($data) {
+    
+ 
             $data->update($uploadedImages);
         }else{
             $uploadedImages['status'] = $status;
