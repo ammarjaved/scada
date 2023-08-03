@@ -12,7 +12,7 @@ class Item extends Model
 
     public function allRecords()
     {
-        return $this->hasMany(Item::class, 'item', 'item');
+        return $this->hasMany(Requisition::class, 'item_id');
     }
     
 }

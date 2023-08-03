@@ -93,7 +93,7 @@
                                                         {{ $dat->units ? $dat->units : '-' }}
                                                     </td>
                                                     <td>{{ $dat->updated_at }}</td>
-                                                    <td>detail</td>
+                                                    <td><a href="{{route('requisition.show',$dat->id)}}" class="btn btn-secondary btn-sm">Detail</a> </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

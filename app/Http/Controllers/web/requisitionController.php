@@ -83,6 +83,10 @@ class requisitionController extends Controller
     public function show($id)
     {
         //
+        // return Item::with('allRecords')->find($id);
+        return view('requisition.show',[
+            'data'=>Item::with('allRecords')->find($id)
+        ]);
     }
 
     /**
