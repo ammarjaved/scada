@@ -15,12 +15,12 @@
         <div class="container-  ">
             <div class="row mb-2" style="flex-wrap:nowrap">
                 <div class="col-sm-6">
-                    <h3>Stock updates</h3>
+                    <h3>Order Detail</h3>
                 </div>
                 <div class="col-sm-6 text-right">
                     <ol class="breadcrumb float-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item "><a href="{{ route('requisition.index') }}">stock</a> </li>
+                        <li class="breadcrumb-item "><a href="{{ route('admin-order.index') }}">orders</a> </li>
                         <li class="breadcrumb-item active">detail</li>
 
                     </ol>
@@ -33,25 +33,6 @@
 
 
 
-            @if (Session::has('failed'))
-                <div class="alert {{ Session::get('alert-class', 'alert-secondary') }}" role="alert">
-                    {{ Session::get('failed') }}
-
-                    <button type="button" class="close border-0 bg-transparent" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-            @endif
-            @if (Session::has('success'))
-                <div class="alert {{ Session::get('alert-class', 'alert-success') }}" role="alert">
-                    {{ Session::get('success') }}
-                    <button type="button" class="close border-0 bg-transparent" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-
 
 
             <div class="row">
@@ -59,8 +40,19 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                                Requisition
+                                Order Detail
                             </div>
+                            @if ($order->status == 'Pending')
+                            <div class="text-right">
+                                @if ($isValid)
+
+                                <a href="/order/{{ $order->id }}/Complete" ><button type="button" class="btn-sm btn-success">Complete Order</button></a>
+                                @else
+                                  <span class="text-danger">{{$isValid}} Low Stocks</span>
+                                @endif
+
+                            </div>
+                        @endif
 
                         </div>
 
@@ -68,20 +60,20 @@
                             <div class="my-3">
                                 <table>
                                     <tr>
-                                        <th>Item Name </th>
-                                        <td> : {{ $data->item }}</td>
+                                        <th>Order no : </th>
+                                        <td>{{ $order->id }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Item Type </th>
-                                        <td> : {{ $data->type }}</td>
+                                        <th>Username : </th>
+                                        <td>{{ $order->userData->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Current Units  </th>
-                                        <td> : {{ $data->units }}</td>
+                                        <th>Email : </th>
+                                        <td>{{ $order->userData->email }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Last Update </th>
-                                        <td> : {{ $data->updated_at }}</td>
+                                        <th>Staus : </th>
+                                        <td>{{ $order->status }}</td>
                                     </tr>
                                 </table>
 
@@ -95,21 +87,23 @@
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
                                             <th>#</th>
-                                            <th>LAST UNITS</th>
-                                            <th>UNITS</th>
-                                            <th>DATE</th>
-
+                                            <th>Item</th>
+                                            <th>Type</th>
+                                            <th>Unit</th>
+                                            <th>Current Units</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($data->allRecords as $data)
+                                        @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{ $loop->index }}</td>
-                                                <td class="align-middle">{{ $data->last_unit }}</td>
+                                                <td>{{ $loop->index +1 }}</td>
+                                                <td class="align-middle">{{ $data->itemDetail->item }}</td>
+                                                <td>{{ $data->itemDetail->type }}</td>
                                                 <td>{{ $data->unit }}</td>
-                                                <td>{{ $data->updated_at }}</td>
+                                                <td>{{ $data->itemDetail->units}}</td>
+
 
 
                                             </tr>
@@ -118,6 +112,18 @@
                                 </table>
                             </div>
 
+                            @if ($order->status == 'Pending')
+                                <div class="text-center my-4">
+                                    <a href="/order/{{ $order->id }}/Cancel"class=""><button type="button" class="btn-sm btn-danger"> Cancel Order</button></a>
+                                    @if ($isValid)
+
+                                        <a href="/order/{{ $order->id }}/Complete" ><button type="button" class="btn-sm btn-success">Complete Order</button></a>
+                                    @else
+                                      <span class="text-danger">{{$isValid}} Low Stocks</span>
+                                    @endif
+
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -138,6 +144,12 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
+            $('a').on('click',function(){
+                const overlay = document.getElementById('overlay');
+    overlay.style.display = 'block';
+            })
         })
+
+
     </script>
 @endsection

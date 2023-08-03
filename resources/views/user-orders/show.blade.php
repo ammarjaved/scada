@@ -32,28 +32,6 @@
         <div class="container-fluid">
 
 
-
-            @if (Session::has('failed'))
-                <div class="alert {{ Session::get('alert-class', 'alert-secondary') }}" role="alert">
-                    {{ Session::get('failed') }}
-
-                    <button type="button" class="close border-0 bg-transparent" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                </div>
-            @endif
-            @if (Session::has('success'))
-                <div class="alert {{ Session::get('alert-class', 'alert-success') }}" role="alert">
-                    {{ Session::get('success') }}
-                    <button type="button" class="close border-0 bg-transparent" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            @endif
-
-
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -69,20 +47,26 @@
                                 <table>
                                     <tr>
                                         <th>Order no : </th>
-                                        <td>{{ $datas->id }}</td>
+                                        <td>{{ $order->id }}</td>
                                     </tr>
                                     <tr>
                                         <th>Username : </th>
-                                        <td>{{ $datas->userData->name }}</td>
+                                        <td>{{ $order->userData->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Email : </th>
-                                        <td>{{ $datas->userData->email }}</td>
+                                        <td>{{ $order->userData->email }}</td>
                                     </tr>
                                     <tr>
                                         <th>Staus : </th>
-                                        <td>{{ $datas->status }}</td>
+                                        <td>{{ $order->status }}</td>
                                     </tr>
+                                    <tr><th>Order Place Date : </th>
+                                    <td>{{$order->created_at}}</td>
+                                    </tr>
+                                    <tr><th>Order {{ $order->status }} Date : </th>
+                                        <td> {{$order->updated_at}}</td>
+                                        </tr>
                                 </table>
 
 
@@ -97,18 +81,21 @@
                                             <th>#</th>
                                             <th>Item</th>
                                             <th>Type</th>
-                                            <th>unit</th>
+                                            <th>Unit</th>
+                                           
 
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($datas->orderInfo as $data)
+                                        @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{ $loop->index }}</td>
-                                                <td class="align-middle">{{ $data->item }}</td>
-                                                <td>{{ $data->type }}</td>
+                                                <td>{{ $loop->index +1 }}</td>
+                                                <td class="align-middle">{{ $data->itemDetail->item }}</td>
+                                                <td>{{ $data->itemDetail->type }}</td>
                                                 <td>{{ $data->unit }}</td>
+
+
 
 
                                             </tr>
@@ -117,12 +104,6 @@
                                 </table>
                             </div>
 
-                            @if ($datas->status == 'Pending')
-                                <div class="text-center">
-                                    <a href="/order-complete/{{ $datas->id }}"><button class="btn-sm btn-success">Order
-                                            Complete</button></a>
-                                </div>
-                            @endif
                         </div>
                     </div>
 
@@ -143,6 +124,9 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
+
         })
+
+
     </script>
 @endsection

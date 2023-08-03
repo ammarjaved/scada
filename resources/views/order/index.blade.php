@@ -90,7 +90,7 @@
                                                 <td>{{ $data->userData->email }}</td>
                                                 <td>{{ $data->order_info_count }}</td>
                                                 <td>{{ $data->created_at }}</td>
-                                                <td><a href="{{ route('order.show', $data->id) }}"><button
+                                                <td><a href="{{ route('order.edit', $data->id) }}"><button
                                                             class="btnn btn-sm btn-secondary">Detail</button></a> </td>
 
                                             </tr>
@@ -108,7 +108,7 @@
             </div>
         </div>
     </section>
-   
+
 @endsection
 
 @section('script')

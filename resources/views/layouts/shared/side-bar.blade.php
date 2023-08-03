@@ -53,7 +53,7 @@
                     <li
                         class="nav-item {{ Request::route()->getName() === 'estimation-work.create' || Request::route()->getName() === 'estimation-work.index' ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link">
-                            <i class="fa fa-book"></i>
+                            <i class="fas fa-copy"></i>
                             <p>
                                 Estimation Work
                                 <i class="right fas fa-angle-left"></i>
@@ -80,9 +80,9 @@
                 <li
                     class="nav-item {{ Request::route()->getName() === 'order.create' || Request::route()->getName() === 'admin-order.index' ? 'menu-is-opening menu-open' : '' }}">
                     <a href="#" class="nav-link">
-                        <i class="fa fa-book"></i>
+                        <i class=" fas fa-cart-plus"></i>
                         <p>
-                            Order
+                            Requisition
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -105,10 +105,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin-order.index') }}"
+                            <a href="/complete-orders"
                                 class="nav-link {{ Request::route()->getName() === 'order.index' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Complete Orders</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/cancel-orders"
+                                class="nav-link {{ Request::route()->getName() === 'order.index' ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Cancel Orders</p>
                             </a>
                         </li>
                     </ul>
@@ -119,8 +127,8 @@
                         <li class="nav-item">
                             <a href="{{ route('requisition.index') }}"
                                 class="nav-link {{ Request::route()->getName() === 'requisition.index' ? 'active' : '' }}">
-                                <i class="fa fa-book"></i>
-                                <p>Requisition</p>
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>Stock Management</p>
                             </a>
                         </li>
                     </ul>

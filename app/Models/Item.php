@@ -14,5 +14,10 @@ class Item extends Model
     {
         return $this->hasMany(Requisition::class, 'item_id');
     }
-    
+
+    public function orderDetail()
+    {
+        return $this->hasMany(Order_info::class, 'item_id');
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Order_info;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,9 @@ class OrderController extends Controller
     public function create()
     {
         //
-        return view('user-orders.create');
+        return view('user-orders.create',[
+            'items' => Item::distinct()->pluck('item'),
+        ]);
     }
 
     /**
@@ -41,6 +44,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         try {
             $order = Order::create([
                 'user_id' => Auth::user()->id,
@@ -53,6 +57,7 @@ class OrderController extends Controller
                     'item' => $request->item[$i],
                     'type' => $request->type[$i],
                     'unit' => $request->unit[$i],
+                    'item_id' => $request->type[$i],
                 ]);
             }
             return redirect()
@@ -75,9 +80,13 @@ class OrderController extends Controller
     public function show($id)
     {
         //
-        
+        $order = Order::with('userData')->find($id);
+        $datas = Order_info::with('itemDetail')->where('order_id',$id)->get();
+
+
         return view('user-orders.show',[
-            'datas'=> Order::with('orderInfo','userData')->where('id',$id)->first()
+            'order'=> $order,
+            'datas'=> $datas,
         ]);
     }
 
@@ -90,6 +99,24 @@ class OrderController extends Controller
     public function edit($id)
     {
         //
+        $order = Order::with('userData')->find($id);
+        $datas = Order_info::with('itemDetail')->where('order_id',$id)->get();
+        $isValid = true;
+        if($datas){
+            foreach($datas as $data){
+                if($data->unit > $data->itemDetail->units){
+                    $isValid = false;
+                }
+
+            }
+        }
+    
+
+        return view('user-orders.edit',[
+            'order'=> $order,
+            'datas'=> $datas,
+            'isValid' => $isValid,
+        ]);
     }
 
     /**

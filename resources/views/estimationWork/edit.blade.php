@@ -23,6 +23,7 @@
                 <h3 class="text-center mb-4"> Estimation Work</h3>
                 <form action="{{ route('estimation-work.update', $data->id) }}" onsubmit="return submitFoam()"
                     method="post">
+                    @method('PATCH')
                     @csrf
 
                     <div class="row">

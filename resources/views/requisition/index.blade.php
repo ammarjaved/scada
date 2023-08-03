@@ -162,28 +162,7 @@
                                 @foreach ($items as $item)
                                     <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach
-                                {{-- <option value="CABLE FOR PIW VCB">CABLE FOR PIW VCB</option>
-                            <option value="CABLE FOR RTU / VCB">CABLE FOR RTU / VCB</option>
-                            <option value="TRANSDUCER">TRANSDUCER</option>
-                            <option value="MCB">MCB</option>
-                            <option value="SELECTOR SWITCH">SELECTOR SWITCH</option>
-                            <option value="EFI BASE PLATE">EFI BASE PLATE</option>
-                            <option value="TERMINAL BLOCKS">TERMINAL BLOCKS</option>
-                            <option value="CABLE UG">CABLE UG</option>
-                            <option value="PVC CONDUIT ACCESSORIES(ORANGE)">PVC CONDUIT ACCESSORIES(ORANGE)</option>
-                            <option value="CABLE GLAND">CABLE GLAND</option>
-                            <option value="PVC ADHESIVE TAPE">PVC ADHESIVE TAPE</option>
-                            <option value="MARKING TUBING">MARKING TUBING</option>
-                            <option value="SWITCH & SOCKET">SWITCH & SOCKET</option>
-                            <option value="CABLE TRAY">CABLE TRAY</option>
-                            <option value="CABLE TIE">CABLE TIE</option>
-                            <option value="CABLE TRAY SUPPORT">CABLE TRAY SUPPORT</option>
-                            <option value="FERRULE MARKERS(PARTEX WHITE)">FERRULE MARKERS(PARTEX WHITE)</option>
-                            <option value="FERRULE MARKERS(PARTEX YELLOW)">FERRULE MARKERS(PARTEX YELLOW)</option>
-                            <option value="FERRULE MARKERS(PARTEX RED)">FERRULE MARKERS(PARTEX RED)</option>
-                            <option value="FASTENER">FASTENER</option>
-                            <option value="WEAR & TEARS TOOLS">WEAR & TEARS TOOLS</option> --}}
-
+                          
                             </select>
                         </div>
                         <div class="">

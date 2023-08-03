@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
 
     Route::resource('site-data-collection', siteDateCollection::class);
     Route::resource('update-site-data-images', updateSiteDataImages::class);
@@ -42,12 +42,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('requisition',requisitionController::class);
     Route::get('/get-type/{item}',[requisitionController::class,'getType']);
-    
+
     Route::resource('order',OrderController::class);
     Route::get('admin-orders',[adminOrderController::class,'index'])->name('admin-order.index');
-    Route::get('/order-complete/{id}',[adminOrderController::class,'completeOrder']);
-
+    Route::get('/order/{id}/{con}',[adminOrderController::class,'completeOrder']);
     Route::get('/complete-orders',[adminOrderController::class,'getCOmpleteOrders']);
+    Route::get('/cancel-orders',[adminOrderController::class,'getCancelOrders']);
 
 });
 
