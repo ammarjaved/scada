@@ -97,6 +97,7 @@ class siteDateCollection extends Controller
         $data = SiteDataCollection::with('estWork')
             ->with('siteImg')
             ->find($id);
+            // return $data;
         return $data ? view('siteDataCollections.show', ['data' => $data]) : abort(404);
     }
 

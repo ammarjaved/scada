@@ -227,6 +227,68 @@
                     </div>
                 </div>
 
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        <label for="lvdb"><strong> LVDB</strong></label>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <input value="{{ $data->lvdb }} " class="form-control" disabled>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        <label for="type_lvdb"><strong> TYPE LVDB</strong></label>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <input value="{{ $data->type_lvdb }} " class="form-control" disabled>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        <label for=""><strong>TYPE FUSE </strong></label>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <input value="{{ $data->type_fuse }} " class="form-control" disabled>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        <label for="feeder"><strong>FEEDER </strong></label>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <input value="{{ $data->feeder }} " class="form-control"disabled>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3 ">
+                        <label for="rating"><strong>RATING </strong></label>
+                    </div>
+
+                    <div class="col-md-4 ">
+                        <input value="{{ $data->rating }} " class="form-control" disabled>
+                    </div>
+
+                </div>
+
+
                 @foreach ($data->siteImg as $data)
                     <h3 class="text-center my-3 text-capitalize">{{ $data->status }} Images</h3>
 
@@ -618,67 +680,7 @@
                         </div>
                     </div>
                 @endforeach
-                <div class="row">
-
-                    <div class="col-md-3 ">
-                        <label for="lvdb"><strong> LVDB</strong></label>
-                    </div>
-
-                    <div class="col-md-4 ">
-                        <input value="{{ $data->lvdb }} " class="form-control" disabled>
-                    </div>
-
-                </div>
-
-
-                <div class="row">
-
-                    <div class="col-md-3 ">
-                        <label for="type_lvdb"><strong> TYPE LVDB</strong></label>
-                    </div>
-
-                    <div class="col-md-4 ">
-                        <input value="{{ $data->type_lvdb }} " class="form-control" disabled>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-3 ">
-                        <label for=""><strong>TYPE FUSE </strong></label>
-                    </div>
-
-                    <div class="col-md-4 ">
-                        <input value="{{ $data->type_fuse }} " class="form-control" disabled>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-3 ">
-                        <label for="feeder"><strong>FEEDER </strong></label>
-                    </div>
-
-                    <div class="col-md-4 ">
-                        <input value="{{ $data->feeder }} " class="form-control"disabled>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-3 ">
-                        <label for="rating"><strong>RATING </strong></label>
-                    </div>
-
-                    <div class="col-md-4 ">
-                        <input value="{{ $data->rating }} " class="form-control" disabled>
-                    </div>
-
-                </div>
-                <div class="text-center">
+                                <div class="text-center">
                     @if ($data->estWork != '')
                         <a href="{{ route('estimation-work.show', $data->estWork->id) }}" class="btn btn-success">Goto
                             Estimation
