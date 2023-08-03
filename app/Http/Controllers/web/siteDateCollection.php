@@ -67,12 +67,13 @@ class siteDateCollection extends Controller
      */
     public function store(Request $request)
     {
+        
         try {
             $data = SiteDataCollection::create($request->all());
 
             $this->siteRepository->addImages($request->image, $data->id, 'before');
 
-            DB::statement("INSERT INTO site_data_collections (geom) VALUES (ST_GeomFromText('POINT($request->log $request->lat)'))");
+            DB::statement("UPDATE site_data_collections (geom) VALUES (ST_GeomFromText('POINT($request->log $request->lat)')) where id = $data->id");
             return redirect()
                 ->route('site-data-collection.index')
                 ->with('success', 'Inserted Foam successfully');
