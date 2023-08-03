@@ -642,7 +642,9 @@
                         <div class="col-md-4 ">
                             <br>
                             <button onclick="getLocation()" class="btn-sm btn-secondary" type="button">Get Location</button><br>
+                            <label for="lat">lat</label>
                             <input type="text" name="lat" id="lat" class="form-control">
+                            <label for="log">log</label>
                             <input type="text" name="log" id="log" class="form-control">
                         </div>
                     </div>
