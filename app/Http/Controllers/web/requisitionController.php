@@ -27,10 +27,10 @@ class requisitionController extends Controller
         foreach ($distinctItems as $item) {
             $data[$item->item] = DB::table('items')
                 ->where('item', $item->item)
-                ->orderBy('id','asc')
+                ->orderBy('id', 'asc')
                 ->get();
         }
-    
+
         return view('requisition.index', [
             'datas' => $data,
             'items' => Item::distinct()->pluck('item'),
@@ -84,8 +84,8 @@ class requisitionController extends Controller
     {
         //
         // return Item::with('allRecords')->find($id);
-        return view('requisition.show',[
-            'data'=>Item::with('allRecords')->find($id)
+        return view('requisition.show', [
+            'data' => Item::with('allRecords')->find($id),
         ]);
     }
 

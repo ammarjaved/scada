@@ -67,12 +67,12 @@ class siteDateCollection extends Controller
      */
     public function store(Request $request)
     {
-        
         try {
             $data = SiteDataCollection::create($request->all());
 
-            $this->siteRepository->addImages($request->image, $data->id, 'before');
-
+            if ($request->image) {
+                $this->siteRepository->addImages($request->image, $data->id, 'before');
+            }
             DB::statement("UPDATE site_data_collections set geom = ST_GeomFromText('POINT($request->log $request->lat)',4326) where id = $data->id");
             return redirect()
                 ->route('site-data-collection.index')
@@ -97,7 +97,7 @@ class siteDateCollection extends Controller
         $data = SiteDataCollection::with('estWork')
             ->with('siteImg')
             ->find($id);
-            // return $data;
+        // return $data;
         return $data ? view('siteDataCollections.show', ['data' => $data]) : abort(404);
     }
 

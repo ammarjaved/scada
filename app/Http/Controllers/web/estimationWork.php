@@ -19,7 +19,7 @@ class estimationWork extends Controller
     {
         //
         $data = ModelsEstimationWork::with('siteData')->get();
-        return view('estimationWork.index',['datas'=>$data]);
+        return view('estimationWork.index', ['datas' => $data]);
     }
 
     /**
@@ -29,8 +29,7 @@ class estimationWork extends Controller
      */
     public function create()
     {
-
-        return view('estimationWork.create',["siteDatas"=> SiteDataCollection::all(['id','nama_pe'])]);
+        return view('estimationWork.create', ['siteDatas' => SiteDataCollection::all(['id', 'nama_pe'])]);
     }
 
     /**
@@ -42,19 +41,17 @@ class estimationWork extends Controller
     public function store(Request $request)
     {
         //
-        try{
-
-
+        try {
             ModelsEstimationWork::create($request->all());
 
             return redirect()
-                    ->route('estimation-work.index')
-                    ->with('success', 'Insert Data successfully');
-            } catch (Exception $e) {
-                return redirect()
-                    ->route('estimation-work.index')
-                    ->with('failed', 'Request failed');
-            }
+                ->route('estimation-work.index')
+                ->with('success', 'Insert Data successfully');
+        } catch (Exception $e) {
+            return redirect()
+                ->route('estimation-work.index')
+                ->with('failed', 'Request failed');
+        }
     }
 
     /**
@@ -68,7 +65,7 @@ class estimationWork extends Controller
         //
         $data = ModelsEstimationWork::with('siteData')->find($id);
 
-        return $data ? view('estimationWork.show',['data'=>$data]) : abort(404);
+        return $data ? view('estimationWork.show', ['data' => $data]) : abort(404);
     }
 
     /**
@@ -82,7 +79,7 @@ class estimationWork extends Controller
         //
         $data = ModelsEstimationWork::with('siteData')->find($id);
 
-        return $data ? view('estimationWork.edit',['data'=>$data]) : abort(404);
+        return $data ? view('estimationWork.edit', ['data' => $data]) : abort(404);
     }
 
     /**
@@ -94,19 +91,17 @@ class estimationWork extends Controller
      */
     public function update(Request $request, $id)
     {
-        try{
-
-
+        try {
             ModelsEstimationWork::find($id)->update($request->all());
 
             return redirect()
-                    ->route('estimation-work.index')
-                    ->with('success', 'Insert Data successfully');
-            } catch (Exception $e) {
-                return redirect()
-                    ->route('estimation-work.index')
-                    ->with('failed', 'Request failed');
-            }
+                ->route('estimation-work.index')
+                ->with('success', 'Insert Data successfully');
+        } catch (Exception $e) {
+            return redirect()
+                ->route('estimation-work.index')
+                ->with('failed', 'Request failed');
+        }
     }
 
     /**
@@ -118,17 +113,16 @@ class estimationWork extends Controller
     public function destroy($id)
     {
         //
-        try{
-
+        try {
             ModelsEstimationWork::find($id)->delete();
 
             return redirect()
-                    ->route('estimation-work.index')
-                    ->with('success', 'Remove successfully');
-            } catch (Exception $e) {
-                return redirect()
-                    ->route('estimation-work.index')
-                    ->with('failed', 'Request failed');
-            }
+                ->route('estimation-work.index')
+                ->with('success', 'Remove successfully');
+        } catch (Exception $e) {
+            return redirect()
+                ->route('estimation-work.index')
+                ->with('failed', 'Request failed');
+        }
     }
 }

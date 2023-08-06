@@ -99,16 +99,13 @@
 @endsection
 
 @section('script')
-
-
-
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
 
     <script>
         var orderCount = 1;
         $(document).ready(function() {
             addRow()
-             $(".form-control").on('change', function() {
+            $(".form-control").on('change', function() {
                 if ($(this).parent().find('span').length > 0) {
                     $(this).parent().find('span').remove().end();
                 }
@@ -120,19 +117,22 @@
             var typeValue = [];
             $(event).parent().next().children().find('option').remove().end();
             $.ajax({
-                    url: '/get-type/' + event.value,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        $(event).parent().next().find('select').append(`<option value="" hidden>select type</option>`)
+                url: '/get-type/' + event.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $(event).parent().next().find('select').append(
+                        `<option value="" hidden>select type</option>`)
 
-                        data.map((opt) => {
-                            $(event).parent().next().find('select').append(`<option value="${opt.id}">${opt.type}</option>`)})
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+                    data.map((opt) => {
+                        $(event).parent().next().find('select').append(
+                            `<option value="${opt.id}">${opt.type}</option>`)
+                    })
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
         }
 
 
@@ -164,44 +164,42 @@
 
         function submitFoam() {
 
-var class_error = document.querySelectorAll('.required');
-if(class_error.length < 1){
-    return false
-}
+            var class_error = document.querySelectorAll('.required');
+            if (class_error.length < 1) {
+                return false
+            }
 
 
-var id = '';
+            var id = '';
 
 
-var isValid = true;
+            var isValid = true;
 
-for (var i = 0; i < class_error.length; i++) {
-    console.log(class_error);
-    var id = class_error[i].id;
-    if ($(`#${id}`).val() === '' && id != "other") {
-        if ($(`#${id}`).parent().find('span').length < 1) {
-            $(`#${id}`).parent().prepend('<span class="text-danger">This field is required</span>');
+            for (var i = 0; i < class_error.length; i++) {
+                console.log(class_error);
+                var id = class_error[i].id;
+                if ($(`#${id}`).val() === '' && id != "other") {
+                    if ($(`#${id}`).parent().find('span').length < 1) {
+                        $(`#${id}`).parent().prepend('<span class="text-danger">This field is required</span>');
+
+                    }
+                    isValid = false
+                } else {
+                    if ($(`#${id}`).parent().find('span').length > 0) {
+                        $(`#${id}`).parent().find('span').remove().end();
+                    }
+                }
+            }
+
+
+
+
+            if (isValid) {
+                const overlay = document.getElementById('overlay');
+                overlay.style.display = 'block';
+            }
+            return isValid;
 
         }
-        isValid = false
-    } else {
-        if ($(`#${id}`).parent().find('span').length > 0) {
-            $(`#${id}`).parent().find('span').remove().end();
-        }
-    }
-}
-
-
-
-
-if (isValid) {
-    const overlay = document.getElementById('overlay');
-    overlay.style.display = 'block';
-}
-return isValid;
-
-}
-
     </script>
-
 @endsection

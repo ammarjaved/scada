@@ -3,12 +3,12 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<style>
-    div#myTable_length {
-    display: none !important;
-}
-</style>
-    @endsection
+    <style>
+        div#myTable_length {
+            display: none !important;
+        }
+    </style>
+@endsection
 
 @section('content')
     <section class="content-header">
@@ -43,16 +43,16 @@
                                 Order Detail
                             </div>
                             @if ($order->status == 'Pending')
-                            <div class="text-right">
-                                @if ($isValid)
+                                <div class="text-right">
+                                    @if ($isValid)
+                                        <a href="/order/{{ $order->id }}/Complete"><button type="button"
+                                                class="btn-sm btn-success">Complete Order</button></a>
+                                    @else
+                                        <span class="text-danger">{{ $isValid }} Low Stocks</span>
+                                    @endif
 
-                                <a href="/order/{{ $order->id }}/Complete" ><button type="button" class="btn-sm btn-success">Complete Order</button></a>
-                                @else
-                                  <span class="text-danger">{{$isValid}} Low Stocks</span>
-                                @endif
-
-                            </div>
-                        @endif
+                                </div>
+                            @endif
 
                         </div>
 
@@ -98,11 +98,11 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{ $loop->index +1 }}</td>
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <td class="align-middle">{{ $data->itemDetail->item }}</td>
                                                 <td>{{ $data->itemDetail->type }}</td>
                                                 <td>{{ $data->unit }}</td>
-                                                <td>{{ $data->itemDetail->units}}</td>
+                                                <td>{{ $data->itemDetail->units }}</td>
 
 
 
@@ -114,12 +114,13 @@
 
                             @if ($order->status == 'Pending')
                                 <div class="text-center my-4">
-                                    <a href="/order/{{ $order->id }}/Cancel"class=""><button type="button" class="btn-sm btn-danger"> Cancel Order</button></a>
+                                    <a href="/order/{{ $order->id }}/Cancel"class=""><button type="button"
+                                            class="btn-sm btn-danger"> Cancel Order</button></a>
                                     @if ($isValid)
-
-                                        <a href="/order/{{ $order->id }}/Complete" ><button type="button" class="btn-sm btn-success">Complete Order</button></a>
+                                        <a href="/order/{{ $order->id }}/Complete"><button type="button"
+                                                class="btn-sm btn-success">Complete Order</button></a>
                                     @else
-                                      <span class="text-danger">{{$isValid}} Low Stocks</span>
+                                        <span class="text-danger">{{ $isValid }} Low Stocks</span>
                                     @endif
 
                                 </div>
@@ -144,12 +145,10 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
-            $('a').on('click',function(){
+            $('a').on('click', function() {
                 const overlay = document.getElementById('overlay');
-    overlay.style.display = 'block';
+                overlay.style.display = 'block';
             })
         })
-
-
     </script>
 @endsection

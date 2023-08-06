@@ -36,32 +36,32 @@ class adminOrderController extends Controller
         }
     }
 
-    public function completeOrder($id , $con)
+    public function completeOrder($id, $con)
     {
         try {
-
             $order = Order::find($id);
 
-            if($order){
-                if($con == "Complete"){
-                    $datas = Order_info::with('itemDetail')->where('order_id',$id)->get();
+            if ($order) {
+                if ($con == 'Complete') {
+                    $datas = Order_info::with('itemDetail')
+                        ->where('order_id', $id)
+                        ->get();
                     $isValid = true;
-                    if($datas){
-                        foreach($datas as $data){
-                            if($data->unit > $data->itemDetail->units){
+                    if ($datas) {
+                        foreach ($datas as $data) {
+                            if ($data->unit > $data->itemDetail->units) {
                                 return Redirect::route('admin-order.index')->with('failed', 'Request failed low stock');
                             }
-
                         }
 
-                        foreach($datas as $data){
+                        foreach ($datas as $data) {
                             $units = $data->itemDetail->units - $data->unit;
-                            Item::find($data->itemDetail->id)->update(["units"=>$units]);
+                            Item::find($data->itemDetail->id)->update(['units' => $units]);
                         }
                     }
                 }
             }
-    $order->update(['status' => $con]);
+            $order->update(['status' => $con]);
 
             return Redirect::route('admin-order.index')->with('success', "Order $con Successfully");
         } catch (Exception $e) {
@@ -73,40 +73,40 @@ class adminOrderController extends Controller
     public function getCOmpleteOrders()
     {
         if (Auth::user()->type === true) {
-        return view('order.completeOrders', [
-            'datas' => Order::withCount('orderInfo')
-                ->with('userData')
-                ->where('status', 'Complete')
-                ->get(),
-        ]);
-    }else{
-        return view('order.completeOrders', [
-            'datas' => Order::withCount('orderInfo')
-                ->with('userData')
-                ->where('status', 'Complete')->where('user_id',Auth::user()->id)
-                ->get(),
-        ]);
-    }
+            return view('order.completeOrders', [
+                'datas' => Order::withCount('orderInfo')
+                    ->with('userData')
+                    ->where('status', 'Complete')
+                    ->get(),
+            ]);
+        } else {
+            return view('order.completeOrders', [
+                'datas' => Order::withCount('orderInfo')
+                    ->with('userData')
+                    ->where('status', 'Complete')
+                    ->where('user_id', Auth::user()->id)
+                    ->get(),
+            ]);
+        }
     }
 
     public function getCancelOrders()
     {
         if (Auth::user()->type === true) {
-        return view('order.completeOrders', [
-            'datas' => Order::withCount('orderInfo')
-                ->with('userData')
-                ->where('status', 'Cancel')
-                ->get(),
-        ]);
-    }else{
-        return view('order.completeOrders', [
-            'datas' => Order::withCount('orderInfo')
-                ->with('userData')
-                ->where('status', 'Cancel')->where('user_id',Auth::user()->id)
-                ->get(),
-        ]);
+            return view('order.completeOrders', [
+                'datas' => Order::withCount('orderInfo')
+                    ->with('userData')
+                    ->where('status', 'Cancel')
+                    ->get(),
+            ]);
+        } else {
+            return view('order.completeOrders', [
+                'datas' => Order::withCount('orderInfo')
+                    ->with('userData')
+                    ->where('status', 'Cancel')
+                    ->where('user_id', Auth::user()->id)
+                    ->get(),
+            ]);
+        }
     }
-    }
-
-
 }

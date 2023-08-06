@@ -638,10 +638,11 @@
                         <div class="col-md-3 ">
                             <label for="location"><strong>Location </strong></label>
                         </div>
-                        
+
                         <div class="col-md-4 ">
                             <br>
-                            <button onclick="getLocation()" class="btn-sm btn-secondary" type="button">Get Location</button><br>
+                            <button onclick="getLocation()" class="btn-sm btn-secondary" type="button">Get
+                                Location</button><br>
                             <label for="lat">lat</label>
                             <input type="text" name="lat" id="lat" class="form-control">
                             <label for="log">log</label>
@@ -649,8 +650,8 @@
                         </div>
                     </div>
 
-                    
-                    
+
+
 
                     <div class="text-center">
                         <button class="btn btn-success mt-4" style="cursor: pointer !important"
@@ -707,7 +708,7 @@
 
             var class_error = document.querySelectorAll('input[type="text"]');
             var selectInputs = document.querySelectorAll('select');
-            var fileInputs = document.querySelectorAll('input[type="file"]');
+            // var fileInputs = document.querySelectorAll('input[type="file"]');
             var id = '';
 
 
@@ -727,21 +728,21 @@
                     }
                 }
             }
-            fileInputs.forEach(function(input) {
-                id = input.id
+            // fileInputs.forEach(function(input) {
+            //     id = input.id
 
-                if (input.files.length > 0) {
-                    if ($(`#${id}`).parent().find('span').length > 1) {
-                        $(`#${id}`).parent().find('span').remove().end();
-                    }
-                } else {
-                    if ($(`#${id}`).parent().find('span').length < 1) {
-                        $(`#${id}`).parent().prepend('<span class="text-danger">This field is required</span>');
+            //     if (input.files.length > 0) {
+            //         if ($(`#${id}`).parent().find('span').length > 1) {
+            //             $(`#${id}`).parent().find('span').remove().end();
+            //         }
+            //     } else {
+            //         if ($(`#${id}`).parent().find('span').length < 1) {
+            //             $(`#${id}`).parent().prepend('<span class="text-danger">This field is required</span>');
 
-                    }
-                    isValid = false
-                }
-            });
+            //         }
+            //         isValid = false
+            //     }
+            // });
 
             selectInputs.forEach(function(input) {
                 id = input.id

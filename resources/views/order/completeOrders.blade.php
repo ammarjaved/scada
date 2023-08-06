@@ -3,8 +3,6 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-
-
 @endsection
 
 @section('content')
@@ -59,7 +57,7 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{$data->id < 10 ? '00'.$data->id : '0'.$data->id}}</td>
+                                                <td>{{ $data->id < 10 ? '00' . $data->id : '0' . $data->id }}</td>
                                                 <td class="align-middle">{{ $data->userData->name }}</td>
                                                 <td>{{ $data->userData->email }}</td>
                                                 <td>{{ $data->order_info_count }}</td>
@@ -83,7 +81,6 @@
             </div>
         </div>
     </section>
-
 @endsection
 
 @section('script')

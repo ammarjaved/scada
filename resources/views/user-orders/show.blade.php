@@ -3,12 +3,12 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<style>
-    div#myTable_length {
-    display: none !important;
-}
-</style>
-    @endsection
+    <style>
+        div#myTable_length {
+            display: none !important;
+        }
+    </style>
+@endsection
 
 @section('content')
     <section class="content-header">
@@ -61,12 +61,14 @@
                                         <th>Staus : </th>
                                         <td>{{ $order->status }}</td>
                                     </tr>
-                                    <tr><th>Order Place Date : </th>
-                                    <td>{{$order->created_at}}</td>
+                                    <tr>
+                                        <th>Order Place Date : </th>
+                                        <td>{{ $order->created_at }}</td>
                                     </tr>
-                                    <tr><th>Order {{ $order->status }} Date : </th>
-                                        <td> {{$order->updated_at}}</td>
-                                        </tr>
+                                    <tr>
+                                        <th>Order {{ $order->status }} Date : </th>
+                                        <td> {{ $order->updated_at }}</td>
+                                    </tr>
                                 </table>
 
 
@@ -82,7 +84,7 @@
                                             <th>Item</th>
                                             <th>Type</th>
                                             <th>Unit</th>
-                                           
+
 
                                         </tr>
                                     </thead>
@@ -90,7 +92,7 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{ $loop->index +1 }}</td>
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <td class="align-middle">{{ $data->itemDetail->item }}</td>
                                                 <td>{{ $data->itemDetail->type }}</td>
                                                 <td>{{ $data->unit }}</td>
@@ -126,7 +128,5 @@
             $('#myTable').DataTable();
 
         })
-
-
     </script>
 @endsection
