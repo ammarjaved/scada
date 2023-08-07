@@ -3,7 +3,7 @@
     <a href="{{ route('site-data-collection.index') }}" class="brand-link">
         <img src="{{ asset('assets/web-images/main-logo-sm.png') }}" alt="AdminLTE Logo" class="brand-image "
             style="opacity: .8">
-        <span class="brand-text font-weight-light">Invetory Management</span>
+        <span class="brand-text font-weight-light">Inventory Management</span>
     </a>
 
 

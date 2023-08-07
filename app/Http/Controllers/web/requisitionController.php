@@ -67,10 +67,10 @@ class requisitionController extends Controller
 
                 Requisition::create(['item_id' => $data->id, 'unit' => $request->unit, 'last_unit' => $data->units]);
             }
-            return Redirect::route('requisition.index')->with('success', 'Data inteserted successfuly');
+            return Redirect::route('requisition.index')->with('success', 'Form Submitted');
         } catch (Exception $e) {
             // return $e->getMessage();
-            return Redirect::route('requisition.index')->with('failed', 'Data interting failed');
+            return Redirect::route('requisition.index')->with('failed', 'Request Failed');
         }
     }
 

@@ -76,12 +76,12 @@ class siteDateCollection extends Controller
             DB::statement("UPDATE site_data_collections set geom = ST_GeomFromText('POINT($request->log $request->lat)',4326) where id = $data->id");
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Inserted Foam successfully');
+                ->with('success', 'Form Submitted');
         } catch (Exception $e) {
             return $e->getMessage();
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('failed', 'Inserted Foam failed');
+                ->with('failed', 'Request Failed');
         }
     }
 
@@ -126,7 +126,7 @@ class siteDateCollection extends Controller
             SiteDataCollection::find($id)->update($request->all());
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Update Foam successfully');
+                ->with('success', 'Form Updated');
         } catch (Exception $e) {
             return redirect()
                 ->route('site-data-collection.index')
@@ -153,7 +153,7 @@ class siteDateCollection extends Controller
             // }
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Remove successfully');
+                ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
                 ->route('site-data-collection.index')

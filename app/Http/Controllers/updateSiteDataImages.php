@@ -129,11 +129,11 @@ class updateSiteDataImages extends Controller
         //     $id->update($request->all());
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('success', 'Inserted Foam successfully');
+                ->with('success', 'Form Submitted');
         } catch (Exception $e) {
             return redirect()
                 ->route('site-data-collection.index')
-                ->with('failed', 'Inserted Foam failed');
+                ->with('failed', 'Request Failed');
         }
     }
 

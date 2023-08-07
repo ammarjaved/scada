@@ -62,7 +62,7 @@ class OrderController extends Controller
             }
             return redirect()
                 ->route('admin-order.index')
-                ->with('success', 'Place Order Successfully');
+                ->with('success', 'Orders Placed');
         } catch (Exception $e) {
             return $e->getMessage();
             return redirect()

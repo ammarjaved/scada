@@ -46,7 +46,7 @@ class estimationWork extends Controller
 
             return redirect()
                 ->route('estimation-work.index')
-                ->with('success', 'Insert Data successfully');
+                ->with('success', 'Form Submitted');
         } catch (Exception $e) {
             return redirect()
                 ->route('estimation-work.index')
@@ -96,7 +96,7 @@ class estimationWork extends Controller
 
             return redirect()
                 ->route('estimation-work.index')
-                ->with('success', 'Insert Data successfully');
+                ->with('success', 'Form Updated');
         } catch (Exception $e) {
             return redirect()
                 ->route('estimation-work.index')
@@ -118,7 +118,7 @@ class estimationWork extends Controller
 
             return redirect()
                 ->route('estimation-work.index')
-                ->with('success', 'Remove successfully');
+                ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
                 ->route('estimation-work.index')
