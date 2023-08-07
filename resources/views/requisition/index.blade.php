@@ -75,7 +75,7 @@
 
                                                 <th>Description</th>
 
-                                                <th>Unit</th>
+                                                <th>Unit (m)</th>
                                                 <th>Last Update</th>
                                                 <th>Action</th>
                                             </tr>
@@ -162,7 +162,7 @@
                                 @foreach ($items as $item)
                                     <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach
-                          
+
                             </select>
                         </div>
                         <div class="">

@@ -69,7 +69,7 @@
                                             <th>#</th>
                                             <th>ITEM</th>
                                             <th>DESCRIPTION</th>
-                                            <th>UNIT</th>
+                                            <th>UNIT (m)</th>
                                             <th>REMOVE</th>
 
                                         </thead>
