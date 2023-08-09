@@ -132,6 +132,16 @@
                             </a>
                         </li>
                     </ul>
+
+                    <ul>
+                        <li class="nav-item">
+                            <a href="{{ route('scrap.index') }}"
+                                class="nav-link {{ Request::route()->getName() === 'scrap.index' ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-anchor"></i>
+                                <p>Sscrap</p>
+                            </a>
+                        </li>
+                    </ul>
                 @endif
 
             </ul>
