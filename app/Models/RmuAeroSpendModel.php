@@ -33,8 +33,13 @@ class RmuAeroSpendModel extends Model
         'amt_transport_status',
         'id_rmu_budget',
         'total',
-       
+
     ];
+
+    public function RmuBudget()
+    {
+        return $this->belongsTo(RmuBudgetTNBModel::class, 'id_rmu_budget');
+    }
 
 
 }

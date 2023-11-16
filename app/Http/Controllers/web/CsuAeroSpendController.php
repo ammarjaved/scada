@@ -16,10 +16,14 @@ class CsuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
         //
-        return view('csu-aero-spend.index',['datas'=>CsuAeroSpendModel::all()]) ;
+        $datas = CsuAeroSpendModel::where('id_csu_budget', $id)
+        ->with('CsuBudget')
+        ->get();
+
+        return view('csu-aero-spend.index', ['datas' => $datas])->render();
 
     }
 
@@ -28,10 +32,10 @@ class CsuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id, $pe_name)
     {
         //
-        return view('csu-aero-spend.create');
+        return view('csu-aero-spend.create', ['id_tnb' => $id, 'pe_name' => $pe_name]);
     }
 
     /**
@@ -47,9 +51,9 @@ class CsuAeroSpendController extends Controller
             //code...
 
         CsuAeroSpendModel::create($request->all());
-        return redirect()->route('csu-aero-spend.index')->with('success',"Form Submitted");
+        return redirect()->route('csu-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
-        return redirect()->route('csu-aero-spend.index')->with('failed',"Request Failed");
+        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
 
     }
     }
@@ -76,7 +80,8 @@ class CsuAeroSpendController extends Controller
     public function edit($id)
     {
         //
-        $data = CsuAeroSpendModel::find($id);
+        $data = CsuAeroSpendModel::where('id',$id)->with('CsuBudget')->first();
+
         return $data ? view('csu-aero-spend.edit',['data'=>$data]) : abrot(404);
     }
 
@@ -93,9 +98,9 @@ class CsuAeroSpendController extends Controller
             //code...
 
         $data = CsuAeroSpendModel::find($id)->update($request->all());
-        return redirect()->route('csu-aero-spend.index')->with('success',"Form update");
+        return redirect()->route('csu-budget-tnb.index')->with('success',"Form update");
     } catch (\Throwable $th) {
-        return redirect()->route('csu-aero-spend.index')->with('failed',"Request Failed");
+        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
 
     }
     }
@@ -114,11 +119,11 @@ class CsuAeroSpendController extends Controller
             CsuAeroSpendModel::find($id)->delete();
 
             return redirect()
-                ->route('csu-aero-spend.index')
+                ->route('csu-budget-tnb.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
-                ->route('csu-aero-spend.index')
+                ->route('csu-budget-tnb.index')
                 ->with('failed', 'Request failed');
         }
     }

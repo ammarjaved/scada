@@ -16,10 +16,14 @@ class VcbAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
-        return view('vcb-aero-spend.index',['datas'=>VcbAeroSpendModel::all()]) ;
+        $datas = VcbAeroSpendModel::where('id_vcb_budget', $id)
+            ->with('VcbBudget')
+            ->get();
+        // return $id;
+        return view('vcb-aero-spend.index', ['datas' => $datas])->render();
+
     }
 
     /**
@@ -27,11 +31,13 @@ class VcbAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+
+     public function create($id, $pe_name)
     {
         //
-        return view('vcb-aero-spend.create');
+        return view('vcb-aero-spend.create', ['id_tnb' => $id, 'pe_name' => $pe_name]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -46,9 +52,9 @@ class VcbAeroSpendController extends Controller
             //code...
 
         VcbAeroSpendModel::create($request->all());
-        return redirect()->route('vcb-aero-spend.index')->with('success',"Form Submitted");
+        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
-        return redirect()->route('vcb-aero-spend.index')->with('failed',"Request Failed");
+        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
 
     }
     }
@@ -62,7 +68,7 @@ class VcbAeroSpendController extends Controller
     public function show($id)
     {
         //
-        $data = VcbAeroSpendModel::find($id);
+        $data = VcbAeroSpendModel::where('id',$id)->with('VcbBudget')->first();
         return $data ? view('vcb-aero-spend.show',['data'=>$data]) : abrot(404);
     }
 
@@ -75,7 +81,7 @@ class VcbAeroSpendController extends Controller
     public function edit($id)
     {
         //
-        $data = VcbAeroSpendModel::find($id);
+        $data = VcbAeroSpendModel::where('id',$id)->with('VcbBudget')->first();
         return $data ? view('vcb-aero-spend.edit',['data'=>$data]) : abrot(404);
     }
 
@@ -93,9 +99,9 @@ class VcbAeroSpendController extends Controller
             //code...
 
         $data = VcbAeroSpendModel::find($id)->update($request->all());
-        return redirect()->route('vcb-aero-spend.index')->with('success',"Form update");
+        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form update");
     } catch (\Throwable $th) {
-        return redirect()->route('vcb-aero-spend.index')->with('failed',"Request Failed");
+        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
 
     }
     }
@@ -114,11 +120,11 @@ class VcbAeroSpendController extends Controller
             VcbAeroSpendModel::find($id)->delete();
 
             return redirect()
-                ->route('vcb-aero-spend.index')
+                ->route('vcb-budget-tnb.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
-                ->route('vcb-aero-spend.index')
+                ->route('vcb-budget-tnb.index')
                 ->with('failed', 'Request failed');
         }
     }

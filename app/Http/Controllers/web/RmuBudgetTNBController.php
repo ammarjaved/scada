@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RmuBudgetTNBModel;
 use Exception;
+use App\Models\RmuAeroSpendModel;
+
 
 
 
@@ -18,8 +20,10 @@ class RmuBudgetTNBController extends Controller
      */
     public function index()
     {
-        //
-        return view('rmu-budget-tnb.index',['datas'=>RmuBudgetTNBModel::all()]) ;
+
+        return view('rmu-budget-tnb.index',['datas'=>
+                RmuBudgetTNBModel::withCount('RmuSpends')->with(['RmuSpends'])->get()
+            ]) ;
     }
 
     /**
@@ -112,6 +116,11 @@ class RmuBudgetTNBController extends Controller
 
         try {
             RmuBudgetTNBModel::find($id)->delete();
+            $data = RmuAeroSpendModel::where('id_rmu_budget',$id);
+            if ($data->get()) {
+                $data->delete();
+
+            }
 
             return redirect()
                 ->route('rmu-budget-tnb.index')

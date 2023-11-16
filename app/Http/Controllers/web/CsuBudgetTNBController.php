@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CsuBudgetTNBModel;
 use Exception;
+use App\Models\CsuAeroSpendModel;
+
 
 
 
@@ -19,7 +21,10 @@ class CsuBudgetTNBController extends Controller
     public function index()
     {
         //
-        return view('csu-budget-tnb.index',['datas'=>CsuBudgetTNBModel::all()]) ;
+        return view('csu-budget-tnb.index',['datas'=>
+        CsuBudgetTNBModel::withCount('CsuSpends')->with(['CsuSpends'])->get()
+    ]) ;
+
     }
 
     /**
@@ -114,6 +119,11 @@ class CsuBudgetTNBController extends Controller
 
         try {
             CsuBudgetTNBModel::find($id)->delete();
+            $data = CsuAeroSpendModel::where('id_csu_budget',$id);
+            if ($data->get()) {
+                $data->delete();
+
+            }
 
             return redirect()
                 ->route('csu-budget-tnb.index')

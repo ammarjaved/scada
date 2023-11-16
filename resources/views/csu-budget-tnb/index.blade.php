@@ -50,12 +50,10 @@
 
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
-                                            <th>ID</th>
-                                            <th>pE NAME</th>
-                                            <th>CFS</th>
-                                            <th>SCADA</th>
+                                            <th>PE NAME</th>
                                             <th>TOTAL</th>
-                                            {{-- <th>TYPE FEEDER</th> --}}
+                                            <th>LAST UPDATE</th>
+                                            <th class="text-center">ADD SPENDINGS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -63,11 +61,21 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td class="align-middle"> {{ $data->id}}</td>
-                                                <td class="align-middle"> {{ $data->pe_name}}</td>
-                                                <td class="align-middle"> {{ $data->cfs }}</td>
-                                                <td class="align-middle"> {{ $data->scada }}</td>
-                                                <td class="align-middle"> {{ $data->total }}</td>
+                                                <td class="align-middle" style="cursor: pointer" onclick="showSpendDetails({{$data->id}})">{{ $data->pe_name }}</td>
+                                                <td class="align-middle">{{ $data->total }}</td>
+                                                <td class="align-middle">{{ $data->updated_at }}</td>
+                                                <td class="text-center">
+                                                    @if ($data->csu_spends_count == 0)
+                                                        <a class='btn btn-success btn-sm'
+                                                            href="{{ route('csu-aero-spend.create', [$data->id, $data->pe_name]) }}">ADD
+                                                            SPENDINGS</a>
+                                                    @else
+                                                        <a class="btn btn-sm btn-secondary"
+                                                            href="{{ route('csu-aero-spend.edit', $data->csuSpends->id) }}">Edit
+                                                            SPENDINGS</a>
+                                                    @endif
+                                                </td>
+
 
                                                 <td class="text-center">
                                                     <button type="button" class="btn  " data-toggle="dropdown">
@@ -82,7 +90,7 @@
                                                             href="{{ route('csu-budget-tnb.show', $data->id) }}">Detail</a>
 
                                                         <button type="button" class="btn btn-primary dropdown-item"
-                                                            data-id="{{ $data->id }}" data-toggle="modal"
+                                                            data-id="{{ $data->id }}" data-toggle="modal" data-url="csu-budget-tnb"
                                                             data-target="#myModal">
                                                             Remove
                                                         </button>
@@ -101,6 +109,9 @@
 
 
                 </div>
+            </div>
+            <div id="tnb-spends" class="mt-4">
+
             </div>
         </div>
     </section>
@@ -148,13 +159,34 @@
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
                 var modal = $(this);
-                $('#remove-foam').attr('action', 'csu-budget-tnb/' + id)
+                var url = button.data('url');
+                $('#remove-foam').attr('action', url + '/' + id)
             });
+
 
             $("#example2").DataTable({
                 "lengthChange": false,
                 "autoWidth": false,
             })
         })
+
+        function showSpendDetails(id){
+            console.log(id);
+            $.ajax({
+                url: `/csu-aero-spend/index/${id}`,
+                method: 'GET',
+                dataType: 'html',
+                success: function(data) {
+
+
+                    $('#tnb-spends').html(data);
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    $('#responseData').html('Error occurred');
+                }
+            });
+        }
     </script>
 @endsection

@@ -19,5 +19,9 @@ class RmuBudgetTNBModel extends Model
         'total',
     ];
 
+    public function RmuSpends() {
+        return $this->hasOne(RmuAeroSpendModel::class, 'id_rmu_budget');
+    }
+
 
 }

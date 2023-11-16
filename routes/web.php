@@ -63,17 +63,27 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('scrap',scrapController::class);
 
-    Route::resource('csu-aero-spend', CsuAeroSpendController::class);
+    Route::resource('csu-aero-spend', CsuAeroSpendController::class,['except' => ['create','index']]);
+    Route::get('csu-aero-spend/create/{id}/{pe_name}', [CsuAeroSpendController::class, 'create'])->name('csu-aero-spend.create');
+    Route::get('csu-aero-spend/index/{id}', [CsuAeroSpendController::class, 'index'])->name('csu-aero-spend.index');
+
 
     Route::resource('csu-budget-tnb', CsuBudgetTNBController::class);
 
-    Route::resource('rmu-aero-spend', RmuAeroSpendController::class,['except' => ['create']]);
-
+    Route::resource('rmu-aero-spend', RmuAeroSpendController::class,['except' => ['create','index']]);
     Route::get('rmu-aero-spend/create/{id}/{pe_name}', [RmuAeroSpendController::class, 'create'])->name('rmu-aero-spend.create');
+    Route::get('rmu-aero-spend/index/{id}', [RmuAeroSpendController::class, 'index'])->name('rmu-aero-spend.index');
+
 
     Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class);
 
-    Route::resource('vcb-aero-spend', VcbAeroSpendController::class);
+
+
+    Route::resource('vcb-aero-spend', VcbAeroSpendController::class,['except' => ['create','index']]);
+    Route::get('vcb-aero-spend/create/{id}/{pe_name}', [VcbAeroSpendController::class, 'create'])->name('vcb-aero-spend.create');
+    Route::get('vcb-aero-spend/index/{id}', [VcbAeroSpendController::class, 'index'])->name('vcb-aero-spend.index');
+
+
 
     Route::resource('vcb-budget-tnb', VcbBudgetTNBController::class);
 

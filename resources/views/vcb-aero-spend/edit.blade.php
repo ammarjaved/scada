@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('vcb-aero-spend.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index') }}">index</a></li>
                     <li class="breadcrumb-item active">edit</li>
                 </ol>
             </div>
@@ -29,10 +29,19 @@
 
             <div class="row">
                 <div class="col-md-4">
+                    <label for="amt_kkb">PE NAME</label>
+                </div>
+                <div class="col-md-4">
+                   <input value="{{$data->VcbBudget->pe_name}}" type="text" name="pe_name" id="pe_name" class="form-control" required readonly>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
                     <label for="amt_bo">AMT BO</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_bo}}" type="number" name="amt_bo" id="amt_bo" class="form-control" required>
+                    <input value="{{$data->amt_bo}}" type="number" name="amt_bo" id="amt_bo" class="form-control" >
                 </div>
             </div>
 
@@ -42,7 +51,13 @@
                     <label for="amt_bo_status">AMT BO Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_bo_status}}" type="text" name="amt_bo_status" id="amt_bo_status" class="form-control" required>
+                    <select name="amt_bo_status" id="amt_bo_status" class="form-control">
+                        <option value="{{$data->amt_bo_status}}" hidden>{{$data->amt_bo_status  == "" ? "select status" : $data->amt_bo_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -53,7 +68,7 @@
                     <label for="amt_piw">AMT PIW</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_piw}}" type="number" name="amt_piw" id="amt_piw" class="form-control" required>
+                    <input value="{{$data->amt_piw}}" type="number" name="amt_piw" id="amt_piw" class="form-control" >
                 </div>
             </div>
 
@@ -63,7 +78,13 @@
                     <label for="amt_piw_status">AMT PIW Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_piw_status}}" type="text" name="amt_piw_status" id="amt_piw_status" class="form-control" required>
+                    <select name="amt_piw_status" id="amt_piw_status" class="form-control">
+                        <option value="{{$data->amt_piw_status}}" hidden>{{$data->amt_piw_status  == "" ? "select status" : $data->amt_piw_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -86,7 +107,13 @@
                     <label for="amt_cable_status">AMT Cable Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_cable_status}}" type="text" name="amt_cable_status" id="amt_cable_status" class="form-control">
+                    <select name="amt_cable_status" id="amt_cable_status" class="form-control">
+                        <option value="{{$data->amt_cable_status}}" hidden>{{$data->amt_cable_status  == "" ? "select status" : $data->amt_cable_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -107,7 +134,13 @@
                     <label for="amt_transducer_status">AMT Transducer Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_transducer_status}}" type="text" name="amt_transducer_status" id="amt_transducer_status" class="form-control">
+                    <select name="amt_transducer_status" id="amt_transducer_status" class="form-control">
+                        <option value="{{$data->amt_transducer_status}}" hidden>{{$data->amt_transducer_status  == "" ? "select status" : $data->amt_transducer_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -127,7 +160,13 @@
                     <label for="amt_rtu_status">AMT RTU Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_rtu_status}}" type="text" name="amt_rtu_status" id="amt_rtu_status" class="form-control">
+                    <select name="amt_rtu_status" id="amt_rtu_status" class="form-control">
+                        <option value="{{$data->amt_rtu_status}}" hidden>{{$data->amt_rtu_status  == "" ? "select status" : $data->amt_rtu_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -146,7 +185,13 @@
                     <label for="amt_rtu_cable_status">AMT RTU Cable Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_rtu_cable_status}}" type="text" name="amt_rtu_cable_status" id="amt_rtu_cable_status" class="form-control">
+                    <select name="amt_rtu_cable_status" id="amt_rtu_cable_status" class="form-control">
+                        <option value="{{$data->amt_rtu_cable_status}}" hidden>{{$data->amt_rtu_cable_status  == "" ? "select status" : $data->amt_rtu_cable_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -178,7 +223,13 @@
                     <label for="amt_tools_status">AMT Tools Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_tools_status}}" type="text" name="amt_tools_status" id="amt_tools_status" class="form-control">
+                    <select name="amt_tools_status" id="amt_tools_status" class="form-control">
+                        <option value="{{$data->amt_tools_status}}" hidden>{{$data->amt_tools_status  == "" ? "select status" : $data->amt_tools_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -198,7 +249,13 @@
 
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_store_rental_status}}" type="text" name="amt_store_rental_status" id="amt_store_rental_status" class="form-control">
+                    <select name="amt_store_rental_status" id="amt_store_rental_status" class="form-control">
+                        <option value="{{$data->amt_store_rental_status}}" hidden>{{$data->amt_store_rental_status  == "" ? "select status" : $data->amt_store_rental_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
 
                 </div>
             </div>
@@ -220,7 +277,13 @@
                     <label for="amt_transport_status">AMT Transport Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_transport_status}}" type="text" name="amt_transport_status" id="amt_transport_status" class="form-control">
+                    <select name="amt_transport_status" id="amt_transport_status" class="form-control">
+                        <option value="{{$data->amt_transport_status}}" hidden>{{$data->amt_transport_status  == "" ? "select status" : $data->amt_transport_status}}</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
 
                 </div>
             </div>
@@ -230,7 +293,7 @@
                     <label for="total">Total</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control">
+                    <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control" readonly>
 
                 </div>
             </div>
@@ -253,9 +316,31 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
+        var total = 0;
+        var pre = 0;
         $(document).ready(function() {
 
             $("#myForm").validate();
+            $("input[type='number']").on('click', function() {
+                if (this.value != "") {
+                    pre = parseFloat(this.value);
+                } else {
+                    pre = 0;
+
+                }
+
+            })
+            total = $('#total').val() == "" ? 0 : parseFloat($('#total').val());
+
+
+            $("input[type='number']").on('change', function() {
+                var changeVal = 0;
+                if (this.value !== "") {
+                    changeVal = parseFloat(this.value);
+                }
+                total = total + changeVal - pre;
+                $('#total').val(total);
+            });
 
 
         })

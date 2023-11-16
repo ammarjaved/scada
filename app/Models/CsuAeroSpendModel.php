@@ -31,4 +31,9 @@ class CsuAeroSpendModel extends Model
         'total',
 
     ];
+
+    public function CsuBudget()
+    {
+        return $this->belongsTo(CsuBudgetTNBModel::class, 'id_csu_budget');
+    }
 }

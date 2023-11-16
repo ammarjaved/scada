@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('csu-aero-spend.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index') }}">index</a></li>
                     <li class="breadcrumb-item active">create</li>
                 </ol>
             </div>
@@ -24,7 +24,14 @@
         <form action="{{ route('csu-aero-spend.store') }}" id="myForm" method="post">
             @csrf
 
-
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">PE NAME</label>
+                </div>
+                <div class="col-md-4">
+                   <input type="text" name="pe_name" id="pe_name" value="{{$pe_name}}" class="form-control" required readonly >
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="amt_kkb">AMT KKB</label>
@@ -39,7 +46,13 @@
                     <label for="amt_kkb_status">AMT KKB Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_kkb_status" id="amt_kkb_status" class="form-control" required>
+                    <select name="amt_kkb_status" id="amt_kkb_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select> 
                 </div>
             </div>
 
@@ -61,7 +74,13 @@
                     <label for="amt_cfs_status">AMT CFS Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_cfs_status" id="amt_cfs_status" class="form-control" required>
+                    <select name="amt_cfs_status" id="amt_cfs_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -70,6 +89,7 @@
                     <label for="amt_bo">AMT BO</label>
                 </div>
                 <div class="col-md-4">
+
                     <input type="number" name="amt_bo" id="amt_bo" class="form-control">
                 </div>
             </div>
@@ -80,7 +100,13 @@
                     <label for="amt_bo_status">AMT BO Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_bo_status" id="amt_bo_status" class="form-control">
+                    <select name="amt_bo_status" id="amt_bo_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -102,7 +128,13 @@
                     <label for="amt_rtu_status">AMT RTU Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_rtu_status" id="amt_rtu_status" class="form-control">
+                    <select name="amt_rtu_status" id="amt_rtu_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -125,7 +157,13 @@
                     <label for="amt_tools_status">AMT Tools Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_tools_status" id="amt_tools_status" class="form-control">
+                    <select name="amt_tools_status" id="amt_tools_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
                 </div>
             </div>
 
@@ -145,7 +183,13 @@
 
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_store_rental_status" id="amt_store_rental_status" class="form-control">
+                    <select name="amt_store_rental_status" id="amt_store_rental_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
 
                 </div>
             </div>
@@ -167,7 +211,13 @@
                     <label for="amt_transport_status">AMT Transport Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_transport_status" id="amt_transport_status" class="form-control">
+                    <select name="amt_transport_status" id="amt_transport_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
 
                 </div>
             </div>
@@ -189,7 +239,13 @@
                     <label for="amt_salary_status">AMT Salary Status</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="text" name="amt_salary_status" id="amt_salary_status" class="form-control">
+                    <select name="amt_salary_status" id="amt_salary_status" class="form-control">
+                        <option value="" hidden>select status</option>
+                        <option value="work done and payed">work done and payed</option>
+                        <option value="work done but not payed">work done but not payed</option>
+                        <option value="work not done but payed">work not done but payed</option>
+                        <option value="not work done and  not payed">not work done and not payed</option>
+                    </select>
 
                 </div>
             </div>
@@ -198,13 +254,13 @@
                     <label for="total">Total</label>
                 </div>
                 <div class="col-md-4">
-                    <input   type="number" name="total" id="total" class="form-control">
+                    <input   type="number" name="total" id="total" class="form-control" readonly>
 
                 </div>
             </div>
 
 
-
+            <input type="hidden" name="id_csu_budget" id="id_csu_budget" value="{{$id_tnb}}" class="form-control">
             <div class="text-center">
                 <button class="btn btn-success mt-4" style="cursor: pointer !important" type="submit">Submit</button>
             </div>
@@ -218,10 +274,28 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
+         var total = 0;
+        var pre = 0;
         $(document).ready(function() {
 
             $("#myForm").validate();
+            $("input[type='number']").on('click', function() {
+                if (this.value != "") {
+                    pre = parseFloat(this.value);
+                } else {
+                    pre = 0;
 
+                }
+
+            })
+            $("input[type='number']").on('change', function() {
+                var changeVal = 0;
+                if (this.value !== "") {
+                    changeVal = parseFloat(this.value);
+                }
+                total = total + changeVal - pre;
+                $('#total').val(total);
+            });
 
         })
 

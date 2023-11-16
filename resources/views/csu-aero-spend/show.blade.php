@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('csu-aero-spend.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index') }}">index</a></li>
                     <li class="breadcrumb-item active">show</li>
                 </ol>
             </div>
@@ -22,7 +22,14 @@
 
 
 
-
+        <div class="row">
+            <div class="col-md-4">
+                <label for="amt_kkb">PE NAME</label>
+            </div>
+            <div class="col-md-4">
+               <input value="{{$data->CsuBudget->pe_name}}"   class="form-control"   readonly>
+            </div>
+        </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="amt_kkb">AMT KKB</label>

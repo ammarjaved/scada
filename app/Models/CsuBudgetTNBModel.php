@@ -17,7 +17,11 @@ class CsuBudgetTNBModel extends Model
         'scada',
         'total',
         'date_time',
-       
+
     ];
+
+    public function CsuSpends() {
+        return $this->hasOne(CsuAeroSpendModel::class, 'id_csu_budget');
+    }
 
 }

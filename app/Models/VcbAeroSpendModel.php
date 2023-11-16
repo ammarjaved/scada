@@ -33,4 +33,9 @@ class VcbAeroSpendModel extends Model
         'total',
     ];
 
+    public function VcbBudget()
+    {
+        return $this->belongsTo(VcbBudgetTNBModel::class, 'id_vcb_budget');
+    }
+
 }

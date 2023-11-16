@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VcbBudgetTNBModel;
 use Exception;
+use App\Models\VcbAeroSpendModel;
+
 
 class VcbBudgetTNBController extends Controller
 {
@@ -16,8 +18,10 @@ class VcbBudgetTNBController extends Controller
      */
     public function index()
     {
-        //
-        return view('vcb-budget-tnb.index',['datas'=>VcbBudgetTNBModel::all()]) ;
+
+        return view('vcb-budget-tnb.index',['datas'=>
+                VcbBudgetTNBModel::withCount('VcbSpends')->with(['VcbSpends'])->get()
+            ]) ;
     }
 
     /**
@@ -109,12 +113,19 @@ class VcbBudgetTNBController extends Controller
         //
 
         try {
-            VcbBudgetTNBModel::find($id)->delete();
+            VcbBudgetTNBModel::find($id)->delete(); ;
+            $data = VcbAeroSpendModel::where('id_vcb_budget',$id);
+            if ($data->get()) {
+                $data->delete();
+
+            }
+
 
             return redirect()
                 ->route('vcb-budget-tnb.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
+            return $e->getMessage();
             return redirect()
                 ->route('vcb-budget-tnb.index')
                 ->with('failed', 'Request failed');

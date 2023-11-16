@@ -71,7 +71,7 @@
                     <label for="total">Total</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control">
+                    <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control" readonly>
                 </div>
             </div>
 
@@ -82,7 +82,7 @@
                     <label for="date_time">Date Time</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->date_time}}" type="datetime-local" name="date_time" id="date_time" class="form-control">
+                    <input value="{{$data->date_time}}" type="datetime-local" name="date_time" id="date_time" class="form-control" >
                 </div>
             </div>
 
@@ -100,12 +100,35 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
+       var total = 0;
+        var pre = 0;
         $(document).ready(function() {
 
             $("#myForm").validate();
+            $("input[type='number']").on('click', function() {
+                if (this.value != "") {
+                    pre = parseFloat(this.value);
+                } else {
+                    pre = 0;
+
+                }
+
+            })
+            total = $('#total').val() == "" ? 0 : parseFloat($('#total').val());
+
+
+            $("input[type='number']").on('change', function() {
+                var changeVal = 0;
+                if (this.value !== "") {
+                    changeVal = parseFloat(this.value);
+                }
+                total = total + changeVal - pre;
+                $('#total').val(total);
+            });
 
 
         })
+
 
 
     </script>

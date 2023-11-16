@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\RmuAeroSpendModel;
 use Exception;
 
-
-
 class RmuAeroSpendController extends Controller
 {
     /**
@@ -16,10 +14,14 @@ class RmuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
         //
-        return view('rmu-aero-spend.index',['datas'=>RmuAeroSpendModel::all()]) ;
+        $datas = RmuAeroSpendModel::where('id_rmu_budget', $id)
+            ->with('RmuBudget')
+            ->get();
+        // return $datas;
+        return view('rmu-aero-spend.index', ['datas' => $datas])->render();
     }
 
     /**
@@ -27,10 +29,10 @@ class RmuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id,$pe_name)
+    public function create($id, $pe_name)
     {
         //
-        return view('rmu-aero-spend.create',['id_tnb'=>$id,'pe_name'=>$pe_name]);
+        return view('rmu-aero-spend.create', ['id_tnb' => $id, 'pe_name' => $pe_name]);
     }
 
     /**
@@ -45,13 +47,16 @@ class RmuAeroSpendController extends Controller
         try {
             //code...
 
-        RmuAeroSpendModel::create($request->all());
-        return redirect()->route('rmu-budget-tnb.index')->with('success',"Form Submitted");
-    } catch (\Throwable $th) {
-        return $th->getMessage();
-        return redirect()->route('rmu-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
+            RmuAeroSpendModel::create($request->all());
+            return redirect()
+                ->route('rmu-budget-tnb.index')
+                ->with('success', 'Form Submitted');
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
+            return redirect()
+                ->route('rmu-budget-tnb.index')
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**
@@ -63,8 +68,8 @@ class RmuAeroSpendController extends Controller
     public function show($id)
     {
         //
-        $data = RmuAeroSpendModel::find($id);
-        return $data ? view('rmu-aero-spend.show',['data'=>$data]) : abrot(404);
+        $data = RmuAeroSpendModel::where('id',$id)->with('RmuBudget')->first();
+        return $data ? view('rmu-aero-spend.show', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -76,8 +81,8 @@ class RmuAeroSpendController extends Controller
     public function edit($id)
     {
         //
-        $data = RmuAeroSpendModel::find($id);
-        return $data ? view('rmu-aero-spend.edit',['data'=>$data]) : abrot(404);
+        $data = RmuAeroSpendModel::where('id',$id)->with('RmuBudget')->first();
+        return $data ? view('rmu-aero-spend.edit', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -93,12 +98,15 @@ class RmuAeroSpendController extends Controller
         try {
             //code...
 
-        $data = RmuAeroSpendModel::find($id)->update($request->all());
-        return redirect()->route('rmu-aero-spend.index')->with('success',"Form update");
-    } catch (\Throwable $th) {
-        return redirect()->route('rmu-aero-spend.index')->with('failed',"Request Failed");
-
-    }
+            $data = RmuAeroSpendModel::find($id)->update($request->all());
+            return redirect()
+                ->route('rmu-budget-tnb.index')
+                ->with('success', 'Form update');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('rmu-budget-tnb.index')
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**
@@ -115,11 +123,11 @@ class RmuAeroSpendController extends Controller
             RmuAeroSpendModel::find($id)->delete();
 
             return redirect()
-                ->route('rmu-aero-spend.index')
+                ->route('rmu-budget-tnb.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
-                ->route('rmu-aero-spend.index')
+                ->route('rmu-budget-tnb.index')
                 ->with('failed', 'Request failed');
         }
     }

@@ -19,4 +19,9 @@ class VcbBudgetTNBModel extends Model
         'date_time',
     ];
 
+    public function VcbSpends() {
+        return $this->hasOne(VcbAeroSpendModel::class, 'id_vcb_budget');
+    }
+
+
 }

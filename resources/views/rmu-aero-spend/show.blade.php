@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('rmu-aero-spend.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index') }}">index</a></li>
                     <li class="breadcrumb-item active">show</li>
                 </ol>
             </div>
@@ -21,11 +21,16 @@
     <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
 
 
-        <form action="{{ route('rmu-aero-spend.update' ,$data->id) }}" id="myForm" method="post">
-            @csrf
-            @method('PATCH')
 
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="amt_kkb">PE NAME</label>
+                </div>
+                <div class="col-md-4">
+                   <input value="{{$data->RmuBudget->pe_name}}"   class="form-control"   readonly>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="amt_kkb">AMT KKB</label>
