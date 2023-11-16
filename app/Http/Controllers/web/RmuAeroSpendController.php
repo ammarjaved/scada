@@ -27,10 +27,10 @@ class RmuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id,$pe_name)
     {
         //
-        return view('rmu-aero-spend.create');
+        return view('rmu-aero-spend.create',['id_tnb'=>$id,'pe_name'=>$pe_name]);
     }
 
     /**
@@ -46,9 +46,10 @@ class RmuAeroSpendController extends Controller
             //code...
 
         RmuAeroSpendModel::create($request->all());
-        return redirect()->route('rmu-aero-spend.index')->with('success',"Form Submitted");
+        return redirect()->route('rmu-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
-        return redirect()->route('rmu-aero-spend.index')->with('failed',"Request Failed");
+        return $th->getMessage();
+        return redirect()->route('rmu-budget-tnb.index')->with('failed',"Request Failed");
 
     }
     }

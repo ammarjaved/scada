@@ -27,6 +27,15 @@
 
             <div class="row">
                 <div class="col-md-4">
+                    <label for="pe name">PE NAME</label>
+                </div>
+                <div class="col-md-4">
+                   <input type="text" name="pe_name" id="pe_name" value="{{$pe_name}}" class="form-control" required >
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
                     <label for="amt_kkb">AMT KKB</label>
                 </div>
                 <div class="col-md-4">
@@ -164,6 +173,10 @@
                 </div>
             </div>
 
+
+           
+                    <input type="hidden" name="id_rmu_budget" id="id_rmu_budget" value="{{$id_tnb}}" class="form-control"> 
+              
 
 
 

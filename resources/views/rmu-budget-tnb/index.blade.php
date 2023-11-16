@@ -56,6 +56,7 @@
                                             <th>SCADA</th>
                                             <th>TOTAL</th>
                                             {{-- <th>TYPE FEEDER</th> --}}
+                                            <th>ADD SPENDINGS</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -72,6 +73,8 @@
                                                 <td class="align-middle">{{ $data->scada }}</td>
 
                                                 <td class="align-middle">{{ $data->total }}</td>
+
+                                                <td class="align-middle"><a class='btn btn-success'  href="{{ route('rmu-aero-spend.create', [$data->id,$data->pe_name]) }}">ADD SPENDINGS</a></td>
 
                                                 {{-- <td class="align-middle">{{ $data->type_feeder ? $data->type_feeder : '-' }}</td> --}}
                                                 <td class="text-center">

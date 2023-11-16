@@ -67,7 +67,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('csu-budget-tnb', CsuBudgetTNBController::class);
 
-    Route::resource('rmu-aero-spend', RmuAeroSpendController::class);
+    Route::resource('rmu-aero-spend', RmuAeroSpendController::class,['except' => ['create']]);
+
+    Route::get('rmu-aero-spend/create/{id}/{pe_name}', [RmuAeroSpendController::class, 'create'])->name('rmu-aero-spend.create');
 
     Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class);
 
