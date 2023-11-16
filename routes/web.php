@@ -12,6 +12,17 @@ use App\Http\Controllers\web\siteDateCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Gd\Commands\RotateCommand;
+use App\Http\Controllers\web\CsuAeroSpendController;
+use App\Http\Controllers\web\CsuBudgetTNBController;
+use App\Http\Controllers\web\RmuAeroSpendController;
+use App\Http\Controllers\web\RmuBudgetTNBController;
+use App\Http\Controllers\web\VcbAeroSpendController;
+use App\Http\Controllers\web\VcbBudgetTNBController;
+
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +62,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/cancel-orders',[adminOrderController::class,'getCancelOrders']);
 
     Route::resource('scrap',scrapController::class);
+
+    Route::resource('csu-aero-spend', CsuAeroSpendController::class);
+
+    Route::resource('csu-budget-tnb', CsuBudgetTNBController::class);
+
+    Route::resource('rmu-aero-spend', RmuAeroSpendController::class);
+
+    Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class);
+
+    Route::resource('vcb-aero-spend', VcbAeroSpendController::class);
+
+    Route::resource('vcb-budget-tnb', VcbBudgetTNBController::class);
+
+
+
+
+
 });
 
 require __DIR__ . '/auth.php';

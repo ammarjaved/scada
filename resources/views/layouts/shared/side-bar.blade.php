@@ -120,6 +120,8 @@
                             </a>
                         </li>
                     </ul>
+
+
                 </li>
 
                 @if (Auth::user()->type === true)
@@ -138,10 +140,178 @@
                             <a href="{{ route('scrap.index') }}"
                                 class="nav-link {{ Request::route()->getName() === 'scrap.index' ? 'active' : '' }}">
                                 <i class="nav-icon fa fa-anchor"></i>
-                                <p>Sscrap</p>
+                                <p>Scrap</p>
                             </a>
                         </li>
                     </ul>
+
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> Csu Aero Spend
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('csu-aero-spend.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('csu-aero-spend.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> Csu Budget TNB
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('csu-budget-tnb.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('csu-budget-tnb.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> RMU Aero Spend
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('rmu-aero-spend.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('rmu-aero-spend.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> RMU Budget TNB
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('rmu-budget-tnb.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('rmu-budget-tnb.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> VCB Aero Spend
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('vcb-aero-spend.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('vcb-aero-spend.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a href="#" class="nav-link">
+                            <i class=" fas fa-cart-plus"></i>
+                            <p> VCB Budget TNB
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+
+                            <li class="nav-item">
+                                <a href="{{ route('vcb-budget-tnb.create') }}"
+                                    class="nav-link  ">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('vcb-budget-tnb.index') }}" class="nav-link  ">
+
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>index</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+
                 @endif
 
             </ul>
