@@ -37,12 +37,27 @@
 
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="amt_kkb">Cost KKB</label>
+                            <label for="pe name">Budget</label>
                         </div>
                         <div class="col-md-4">
-                            <input type="number" name="amt_kkb" id="amt_kkb" class="form-control">
+                            <input type="number" name="allocated_budget" id="allocated_budget" value=""
+                                class="form-control" required>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="amt_kkb">AMT KKB</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" name="amt_kkb" id="amt_kkb" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <button data-toggle="modal" data-name='kkb'  data-target="#myModal" class="btn btn-danger">ADD KKB</button>
+                        </div>
+                    </div>
+
+
 
                     <div class="row">
                         <div class="col-md-4">
@@ -347,6 +362,68 @@
             </div>
         </div>
     </section>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Remove Recored</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="" id="remove-foam" method="POST">
+                    @csrf
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="total">name</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="name" id="field_name" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="total">amount</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" name="amount" id="amt1" class="form-control">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="total">description</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" name="description" id="description" class="form-control">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="total">Date</label>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="date" name="date_time" id="date_time" class="form-control">
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        <button type="button" onclick="submitModelData()" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -355,6 +432,14 @@
         var total = 0;
         var pre = 0;
         $(document).ready(function() {
+
+            $('#myModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var fn = button.data('name');
+                var modal = $(this);
+                $("#field_name").val(fn);
+                var amt_val=$("#amt_kkb").val();
+            });
 
             $("#myForm").validate();
 
@@ -368,15 +453,30 @@
 
             })
             $("input[type='number']").on('change', function() {
+                if(this.id!='allocated_budget'){
                 var changeVal = 0;
                 if (this.value !== "") {
                     changeVal = parseFloat(this.value);
                 }
                 total = total + changeVal - pre;
                 $('#total').val(total);
+            }
             });
 
 
         })
+
+        function submitModelData(){
+            var amt_val_model=$("#amt1").val();
+            var amt_val_field=$("#amt_kkb").val();
+            if(Number(amt_val_field)>0){
+                total_amount=Number(amt_val_model)+Number(amt_val_field);
+                $("#amt_kkb").val(total_amount);
+            }else{
+                $("#amt_kkb").val(amt_val_model);
+            }
+        }
+
+
     </script>
 @endsection

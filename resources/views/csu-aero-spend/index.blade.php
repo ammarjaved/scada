@@ -4,7 +4,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                             <h4>CSU SPENDS</h4>
+                             <h4>CSU SPENDINGS</h4>
                             </div>
 
                         </div>

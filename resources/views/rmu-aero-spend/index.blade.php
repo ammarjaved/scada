@@ -5,7 +5,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                               <h4>RMU SPENDS</h4>
+                               <h4>RMU SPENDINGS</h4>
                             </div>
 
                         </div>
