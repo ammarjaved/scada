@@ -38,7 +38,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_bo">AMT BO</label>
+                    <label for="amt_bo">Cost BO</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_bo}}" type="number" name="amt_bo" id="amt_bo" class="form-control" >
@@ -48,7 +48,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_bo_status">AMT BO Status</label>
+                    <label for="amt_bo_status">Cost BO Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_bo_status" id="amt_bo_status" class="form-control">
@@ -65,7 +65,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_piw">AMT PIW</label>
+                    <label for="amt_piw">Cost PIW</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_piw}}" type="number" name="amt_piw" id="amt_piw" class="form-control" >
@@ -75,7 +75,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_piw_status">AMT PIW Status</label>
+                    <label for="amt_piw_status">Cost PIW Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_piw_status" id="amt_piw_status" class="form-control">
@@ -94,7 +94,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_cable">AMT Cable</label>
+                    <label for="amt_cable">Cost Cable</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_cable}}" type="number" name="amt_cable" id="amt_cable" class="form-control">
@@ -104,7 +104,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_cable_status">AMT Cable Status</label>
+                    <label for="amt_cable_status">Cost Cable Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_cable_status" id="amt_cable_status" class="form-control">
@@ -121,7 +121,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_transducer">AMT Transducer</label>
+                    <label for="amt_transducer">Cost Transducer</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_transducer}}" type="number" name="amt_transducer" id="amt_transducer" class="form-control">
@@ -131,7 +131,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_transducer_status">AMT Transducer Status</label>
+                    <label for="amt_transducer_status">Cost Transducer Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_transducer_status" id="amt_transducer_status" class="form-control">
@@ -147,7 +147,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_rtu">AMT RTU</label>
+                    <label for="amt_rtu">Cost RTU</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_rtu}}" type="number" name="amt_rtu" id="amt_rtu" class="form-control">
@@ -157,7 +157,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_rtu_status">AMT RTU Status</label>
+                    <label for="amt_rtu_status">Cost RTU Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_rtu_status" id="amt_rtu_status" class="form-control">
@@ -172,7 +172,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_rtu_cable">AMT RTU Cable</label>
+                    <label for="amt_rtu_cable">Cost RTU Cable</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_rtu_cable}}" type="number" name="amt_rtu_cable" id="amt_rtu_cable" class="form-control">
@@ -182,7 +182,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_rtu_cable_status">AMT RTU Cable Status</label>
+                    <label for="amt_rtu_cable_status">Cost RTU Cable Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_rtu_cable_status" id="amt_rtu_cable_status" class="form-control">
@@ -220,7 +220,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_tools_status">AMT Tools Status</label>
+                    <label for="amt_tools_status">Cost Tools Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_tools_status" id="amt_tools_status" class="form-control">
@@ -235,7 +235,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_store_rental">AMT Store Rental</label>
+                    <label for="amt_store_rental">Cost Store Rental</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_store_rental}}" type="number" name="amt_store_rental" id="amt_store_rental" class="form-control">
@@ -245,7 +245,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_store_rental_status">AMT Store Rental Status</label>
+                    <label for="amt_store_rental_status">Cost Store Rental Status</label>
 
                 </div>
                 <div class="col-md-4">
@@ -264,7 +264,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_transport">AMT Transport</label>
+                    <label for="amt_transport">Cost Transport</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->amt_transport}}" type="number" name="amt_transport" id="amt_transport"  class="form-control">
@@ -274,7 +274,7 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_transport_status">AMT Transport Status</label>
+                    <label for="amt_transport_status">Cost Transport Status</label>
                 </div>
                 <div class="col-md-4">
                     <select name="amt_transport_status" id="amt_transport_status" class="form-control">
