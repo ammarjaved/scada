@@ -42,5 +42,8 @@ class RmuAeroSpendModel extends Model
         return $this->belongsTo(RmuBudgetTNBModel::class, 'id_rmu_budget');
     }
 
+    public function RmuSpendDetail() {
+        return $this->hasMany(RmuPaymentDetailModel::class, 'rmu_id');
+    }
 
 }

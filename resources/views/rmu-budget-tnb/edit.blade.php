@@ -42,7 +42,15 @@
                    <input value="{{$data->rtu_status}}" type="text" name="rtu_status" id="rtu_status" class="form-control" required >
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Budget</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" value="{{$data->allocated_budget}}" name="allocated_budget" id="allocated_budget"  
+                        class="form-control" required>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="amt_kkb_pk">AMT KKB PK</label>

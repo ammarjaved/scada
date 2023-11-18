@@ -17,11 +17,11 @@ class RmuAeroSpendController extends Controller
     public function index($id)
     {
         //
-        $datas = RmuAeroSpendModel::where('id_rmu_budget', $id)
+        $data = RmuAeroSpendModel::where('id_rmu_budget', $id)
             ->with('RmuBudget')
-            ->get();
+            ->first();
         // return $datas;
-        return view('rmu-aero-spend.index', ['datas' => $datas])->render();
+        return view('rmu-aero-spend.index', ['data' => $data])->render();
     }
 
     /**
@@ -68,8 +68,50 @@ class RmuAeroSpendController extends Controller
     public function show($id)
     {
         //
-        $data = RmuAeroSpendModel::where('id',$id)->with('RmuBudget')->first();
-        return $data ? view('rmu-aero-spend.show', ['data' => $data]) : abrot(404);
+        // return $data = RmuAeroSpendModel::where('id',$id)
+        //                 ->with([
+        //                     'RmuBudget',
+        //                     'RmuSpendDetail as abc' => function ($query) {
+        //                         $query->where('pmt_name', 'amt_kkb');
+        //                     },
+        //                     'RmuSpendDetail as bbc' => function ($query) {
+        //                         $query->where('pmt_name', 'amt_ir');
+        //                     },
+        //                 ])->first();
+            $data = RmuAeroSpendModel::where('id',$id)
+                    ->with([
+                            'RmuBudget',
+                            'RmuSpendDetail'])->first();
+            $count = [];
+            $count['amt_kkb'] = [];
+            $count['amt_kkb_count'] = 1;
+            $count['amt_ir'] =[];
+            $count['amt_ir_count'] = 1;
+            $count['amt_bo'] =[];
+            $count['amt_bo_count'] =1;
+            $count['amt_piw'] =[];
+            $count['amt_piw_count'] =1;
+            $count['amt_cable'] =[];
+            $count['amt_cable_count'] =1;
+            $count['amt_rtu'] =[];
+            $count['amt_rtu_count'] =1;
+            $count['amt_rtu_cable'] =[];
+            $count['amt_rtu_cable_count'] =1;
+            $count['tools'] =[];
+            $count['tools_count'] =1;
+            $count['amt_store_rental'] =[];
+            $count['amt_store_rental_count'] =1;
+            $count['amt_transport'] =[];
+            $count['amt_transport_count'] =1;
+                        
+
+            foreach ($data->RmuSpendDetail as $key => $value) {
+                array_push($count[$value->pmt_name],$value);
+                $count[$value->pmt_name."_count"] +=1;
+            }
+
+
+        return $data ? view('rmu-aero-spend.show', ['data' => $data ,'count'=>$count]) : abrot(404);
     }
 
     /**

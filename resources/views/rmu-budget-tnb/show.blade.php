@@ -21,7 +21,6 @@
     <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
 
 
-
             <div class="row">
                 <div class="col-md-4">
                     <label for="pe_name">Pe Name</label>
@@ -39,7 +38,15 @@
                    <input disabled value="{{$data->rtu_status}}"   class="form-control" required >
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Budget</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" value="{{$data->allocated_budget}}" disabled
+                        class="form-control" required>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="amt_kkb_pk">AMT KKB PK</label>

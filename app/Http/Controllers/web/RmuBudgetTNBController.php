@@ -49,9 +49,14 @@ class RmuBudgetTNBController extends Controller
         try {
             //code...
 
-        RmuBudgetTNBModel::create($request->all());
+        $storeBudget =  RmuBudgetTNBModel::create($request->all());
+        if ($storeBudget) {
+            RmuAeroSpendModel::create(['id_rmu_budget'=>$storeBudget->id]);
+        }
+
         return redirect()->route('rmu-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
+        return $th->getMessage();
         return redirect()->route('rmu-budget-tnb.index')->with('failed',"Request Failed");
 
     }
