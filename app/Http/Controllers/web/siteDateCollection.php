@@ -144,13 +144,34 @@ class siteDateCollection extends Controller
     {
         //
         try {
-            SiteDataCollection::find($id)->delete();
+            $siteData = SiteDataCollection::find($id);
+            $name = $siteData->nama_pe;
+            $gear = $siteData->switchgear;
+            $siteData->delete();
 
             EstimationWork::where('site_data_id', $id)->delete();
             $img = SiteImage::where('site_data_id', $id)->delete();
             // if($img){
             //     $this->siteRepository->removeImg($img);
             // }
+            // if ($gear == 'RMU') {
+            //     $id = \App\Models\RmuBudgetTNBModel::where('pe_name', $name)->first();
+            //     if ($id) {
+            //         return redirect()->route('rmu-budget-tnb.destroy', $id->id);
+            //     }
+            // } elseif ($gear == 'VCB') {
+            //     $id = \App\Models\VCBBudgetTNBModel::where('pe_name', $name)->first();
+            //     if ($id) {
+            //         return redirect()->route('vcb-budget-tnb.destroy', $id->id);
+            //     }
+            // } elseif ($gear == 'COMPACT') {
+            //     $id = \App\Models\RmuBudgetTNBModel::where('pe_name', $name)->first();
+            //     if ($id) {
+            //         return redirect()->route('csu-budget-tnb.destroy', $id->id);
+            //     }
+            // }
+
+
             return redirect()
                 ->route('site-data-collection.index')
                 ->with('success', 'Record Removed');
