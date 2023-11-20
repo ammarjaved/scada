@@ -34,7 +34,7 @@
                                             <th>STORE RENTAL</th>
                                             <th>TRANSPORT</th>
                                             <th>TOTAL</th>
-                                            <th></th>
+                                            <th>PROFIT</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
