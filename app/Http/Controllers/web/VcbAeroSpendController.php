@@ -21,8 +21,8 @@ class VcbAeroSpendController extends Controller
         $datas = VcbAeroSpendModel::where('id_vcb_budget', $id)
             ->with('VcbBudget')
             ->first();
-            $profit = (($data->VcbBudget->allocated_budget -  $data -> total)/$data->VcbBudget->allocated_budget) * 100;
-            $data['profit'] = number_format($profit , 2);
+            $profit = (($datas->VcbBudget->allocated_budget -  $datas -> total)/$datas->VcbBudget->allocated_budget) * 100;
+            $datas['profit'] = number_format($profit , 2);
         // return $id;
         return view('vcb-aero-spend.index', ['data' => $datas])->render();
 
