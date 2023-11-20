@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\RmuBudgetTNBModel;
 use Exception;
 use App\Models\RmuAeroSpendModel;
+use App\Models\RmuPaymentDetailModel;
 
 
 
@@ -123,6 +124,10 @@ class RmuBudgetTNBController extends Controller
             RmuBudgetTNBModel::find($id)->delete();
             $data = RmuAeroSpendModel::where('id_rmu_budget',$id);
             if ($data->get()) {
+                $paymentData = RmuPaymentDetailModel::where('rmu_id' , $getData->id);
+                if ($paymentData->get()) {
+                    $paymentData->delete();
+                }
                 $data->delete();
 
             }

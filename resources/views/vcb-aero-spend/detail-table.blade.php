@@ -25,10 +25,13 @@
                         <td>{{$item->created_at}}</td>
                         @if ($action)
                         <td>
-                            <button type="submit" class="d-none" id="{{$arr_name}}-{{$item->id}}-submit-button" class="btn btn-success btn-sm "> submit</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="{{$arr_name}}-{{$item->id}}-edit-button"  onclick="editDetails('{{$arr_name}}-{{$item->id}}')">edit</button>/
+
+                              <div class="btn-group btn-group-sm">
+                            <button type="submit" class="d-none btn btn-success btn-sm" id="{{$arr_name}}-{{$item->id}}-submit-button"  > <i class="fas fa-save"></i></button>
+                            <button type="button" class="btn btn-sm btn-primary" id="{{$arr_name}}-{{$item->id}}-edit-button"  onclick="editDetails('{{$arr_name}}-{{$item->id}}')"><i class="fas fa-edit"></i></button>
                             <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-id="{{$item->id}}" data-name="{{$arr_name}}-{{$item->id}}"
-                            data-target="#myModal">delete</button>
+                            data-target="#myModal"><i class="fas fa-trash"></i></button>
+                              </div>
                         </td>
                         @endif
 

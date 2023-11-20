@@ -3,7 +3,7 @@
     <a href="{{ route('site-data-collection.index') }}" class="brand-link">
         <img src="{{ asset('assets/web-images/main-logo-sm.png') }}" alt="AdminLTE Logo" class="brand-image "
             style="opacity: .8">
-        <span class="brand-text font-weight-light">Inventory Management</span>
+        <span class="brand-text font-weight-light" style="font-size: 19px !important">Inventory Management</span>
     </a>
 
 
@@ -146,7 +146,7 @@
                     </ul>
 
 
-                
+
                     <!-- <li class="nav-item ">
                         <a href="#" class="nav-link">
                             <i class=" fas fa-cart-plus"></i>
@@ -233,13 +233,13 @@
                     </li> -->
 
 
-                    
 
 
-                   
 
-                  
-                    
+
+
+
+
 
                 @endif
 

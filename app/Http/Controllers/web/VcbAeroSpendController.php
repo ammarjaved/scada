@@ -21,8 +21,13 @@ class VcbAeroSpendController extends Controller
         $datas = VcbAeroSpendModel::where('id_vcb_budget', $id)
             ->with('VcbBudget')
             ->first();
-            $profit = (($datas->VcbBudget->allocated_budget -  $datas -> total)/$datas->VcbBudget->allocated_budget) * 100;
+            try {
+                $profit = (($datas->VcbBudget->allocated_budget -  $datas -> total)/$datas->VcbBudget->allocated_budget) * 100;
             $datas['profit'] = number_format($profit , 2);
+            } catch (\Throwable $th) {
+                $datas['profit'] = "#error!";
+            }
+
         // return $id;
         return view('vcb-aero-spend.index', ['data' => $datas])->render();
 
@@ -74,30 +79,26 @@ class VcbAeroSpendController extends Controller
             ->with(['VcbBudget', 'SpendDetail'])
             ->first();
         $count = [];
-
         $count['amt_bo'] = [];
-        $count['amt_bo_count'] = 1;
         $count['amt_piw'] = [];
-        $count['amt_piw_count'] = 1;
         $count['amt_cable'] = [];
-        $count['amt_cable_count'] = 1;
         $count['amt_transducer'] = [];
-        $count['amt_transducer_count'] = 1;
         $count['amt_rtu'] = [];
-        $count['amt_rtu_count'] = 1;
         $count['amt_rtu_cable'] = [];
-        $count['amt_rtu_cable_count'] = 1;
         $count['tools'] = [];
-        $count['tools_count'] = 1;
         $count['amt_store_rental'] = [];
-        $count['amt_store_rental_count'] = 1;
         $count['amt_transport'] = [];
-        $count['amt_transport_count'] = 1;
 
+        try {
+            $profit = (($data->VcbBudget->allocated_budget -  $data-> total)/$data->VcbBudget->allocated_budget) * 100;
+        $data['profit'] = number_format($profit , 2);
+        } catch (\Throwable $th) {
+            $datas['profit'] = "#error!";
+        }
 
         foreach ($data->SpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);
-            $count[$value->pmt_name . '_count'] += 1;
+      
         }
         return $data ? view('vcb-aero-spend.show',['data'=>$data,'count'=>$count]) : abrot(404);
     }
@@ -127,6 +128,12 @@ class VcbAeroSpendController extends Controller
         $count['amt_store_rental'] = [];
         $count['amt_transport'] = [];
 
+        try {
+            $profit = (($data->VcbBudget->allocated_budget -  $data-> total)/$data->VcbBudget->allocated_budget) * 100;
+        $data['profit'] = number_format($profit , 2);
+        } catch (\Throwable $th) {
+            $datas['profit'] = "#error!";
+        }
 
         foreach ($data->SpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);

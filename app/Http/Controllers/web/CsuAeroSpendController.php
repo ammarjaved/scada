@@ -17,12 +17,16 @@ class CsuAeroSpendController extends Controller
     public function index($id)
     {
         //
-        $datas = CsuAeroSpendModel::where('id_csu_budget', $id)
+        $data = CsuAeroSpendModel::where('id_csu_budget', $id)
             ->with('CsuBudget')
             ->first();
-             $profit = (($datas->CsuBudget->allocated_budget -  $datas -> total)/$datas->CsuBudget->allocated_budget) * 100;
-        $datas['profit'] = number_format($profit , 2);
-        return view('csu-aero-spend.index', ['data' => $datas])->render();
+        try {
+            $profit = (($data->CsuBudget->allocated_budget - $data->total) / $data->CsuBudget->allocated_budget) * 100;
+            $data['profit'] = number_format($profit, 2);
+        } catch (\Throwable $th) {
+            $data['profit'] = '#error!';
+        }
+        return view('csu-aero-spend.index', ['data' => $data])->render();
     }
 
     /**
@@ -81,13 +85,17 @@ class CsuAeroSpendController extends Controller
         $count['amt_store_rental'] = [];
         $count['amt_transport'] = [];
         $count['amt_salary'] = [];
-
+        try {
+            $profit = (($data->CsuBudget->allocated_budget - $data->total) / $data->CsuBudget->allocated_budget) * 100;
+            $data['profit'] = number_format($profit, 2);
+        } catch (\Throwable $th) {
+            $data['profit'] = '#error!';
+        }
         foreach ($data->SpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);
-
         }
 
-        return $data ? view('csu-aero-spend.show', ['data' => $data,'count'=>$count]) : abrot(404);
+        return $data ? view('csu-aero-spend.show', ['data' => $data, 'count' => $count]) : abrot(404);
     }
 
     /**
@@ -111,13 +119,17 @@ class CsuAeroSpendController extends Controller
         $count['amt_store_rental'] = [];
         $count['amt_transport'] = [];
         $count['amt_salary'] = [];
-
+        try {
+            $profit = (($data->CsuBudget->allocated_budget - $data->total) / $data->CsuBudget->allocated_budget) * 100;
+            $data['profit'] = number_format($profit, 2);
+        } catch (\Throwable $th) {
+            $data['profit'] = '#error!';
+        }
         foreach ($data->SpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);
-
         }
 
-        return $data ? view('csu-aero-spend.edit', ['data' => $data , 'count'=>$count]) : abrot(404);
+        return $data ? view('csu-aero-spend.edit', ['data' => $data, 'count' => $count]) : abrot(404);
     }
 
     /**

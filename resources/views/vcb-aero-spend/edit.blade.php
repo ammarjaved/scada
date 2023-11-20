@@ -1,17 +1,24 @@
 @extends('layouts.app')
 @section('css')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-<script src="https://malsup.github.io/jquery.form.js"></script>
-<script>
-    var $jq = $.noConflict(true);
-</script>
-<style>
-    input ,textarea, select {
-    font-size: 15px !important;
-    padding: 0px 6px !important;
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="https://malsup.github.io/jquery.form.js"></script>
+    <script>
+        var $jq = $.noConflict(true);
+    </script>
 
-}
-</style>
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <style>
+        input,
+        textarea,
+        select {
+            font-size: 15px !important;
+            padding: 0px 6px !important;
+
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -34,11 +41,31 @@
         <div class="container-fluid">
             <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
 
+                <table class=" mb-3 table-borderless col-md-3">
+                    <tbody>
+                        <tr>
+                            <th>PE NAME : </th>
+                            <td>{{ $data->VcbBudget->pe_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>ALLOCATED BUDGET : </th>
+                            <td><span id="budget"> {{ $data->VcbBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL SPENDING :</th>
+                            <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL PROFIT :</th>
+                            <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">
                             <th>NAME</th>
-                          <th class="text-center">DETAIL</th>
+                            <th class="text-center">DETAIL</th>
                         </thead>
                         <tbody>
 
@@ -49,7 +76,7 @@
                                 'arr_name' => 'amt_bo',
                                 'name' => 'BO',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
                             @include('vcb-aero-spend.detail-table', [
@@ -57,7 +84,7 @@
                                 'arr_name' => 'amt_piw',
                                 'name' => 'PIW',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
                             @include('vcb-aero-spend.detail-table', [
@@ -65,14 +92,14 @@
                                 'arr_name' => 'amt_cable',
                                 'name' => 'Cable',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
-                             @include('vcb-aero-spend.detail-table', [
+                            @include('vcb-aero-spend.detail-table', [
                                 'arr' => $count['amt_transducer'],
                                 'arr_name' => 'amt_transducer',
                                 'name' => 'Transducer',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
@@ -83,7 +110,7 @@
                                 'arr_name' => 'amt_rtu',
                                 'name' => 'RTU',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
@@ -92,7 +119,7 @@
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
@@ -101,14 +128,14 @@
                                 'arr_name' => 'amt_store_rental',
                                 'name' => 'Store Rental',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
                             @include('vcb-aero-spend.detail-table', [
                                 'arr' => $count['amt_transport'],
                                 'arr_name' => 'amt_transport',
                                 'name' => 'Transport',
                                 'url' => 'vcb',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
@@ -118,7 +145,8 @@
                         </tbody>
                         <tfoot style="background-color: #E4E3E3 !important">
 
-                            <td colspan="2" class="text-end"><strong>Total : <span id="subTotal">{{ $data->total }}</span></strong></td>
+                            <td colspan="2" class="text-end"><strong>Total : <span
+                                        class="subTotal">{{ $data->total }}</span></strong></td>
                             {{-- <td colspan="2" class="text-end"><strong>Budget : {{$data->VcbBudget->allocated_budget}}</strong></td> --}}
                         </tfoot>
                     </table>
@@ -157,13 +185,25 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+
     <script>
+        var budget = 0;
         $(document).ready(function() {
+
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
 
             // $("#myForm").validate();
             $('#myModal').on('show.bs.modal', function(event) {
@@ -176,49 +216,52 @@
 
             $jq('.submit-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
-
-                        alert("Form submitted successfully!");
-                        console.log(responseText.inp_name);
-                        formSubmitted(responseText.data.name , responseText.data.sub_total , responseText.data.total)
-
+                    toastr.success('Spending update successfully!')
+                    formSubmitted(responseText.data.name, responseText.data.sub_total, responseText.data
+                        .total)
                 },
                 error: function(xhr, status, error, $form) {
-
-                    alert("Form submission failed. Please try again.");
+                    toastr.error('Request failed. Please try again.')
 
                 }
             })
 
+            budget = {{ $data->VcbBudget->allocated_budget }};
+
+
 
         })
-        function editDetails(id){
-                $(`#${id}-amount`).removeAttr('disabled');
-                $(`#${id}-amount`).removeClass('border-0');
-                $(`#${id}-status`).removeAttr('disabled');
-                $(`#${id}-status`).removeClass('border-0');
-                $(`#${id}-description`).removeAttr('disabled');
-                $(`#${id}-description`).removeClass('border-0');
 
-                $(`#${id}-submit-button`).removeClass('d-none');
-                $(`#${id}-edit-button`).addClass('d-none');
+        function editDetails(id) {
+            $(`#${id}-amount`).removeAttr('disabled');
+            $(`#${id}-amount`).removeClass('border-0');
+            $(`#${id}-status`).removeAttr('disabled');
+            $(`#${id}-status`).removeClass('border-0');
+            $(`#${id}-description`).removeAttr('disabled');
+            $(`#${id}-description`).removeClass('border-0');
+
+            $(`#${id}-submit-button`).removeClass('d-none');
+            $(`#${id}-edit-button`).addClass('d-none');
 
 
-            }
+        }
 
-            function formSubmitted(param , subTotal , total){
-                $(`#${param}-amount`).attr('disabled',true);
-                $(`#${param}-amount`).addClass('border-0');
-                $(`#${param}-status`).attr('disabled',true);
-                $(`#${param}-status`).addClass('border-0');
-                $(`#${param}-description`).attr('disabled',true);
-                $(`#${param}-description`).addClass('border-0');
+        function formSubmitted(param, subTotal, total) {
+            $(`#${param}-amount`).attr('disabled', true);
+            $(`#${param}-amount`).addClass('border-0');
+            $(`#${param}-status`).attr('disabled', true);
+            $(`#${param}-status`).addClass('border-0');
+            $(`#${param}-description`).attr('disabled', true);
+            $(`#${param}-description`).addClass('border-0');
 
-                $(`#${param}-submit-button`).addClass('d-none');
-                $(`#${param}-edit-button`).removeClass('d-none');
+            $(`#${param}-submit-button`).addClass('d-none');
+            $(`#${param}-edit-button`).removeClass('d-none');
 
-                $(`#subTotal`).html(subTotal)
-                $(`#${param}-total`).html(total)
+            $(`.subTotal`).html(subTotal)
+            $(`#${param}-total`).html(total)
+            var  profit = ((budget - subTotal)/budget)*100;
+            $(`.total_profit`).html(profit)
 
-            }
+        }
     </script>
 @endsection

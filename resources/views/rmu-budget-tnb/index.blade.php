@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+
+      <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <style>
         .error{color: red}
     </style>
@@ -241,12 +246,25 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
+<!-- SweetAlert2 -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
 
     <script>
         $(document).ready(function() {
             // $('#myTable').DataTable();
+
+
+            var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
+
             $("#spendingForm").validate();
 
             $('#myModal').on('show.bs.modal', function(event) {
@@ -277,14 +295,12 @@
 
              $jq('#spendingForm').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
-                    console.log(responseText.id);
-                    alert("Form submitted successfully!");
+                    toastr.success('Spending update successfully!')
                     $('#spendingModal').modal('hide');
                     showSpendDetails(responseText.id)
                 },
                 error: function(xhr, status, error, $form) {
-
-                    alert("Form submission failed. Please try again.");
+                    toastr.error('Request failed. Please try again.')
 
             }
 });

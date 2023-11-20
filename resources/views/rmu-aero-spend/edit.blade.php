@@ -5,6 +5,11 @@
 <script>
     var $jq = $.noConflict(true);
 </script>
+
+      <!-- SweetAlert2 -->
+      <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+      <!-- Toastr -->
+      <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 <style>
     input ,textarea, select {
     font-size: 15px !important;
@@ -33,7 +38,26 @@
     <section class="content">
         <div class="container-fluid">
             <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
-
+                <table class=" mb-3 table-borderless col-md-3">
+                    <tbody>
+                        <tr>
+                            <th>PE NAME : </th>
+                            <td>{{ $data->RmuBudget->pe_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>ALLOCATED BUDGET : </th>
+                            <td><span id="budget"> {{ $data->RmuBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL SPENDING :</th>
+                            <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL PROFIT :</th>
+                            <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">
@@ -180,9 +204,23 @@
 @endsection
 
 @section('script')
+<!-- SweetAlert2 -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
+        var budget = 0;
         $(document).ready(function() {
+
+
+            var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
 
             // $("#myForm").validate();
             $('#myModal').on('show.bs.modal', function(event) {
@@ -195,19 +233,15 @@
 
             $jq('.submit-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
-
-                        alert("Form submitted successfully!");
-                        console.log(responseText.inp_name);
-                        formSubmitted(responseText.data.name , responseText.data.sub_total , responseText.data.total)
-
+                    toastr.success('Spending update successfully!')
+                    formSubmitted(responseText.data.name , responseText.data.sub_total , responseText.data.total)
                 },
                 error: function(xhr, status, error, $form) {
-
-                    alert("Form submission failed. Please try again.");
-
+                    toastr.error('Request failed. Please try again.')
                 }
             })
 
+            budget = {{ $data->RmuBudget->allocated_budget }};
 
         })
         function editDetails(id){
@@ -235,8 +269,10 @@
                 $(`#${param}-submit-button`).addClass('d-none');
                 $(`#${param}-edit-button`).removeClass('d-none');
 
-                $(`#subTotal`).html(subTotal)
-                $(`#${param}-total`).html(total)
+                $(`.subTotal`).html(subTotal)
+            $(`#${param}-total`).html(total)
+            var  profit = (((budget - subTotal)/budget)*100).toFixed(2);
+            $(`.total_profit`).html(profit)
 
             }
     </script>

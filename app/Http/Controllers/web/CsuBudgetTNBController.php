@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\CsuBudgetTNBModel;
 use Exception;
 use App\Models\CsuAeroSpendModel;
+use App\Models\CsuPaymentDetailModel;
+
 
 
 
@@ -125,6 +127,10 @@ class CsuBudgetTNBController extends Controller
             CsuBudgetTNBModel::find($id)->delete();
             $data = CsuAeroSpendModel::where('id_csu_budget',$id);
             if ($data->get()) {
+                $paymentData = CsuPaymentDetailModel::where('csu_id' , $getData->id);
+                if ($paymentData->get()) {
+                    $paymentData->delete();
+                }
                 $data->delete();
 
             }
