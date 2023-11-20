@@ -36,7 +36,7 @@
 
                         <div class="col-md-4 ">
                             <input type="text" name="nama_pe" id="nama_pe" value="{{ $data->nama_pe }}"
-                                class="form-control">
+                                class="form-control" readonly>
                         </div>
 
                     </div>
@@ -70,13 +70,14 @@
                         </div>
 
                         <div class="col-md-4">
-                            <select name="switchgear" id="switchgear" class="form-control">
+                            <input type="text" name="switchgear" id="switchgear" class="form-control" value="{{$data->switchgear}}" readonly>
+                            {{-- <select name="switchgear" id="switchgear" class="form-control" >
                                 <option value="{{ $data->switchgear != '' ? $data->switchgear : '' }}" hidden>
                                     {{ $data->switchgear != '' ? $data->switchgear : 'Select' }}</option>
                                 <option value="RMU">RMU</option>
                                 <option value="VCB">VCB</option>
                                 <option value="COMPACT">COMPACT</option>
-                            </select>
+                            </select> --}}
                         </div>
 
 

@@ -23,7 +23,9 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
+
+                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index' ,   $data->RmuBudget->pe_name  ) }}">index</a></li>
                     <li class="breadcrumb-item active">show</li>
                 </ol>
             </div>

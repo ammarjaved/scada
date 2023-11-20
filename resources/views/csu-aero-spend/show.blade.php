@@ -22,8 +22,10 @@
                 <h3>VCB AERO Spend</h3>
             </div>
             <div class="col-sm-6 text-right">
+
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index') }}">index</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index' ,$data->CsuBudget->pe_name) }}">index</a></li>
                     <li class="breadcrumb-item active">edit</li>
                 </ol>
             </div>

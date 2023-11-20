@@ -9,7 +9,7 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">index</a></li>
                     <li class="breadcrumb-item active">create</li>
                 </ol>
             </div>
@@ -30,7 +30,7 @@
                     <label for="pe_name">Pe Name</label>
                 </div>
                 <div class="col-md-4">
-                   <input type="text" name="pe_name" id="pe_name" class="form-control" required >
+                   <input type="text" name="pe_name" id="pe_name" value="{{$name}}" class="form-control" required  readonly>
                 </div>
             </div>
             <div class="row">

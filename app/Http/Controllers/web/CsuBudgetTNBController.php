@@ -20,13 +20,14 @@ class CsuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($name)
     {
         //
-        return view('csu-budget-tnb.index',['datas'=>
-        CsuBudgetTNBModel::withCount('CsuSpends')->with(['CsuSpends'])->get()
-    ]) ;
-
+        $data =  CsuBudgetTNBModel::where('pe_name', $name)->withCount('CsuSpends')->with(['CsuSpends'])->first();
+        if ($data) {
+            return view('csu-budget-tnb.index',['data'=> $data]) ;
+        }
+        return redirect()->route('csu-budget-tnb.create' ,['name'=>$name]);
     }
 
     /**
@@ -34,10 +35,11 @@ class CsuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($name)
     {
         //
-        return view('csu-budget-tnb.create');
+
+        return view('csu-budget-tnb.create' ,['name'=>$name]);
     }
 
     /**
@@ -58,9 +60,9 @@ class CsuBudgetTNBController extends Controller
         if ($storeBudget) {
             CsuAeroSpendModel::create(['id_csu_budget'=>$storeBudget->id]);
         }
-        return redirect()->route('csu-budget-tnb.index')->with('success',"Form Submitted");
+        return redirect()->route('csu-budget-tnb.index', $request->pe_name)->with('success',"Form Submitted");
     } catch (\Throwable $th) {
-        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
+        return redirect()->route('csu-budget-tnb.index' , $request->pe_name)->with('failed',"Request Failed");
 
     }
     }
@@ -107,9 +109,9 @@ class CsuBudgetTNBController extends Controller
             //code...
 
         $data = CsuBudgetTNBModel::find($id)->update($request->all());
-        return redirect()->route('csu-budget-tnb.index')->with('success',"Form update");
+        return redirect()->route('csu-budget-tnb.index',$request->pe_name)->with('success',"Form update");
     } catch (\Throwable $th) {
-        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
+        return redirect()->route('csu-budget-tnb.index',$request->pe_name)->with('failed',"Request Failed");
 
     }
     }
@@ -126,7 +128,8 @@ class CsuBudgetTNBController extends Controller
         try {
             CsuBudgetTNBModel::find($id)->delete();
             $data = CsuAeroSpendModel::where('id_csu_budget',$id);
-            if ($data->get()) {
+            $getData = $data->first();
+            if ($getData) {
                 $paymentData = CsuPaymentDetailModel::where('csu_id' , $getData->id);
                 if ($paymentData->get()) {
                     $paymentData->delete();
@@ -136,11 +139,11 @@ class CsuBudgetTNBController extends Controller
             }
 
             return redirect()
-                ->route('csu-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return redirect()
-                ->route('csu-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('failed', 'Request failed');
         }
     }

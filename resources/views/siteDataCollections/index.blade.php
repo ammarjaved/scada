@@ -84,19 +84,23 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td class="align-middle">{{ $data->nama_pe ? $data->nama_pe : '-' }}</td>
+                                                <td class="align-middle">{{   $data->nama_pe ? $data->nama_pe : '-' }}</td>
                                                 <td class="align-middle">
                                                     {{ $data->sub_station_type ? $data->sub_station_type : '-' }}</td>
                                                     <td class="align-middle">
                                                     {{ $data->switchgear ? $data->switchgear : '-' }}</td>
 
                                                     <td class="align-middle text-center">
+                                                        @if ( $data->nama_pe != '')
+
+
                                                     @if($data->switchgear=='RMU')
-                                                        <a class="btn btn-primary btn-sm" href="{{ route('rmu-budget-tnb.index') }}">ADD COST</a>
+                                                        <a class="btn btn-primary btn-sm" href="{{ route('rmu-budget-tnb.index',$data->nama_pe ) }}">ADD COST</a>
                                                     @elseif($data->switchgear=='VCB')
-                                                    <a class="btn btn-primary btn-sm" href="{{ route('vcb-budget-tnb.index') }}">ADD COST</a>
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('vcb-budget-tnb.index', $data->nama_pe ) }}">ADD COST</a>
                                                     @elseif($data->switchgear=='COMPACT')
-                                                    <a class="btn btn-primary btn-sm" href="{{ route('csu-budget-tnb.index') }}">ADD COST</a>
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('csu-budget-tnb.index',$data->nama_pe ) }}">ADD COST</a>
+                                                    @endif
                                                     @endif
                                                 </td>
 

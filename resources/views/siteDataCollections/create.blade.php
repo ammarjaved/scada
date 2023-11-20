@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="col-md-4 ">
-                            <input type="text" name="nama_pe" id="nama_pe" class="form-control">
+                            <input type="text" name="nama_pe" id="nama_pe" class="form-control" required>
                         </div>
 
                     </div>
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <select name="switchgear" id="switchgear" class="form-control">
+                            <select name="switchgear" id="switchgear" class="form-control" required>
                                 <option value="" hidden> Select</option>
                                 <option value="RMU">RMU</option>
                                 <option value="VCB">VCB</option>

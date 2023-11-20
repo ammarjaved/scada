@@ -9,9 +9,6 @@ use Exception;
 use App\Models\RmuAeroSpendModel;
 use App\Models\RmuPaymentDetailModel;
 
-
-
-
 class RmuBudgetTNBController extends Controller
 {
     /**
@@ -19,12 +16,22 @@ class RmuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($name)
     {
+        try {
+            //code...
 
-        return view('rmu-budget-tnb.index',['datas'=>
-                RmuBudgetTNBModel::withCount('RmuSpends')->with(['RmuSpends'])->get()
-            ]) ;
+            $data = RmuBudgetTNBModel::where('pe_name', $name)
+                ->withCount('RmuSpends')
+                ->with(['RmuSpends'])
+                ->first();
+            if ($data) {
+                return view('rmu-budget-tnb.index', ['data' => $data]);
+            }
+            return redirect()->route('rmu-budget-tnb.create', ['name' => $name]);
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
     }
 
     /**
@@ -32,10 +39,10 @@ class RmuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($name)
     {
         //
-        return view('rmu-budget-tnb.create');
+        return view('rmu-budget-tnb.create', ['name' => $name]);
     }
 
     /**
@@ -50,17 +57,20 @@ class RmuBudgetTNBController extends Controller
         try {
             //code...
 
-        $storeBudget =  RmuBudgetTNBModel::create($request->all());
-        if ($storeBudget) {
-            RmuAeroSpendModel::create(['id_rmu_budget'=>$storeBudget->id]);
+            $storeBudget = RmuBudgetTNBModel::create($request->all());
+            if ($storeBudget) {
+                RmuAeroSpendModel::create(['id_rmu_budget' => $storeBudget->id]);
+            }
+
+            return redirect()
+                ->route('rmu-budget-tnb.index', $request->pe_name)
+                ->with('success', 'Form Submitted');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return redirect()
+                ->route('rmu-budget-tnb.index', $request->pe_name)
+                ->with('failed', 'Request Failed');
         }
-
-        return redirect()->route('rmu-budget-tnb.index')->with('success',"Form Submitted");
-    } catch (\Throwable $th) {
-        return $th->getMessage();
-        return redirect()->route('rmu-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
     }
 
     /**
@@ -73,7 +83,7 @@ class RmuBudgetTNBController extends Controller
     {
         //
         $data = RmuBudgetTNBModel::find($id);
-        return $data ? view('rmu-budget-tnb.show',['data'=>$data]) : abrot(404);
+        return $data ? view('rmu-budget-tnb.show', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -86,7 +96,7 @@ class RmuBudgetTNBController extends Controller
     {
         //
         $data = RmuBudgetTNBModel::find($id);
-        return $data ? view('rmu-budget-tnb.edit',['data'=>$data]) : abrot(404);
+        return $data ? view('rmu-budget-tnb.edit', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -102,12 +112,15 @@ class RmuBudgetTNBController extends Controller
         try {
             //code...
 
-        $data = RmuBudgetTNBModel::find($id)->update($request->all());
-        return redirect()->route('rmu-budget-tnb.index')->with('success',"Form update");
-    } catch (\Throwable $th) {
-        return redirect()->route('rmu-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
+            $data = RmuBudgetTNBModel::find($id)->update($request->all());
+            return redirect()
+                ->route('rmu-budget-tnb.index', $request->name)
+                ->with('success', 'Form update');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('rmu-budget-tnb.index', $request->name)
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**
@@ -122,22 +135,25 @@ class RmuBudgetTNBController extends Controller
 
         try {
             RmuBudgetTNBModel::find($id)->delete();
-            $data = RmuAeroSpendModel::where('id_rmu_budget',$id);
-            if ($data->get()) {
-                $paymentData = RmuPaymentDetailModel::where('rmu_id' , $getData->id);
+            $data = RmuAeroSpendModel::where('id_rmu_budget', $id);
+            $getData = $data->first();
+
+            if ($getData) {
+                $paymentData = RmuPaymentDetailModel::where('rmu_id', $getData->id);
+ 
                 if ($paymentData->get()) {
                     $paymentData->delete();
                 }
                 $data->delete();
-
             }
 
             return redirect()
-                ->route('rmu-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
+            return $e->getMessage();
             return redirect()
-                ->route('rmu-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('failed', 'Request failed');
         }
     }

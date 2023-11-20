@@ -47,8 +47,9 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="card-title">
-                                <a href="{{ route('rmu-budget-tnb.create') }}" class="btn  btn-sm"
-                                    style="background-color: #367FA9; border-radius:0px; color:white">Add new</a>
+                                RMU Budget TNB
+                                {{-- <a href="{{ route('rmu-budget-tnb.create') }}" class="btn  btn-sm"
+                                    style="background-color: #367FA9; border-radius:0px; color:white">Add new</a> --}}
                             </div>
 
                         </div>
@@ -77,7 +78,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($datas as $data)
+                                        {{-- @foreach ($datas as $data) --}}
                                             <tr>
                                                 <td class="align-middle"> <button class="btn" onclick="showSpendDetails({{$data->id}})">{{ $data->pe_name}} </button> </td>
                                                 <td>{{$data->rtu_status}}</td>
@@ -109,7 +110,7 @@
 
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        {{-- @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>
@@ -272,7 +273,7 @@
                 var id = button.data('id');
                 var modal = $(this);
                 var url = button.data('url');
-                $('#remove-foam').attr('action', url + '/' + id)
+                $('#remove-foam').attr('action', '/'+url + '/' + id)
             });
 
             $('#spendingModal').on('show.bs.modal', function(event) {
@@ -303,6 +304,7 @@
                     toastr.error('Request failed. Please try again.')
 
             }
+
 });
 
 
@@ -310,6 +312,7 @@
                 "lengthChange": false,
                 "autoWidth": false,
             })
+            showSpendDetails({{$data->id}})
         })
 
         function showSpendDetails(id){

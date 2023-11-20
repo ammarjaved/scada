@@ -77,7 +77,11 @@ Route::middleware('auth')->group(function () {
     Route::get('csu-aero-spend/index/{id}', [CsuAeroSpendController::class, 'index'])->name('csu-aero-spend.index');
 
 
-    Route::resource('csu-budget-tnb', CsuBudgetTNBController::class);
+    Route::resource('csu-budget-tnb', CsuBudgetTNBController::class,['except' => ['index' , 'create']]);
+    Route::get('csu-budget-tnb/index/{name}', [CsuBudgetTNBController::class, 'index'])->name('csu-budget-tnb.index');
+    Route::get('csu-budget-tnb/create/{name}', [CsuBudgetTNBController::class, 'create'])->name('csu-budget-tnb.create');
+
+
 
     Route::resource('rmu-payment-details', RmuPaymentDetailController::class);
 
@@ -86,7 +90,10 @@ Route::middleware('auth')->group(function () {
     Route::get('rmu-aero-spend/index/{id}', [RmuAeroSpendController::class, 'index'])->name('rmu-aero-spend.index');
 
 
-    Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class);
+    Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class,['except' => ['index' , 'create']]);
+
+    Route::get('rmu-budget-tnb/index/{name}', [RmuBudgetTNBController::class, 'index'])->name('rmu-budget-tnb.index');
+    Route::get('rmu-budget-tnb/create/{name}', [RmuBudgetTNBController::class, 'create'])->name('rmu-budget-tnb.create');
 
 
     Route::resource('vcb-payment-details', VcbPaymentDetailController::class);
@@ -97,7 +104,10 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::resource('vcb-budget-tnb', VcbBudgetTNBController::class);
+    Route::resource('vcb-budget-tnb', VcbBudgetTNBController::class,['except' => ['create','index']]);
+
+    Route::get('vcb-budget-tnb/index/{name}', [VcbBudgetTNBController::class, 'index'])->name('vcb-budget-tnb.index');
+    Route::get('vcb-budget-tnb/create/{name}', [VcbBudgetTNBController::class, 'create'])->name('vcb-budget-tnb.create');
 
 
 

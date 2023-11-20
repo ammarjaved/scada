@@ -9,7 +9,8 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index') }}">index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$data->pe_name) }}">index</a></li>
                     <li class="breadcrumb-item active">edit</li>
                 </ol>
             </div>
@@ -30,7 +31,7 @@
                     <label for="pe_name">Pe Name</label>
                 </div>
                 <div class="col-md-4">
-                   <input value="{{$data->pe_name}}" type="text" name="pe_name" id="pe_name" class="form-control" required >
+                   <input value="{{$data->pe_name}}" type="text" name="pe_name" id="pe_name" class="form-control" required readonly>
                 </div>
             </div>
 

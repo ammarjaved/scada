@@ -9,9 +9,6 @@ use Exception;
 use App\Models\VcbAeroSpendModel;
 use App\Models\VcbPaymentDetailModel;
 
-
-
-
 class VcbBudgetTNBController extends Controller
 {
     /**
@@ -19,12 +16,24 @@ class VcbBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($name)
     {
+        try {
+            //code...
 
-        return view('vcb-budget-tnb.index',['datas'=>
-                VcbBudgetTNBModel::withCount('VcbSpends')->with(['VcbSpends'])->get()
-            ]) ;
+            $data = VcbBudgetTNBModel::where('pe_name', $name)
+                ->withCount('VcbSpends')
+                ->with(['VcbSpends'])
+                ->first();
+            if ($data) {
+                return view('vcb-budget-tnb.index', ['data' => $data]);
+            }
+            return redirect()->route('vcb-budget-tnb.create', ['name' => $name]);
+        } catch (\Throwable $th) {
+            return redirect()->back();
+        }
+
+
     }
 
     /**
@@ -32,10 +41,10 @@ class VcbBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($name)
     {
         //
-        return view('vcb-budget-tnb.create');
+        return view('vcb-budget-tnb.create',['name'=>$name]);
     }
 
     /**
@@ -48,19 +57,21 @@ class VcbBudgetTNBController extends Controller
     {
         //
         try {
+            $storeBudget = VcbBudgetTNBModel::create($request->all());
 
-            $storeBudget =  VcbBudgetTNBModel::create($request->all());
+            if ($storeBudget) {
+                VcbAeroSpendModel::create(['id_vcb_budget' => $storeBudget->id]);
+            }
 
-        if ($storeBudget) {
-            VcbAeroSpendModel::create(['id_vcb_budget'=>$storeBudget->id]);
+            return redirect()
+                ->route('vcb-budget-tnb.index',$request->pe_name)
+                ->with('success', 'Form Submitted');
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return redirect()
+                ->route('vcb-budget-tnb.index' , $request->pe_name)
+                ->with('failed', 'Request Failed');
         }
-
-        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form Submitted");
-    } catch (\Throwable $th) {
-        return $th->getMessage();
-        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
     }
 
     /**
@@ -73,7 +84,7 @@ class VcbBudgetTNBController extends Controller
     {
         //
         $data = VcbBudgetTNBModel::find($id);
-        return $data ? view('vcb-budget-tnb.show',['data'=>$data]) : abrot(404);
+        return $data ? view('vcb-budget-tnb.show', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -86,7 +97,7 @@ class VcbBudgetTNBController extends Controller
     {
         //
         $data = VcbBudgetTNBModel::find($id);
-        return $data ? view('vcb-budget-tnb.edit',['data'=>$data]) : abrot(404);
+        return $data ? view('vcb-budget-tnb.edit', ['data' => $data]) : abrot(404);
     }
 
     /**
@@ -102,12 +113,15 @@ class VcbBudgetTNBController extends Controller
         try {
             //code...
 
-        $data = VcbBudgetTNBModel::find($id)->update($request->all());
-        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form update");
-    } catch (\Throwable $th) {
-        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
+            $data = VcbBudgetTNBModel::find($id)->update($request->all());
+            return redirect()
+                ->route('vcb-budget-tnb.index',$request->pe_name)
+                ->with('success', 'Form update');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('vcb-budget-tnb.index',$request->pe_name)
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**
@@ -121,27 +135,25 @@ class VcbBudgetTNBController extends Controller
         //
 
         try {
-            VcbBudgetTNBModel::find($id)->delete(); ;
-            $data = VcbAeroSpendModel::where('id_vcb_budget',$id);
+            VcbBudgetTNBModel::find($id)->delete();
+            $data = VcbAeroSpendModel::where('id_vcb_budget', $id);
             $getData = $data->first();
             if ($getData) {
-              $paymentData = VcbPaymentDetailModel::where('vcb_id' , $getData->id);
+                $paymentData = VcbPaymentDetailModel::where('vcb_id', $getData->id);
                 if ($paymentData->get()) {
                     $paymentData->delete();
                 }
- 
-                $data->delete();
 
+                $data->delete();
             }
 
-
             return redirect()
-                ->route('vcb-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('success', 'Record Removed');
         } catch (Exception $e) {
             return $e->getMessage();
             return redirect()
-                ->route('vcb-budget-tnb.index')
+                ->route('site-data-collection.index')
                 ->with('failed', 'Request failed');
         }
     }
