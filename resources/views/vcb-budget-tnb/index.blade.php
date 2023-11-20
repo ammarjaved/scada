@@ -63,7 +63,7 @@
                                             <th>CFS</th>
                                             <th>SCADA</th>
                                             <th>TOTAL</th>
-                                            <th>LAST UPDATE</th>
+                                            <th>BUDGET</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -77,7 +77,8 @@
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>
                                                 <td class="align-middle">{{ $data->total }}</td>
-                                                <td class="align-middle">{{ $data->updated_at }}</td>
+                                                <td class="align-middle">{{ $data->allocated_budget }}</td>
+
                                                 <td class="text-center">
                                                     <button type="button" class="btn  " data-toggle="dropdown">
                                                         <img
