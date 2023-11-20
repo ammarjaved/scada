@@ -20,9 +20,11 @@ class VcbAeroSpendController extends Controller
     {
         $datas = VcbAeroSpendModel::where('id_vcb_budget', $id)
             ->with('VcbBudget')
-            ->get();
+            ->first();
+            $profit = (($data->VcbBudget->allocated_budget -  $data -> total)/$data->VcbBudget->allocated_budget) * 100;
+            $data['profit'] = number_format($profit , 2);
         // return $id;
-        return view('vcb-aero-spend.index', ['datas' => $datas])->render();
+        return view('vcb-aero-spend.index', ['data' => $datas])->render();
 
     }
 
@@ -68,8 +70,36 @@ class VcbAeroSpendController extends Controller
     public function show($id)
     {
         //
-        $data = VcbAeroSpendModel::where('id',$id)->with('VcbBudget')->first();
-        return $data ? view('vcb-aero-spend.show',['data'=>$data]) : abrot(404);
+        $data = VcbAeroSpendModel::where('id', $id)
+            ->with(['VcbBudget', 'SpendDetail'])
+            ->first();
+        $count = [];
+
+        $count['amt_bo'] = [];
+        $count['amt_bo_count'] = 1;
+        $count['amt_piw'] = [];
+        $count['amt_piw_count'] = 1;
+        $count['amt_cable'] = [];
+        $count['amt_cable_count'] = 1;
+        $count['amt_transducer'] = [];
+        $count['amt_transducer_count'] = 1;
+        $count['amt_rtu'] = [];
+        $count['amt_rtu_count'] = 1;
+        $count['amt_rtu_cable'] = [];
+        $count['amt_rtu_cable_count'] = 1;
+        $count['tools'] = [];
+        $count['tools_count'] = 1;
+        $count['amt_store_rental'] = [];
+        $count['amt_store_rental_count'] = 1;
+        $count['amt_transport'] = [];
+        $count['amt_transport_count'] = 1;
+
+
+        foreach ($data->SpendDetail as $key => $value) {
+            array_push($count[$value->pmt_name], $value);
+            $count[$value->pmt_name . '_count'] += 1;
+        }
+        return $data ? view('vcb-aero-spend.show',['data'=>$data,'count'=>$count]) : abrot(404);
     }
 
     /**
@@ -81,8 +111,28 @@ class VcbAeroSpendController extends Controller
     public function edit($id)
     {
         //
-        $data = VcbAeroSpendModel::where('id',$id)->with('VcbBudget')->first();
-        return $data ? view('vcb-aero-spend.edit',['data'=>$data]) : abrot(404);
+
+        $data = VcbAeroSpendModel::where('id', $id)
+            ->with(['VcbBudget', 'SpendDetail'])
+            ->first();
+        $count = [];
+
+        $count['amt_bo'] = [];
+        $count['amt_piw'] = [];
+        $count['amt_cable'] = [];
+        $count['amt_transducer'] = [];
+        $count['amt_rtu'] = [];
+        $count['amt_rtu_cable'] = [];
+        $count['tools'] = [];
+        $count['amt_store_rental'] = [];
+        $count['amt_transport'] = [];
+
+
+        foreach ($data->SpendDetail as $key => $value) {
+            array_push($count[$value->pmt_name], $value);
+
+        }
+        return $data ? view('vcb-aero-spend.edit',['data'=>$data,'count'=>$count]) : abrot(404);
     }
 
     /**

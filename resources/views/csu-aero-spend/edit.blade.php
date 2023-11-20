@@ -1,11 +1,25 @@
 @extends('layouts.app')
+@section('css')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script>
+    var $jq = $.noConflict(true);
+</script>
+<style>
+    input ,textarea, select {
+    font-size: 15px !important;
+    padding: 0px 6px !important;
+
+}
+</style>
+@endsection
 
 @section('content')
     <section class="content-header">
 
         <div class="row mb-2" style="flex-wrap:nowrap">
             <div class="col-sm-6">
-                <h3>CSU AERO Spend</h3>
+                <h3>VCB AERO Spend</h3>
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
@@ -18,300 +32,192 @@
     </section>
     <section class="content">
         <div class="container-fluid">
-    <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
+            <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
+
+                <div class="table-responsive">
+                    <table id="example2" class="table table-bordered ">
+                        <thead style="background-color: #E4E3E3 !important">
+                            <th>NAME</th>
+                          <th class="text-center">DETAIL</th>
+                        </thead>
+                        <tbody>
 
 
-        <form action="{{ route('csu-aero-spend.update' , $data->id) }}" id="myForm" method="post">
-            @csrf
-            @method('PATCH')
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_kkb'],
+                                'arr_name' => 'amt_kkb',
+                                'name' => 'KKB',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_cfs'],
+                                'arr_name' => 'amt_cfs',
+                                'name' => 'CFS',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_bo'],
+                                'arr_name' => 'amt_bo',
+                                'name' => 'BO',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+                             @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_rtu'],
+                                'arr_name' => 'amt_rtu',
+                                'name' => 'RTU',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
 
 
 
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_kkb">PE NAME</label>
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['tools'],
+                                'arr_name' => 'tools',
+                                'name' => 'Tools',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_store_rental'],
+                                'arr_name' => 'amt_store_rental',
+                                'name' => 'Store Rental',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_transport'],
+                                'arr_name' => 'amt_transport',
+                                'name' => 'Transport',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_salary'],
+                                'arr_name' => 'amt_salary',
+                                'name' => 'Salray',
+                                'url' => 'csu',
+                                'action' => true
+                            ])
+
+
+
+
+
+                        </tbody>
+                        <tfoot style="background-color: #E4E3E3 !important">
+
+                            <td colspan="2" class="text-end"><strong>Total : <span id="subTotal">{{ $data->total }}</span></strong></td>
+                        </tfoot>
+                    </table>
                 </div>
-                <div class="col-md-4">
-                   <input value="{{$data->CsuBudget->pe_name}}" type="text" name="pe_name" id="pe_name" class="form-control" required readonly>
-                </div>
+
+
+
             </div>
+        </div>
+    </section>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_kkb">Cost KKB</label>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Remove Recored</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div class="col-md-4">
-                   <input value="{{$data->amt_kkb}}" type="number" name="amt_kkb" id="amt_kkb" class="form-control" required >
-                </div>
+                <form action="" id="remove-foam" method="POST">
+                    @method('DELETE')
+                    @csrf
+
+                    <div class="modal-body">
+                        Are You Sure ?
+                        <input type="hidden" name="id" id="modal-id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </div>
+                </form>
+
             </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_kkb_status">Cost KKB Status</label>
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_kkb_status" id="amt_kkb_status" class="form-control">
-                        <option value="{{$data->amt_kkb_status}}" hidden>{{$data->amt_kkb_status  == "" ? "select status" : $data->amt_kkb_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-                </div>
-            </div>
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_cfs">Cost CFS</label>
-                </div>
-                <div class="col-md-4">
-                   <input value="{{$data->amt_cfs}}" type="number" name="amt_cfs" id="amt_cfs" class="form-control" required>
-                </div>
-            </div>
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_cfs_status">Cost CFS Status</label>
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_cfs_status" id="amt_cfs_status" class="form-control">
-                        <option value="{{$data->amt_cfs_status}}" hidden>{{$data->amt_cfs_status  == "" ? "select status" : $data->amt_cfs_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_bo">Cost BO</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->amt_bo}}" type="number" name="amt_bo" id="amt_bo" class="form-control">
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_bo_status">Cost BO Status</label>
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_bo_status" id="amt_bo_status" class="form-control">
-                        <option value="{{$data->amt_bo_status}}" hidden>{{$data->amt_bo_status  == "" ? "select status" : $data->amt_bo_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-                </div>
-            </div>
-
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_rtu">Cost RTU</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->amt_rtu}}" type="number" name="amt_rtu" id="amt_rtu" class="form-control">
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_rtu_status">Cost RTU Status</label>
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_rtu_status" id="amt_rtu_status" class="form-control">
-                        <option value="{{$data->amt_rtu_status}}" hidden>{{$data->amt_rtu_status  == "" ? "select status" : $data->amt_rtu_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="tools">Tools</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->tools}}" name="tools" id="tools" type="number" class="form-control">
-
-                </div>
-            </div>
-
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_tools_status">Cost Tools Status</label>
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_tools_status" id="amt_tools_status" class="form-control">
-                        <option value="{{$data->amt_tools_status}}" hidden>{{$data->amt_tools_status  == "" ? "select status" : $data->amt_tools_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_store_rental">Cost Store Rental</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->amt_store_rental}}" type="number" name="amt_store_rental" id="amt_store_rental" class="form-control">
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_store_rental_status">Cost Store Rental Status</label>
-
-                </div>
-                <div class="col-md-4">
-                    <select name="amt_store_rental_status" id="amt_store_rental_status" class="form-control">
-                        <option value="{{$data->amt_store_rental_status}}" hidden>{{$data->amt_store_rental_status  == "" ? "select status" : $data->amt_store_rental_status}}</option>
-                        <option value="work done and payed">work done and payed</option>
-                        <option value="work done but not payed">work done but not payed</option>
-                        <option value="work not done but payed">work not done but payed</option>
-                        <option value="not work done and  not payed">not work done and not payed</option>
-                    </select>
-
-                </div>
-            </div>
-
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_transport">Cost Transport</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->amt_transport}}" type="number" name="amt_transport" id="amt_transport"  class="form-control">
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_transport_status">Cost Transport Status</label>
-                </div>
-                <div class="col-md-4">
-
-                        <select name="amt_transport_status" id="amt_transport_status" class="form-control">
-                            <option value="{{$data->amt_transport_status}}" hidden>{{$data->amt_transport_status  == "" ? "select status" : $data->amt_transport_status}}</option>
-                            <option value="work done and payed">work done and payed</option>
-                            <option value="work done but not payed">work done but not payed</option>
-                            <option value="work not done but payed">work not done but payed</option>
-                            <option value="not work done and  not payed">not work done and not payed</option>
-                        </select>
-
-
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_salary">Cost Salary</label>
-                </div>
-                <div class="col-md-4">
-
-                    <input value="{{$data->amt_salary}}" type="number" name="amt_salary" id="amt_salary" class="form-control">
-
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="amt_salary_status">Cost Salary Status</label>
-                </div>
-                <div class="col-md-4">
-
-                        <select name="amt_salary_status" id="amt_salary_status" class="form-control">
-                            <option value="{{$data->amt_salary_status}}" hidden>{{$data->amt_salary_status  == "" ? "select status" : $data->amt_salary_status}}</option>
-                            <option value="work done and payed">work done and payed</option>
-                            <option value="work done but not payed">work done but not payed</option>
-                            <option value="work not done but payed">work not done but payed</option>
-                            <option value="not work done and  not payed">not work done and not payed</option>
-                        </select>
-
-
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="total">Total</label>
-                </div>
-                <div class="col-md-4">
-                    <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control" readonly>
-
-                </div>
-            </div>
-
-
-
-            <div class="text-center">
-                <button class="btn btn-success mt-4" style="cursor: pointer !important" type="submit">Update</button>
-            </div>
-
-        </form>
+        </div>
     </div>
-        </div></section>
+
 @endsection
 
 @section('script')
-
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
-       var total = 0;
-        var pre = 0;
         $(document).ready(function() {
 
-            $("#myForm").validate();
-            $("input[type='number']").on('click', function() {
-                if (this.value != "") {
-                    pre = parseFloat(this.value);
-                } else {
-                    pre = 0;
-
-                }
-
-            })
-            total = $('#total').val() == "" ? 0 : parseFloat($('#total').val());
-
-
-            $("input[type='number']").on('change', function() {
-                var changeVal = 0;
-                if (this.value !== "") {
-                    changeVal = parseFloat(this.value);
-                }
-                total = total + changeVal - pre;
-                $('#total').val(total);
+            // $("#myForm").validate();
+            $('#myModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var modal = $(this);
+                var url = button.data('url');
+                $('#remove-foam').attr('action', '/csu-payment-details/' + id)
             });
+
+            $jq('.submit-form').ajaxForm({
+                success: function(responseText, status, xhr, $form) {
+
+                        alert("Form submitted successfully!");
+                        console.log(responseText.inp_name);
+                        formSubmitted(responseText.data.name , responseText.data.sub_total , responseText.data.total)
+
+                },
+                error: function(xhr, status, error, $form) {
+
+                    alert("Form submission failed. Please try again.");
+
+                }
+            })
 
 
         })
+        function editDetails(id){
+                $(`#${id}-amount`).removeAttr('disabled');
+                $(`#${id}-amount`).removeClass('border-0');
+                $(`#${id}-status`).removeAttr('disabled');
+                $(`#${id}-status`).removeClass('border-0');
+                $(`#${id}-description`).removeAttr('disabled');
+                $(`#${id}-description`).removeClass('border-0');
+
+                $(`#${id}-submit-button`).removeClass('d-none');
+                $(`#${id}-edit-button`).addClass('d-none');
 
 
+            }
+
+            function formSubmitted(param , subTotal , total){
+                $(`#${param}-amount`).attr('disabled',true);
+                $(`#${param}-amount`).addClass('border-0');
+                $(`#${param}-status`).attr('disabled',true);
+                $(`#${param}-status`).addClass('border-0');
+                $(`#${param}-description`).attr('disabled',true);
+                $(`#${param}-description`).addClass('border-0');
+
+                $(`#${param}-submit-button`).addClass('d-none');
+                $(`#${param}-edit-button`).removeClass('d-none');
+
+                $(`#subTotal`).html(subTotal)
+                $(`#${param}-total`).html(total)
+
+            }
     </script>
 @endsection

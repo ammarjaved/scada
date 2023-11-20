@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-sm-6 text-right">
                     <ol class="breadcrumb float-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index') }}">site data</a></li>
                         <li class="breadcrumb-item active">index</li>
                     </ol>
                 </div>

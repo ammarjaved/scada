@@ -17,6 +17,7 @@ class VcbBudgetTNBModel extends Model
         'scada',
         'total',
         'date_time',
+        'allocated_budget',
     ];
 
     public function VcbSpends() {

@@ -30,6 +30,18 @@
                 </div>
             </div>
 
+
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Budget</label>
+                </div>
+                <div class="col-md-4">
+                    <input  disabled value="{{$data->allocated_budget}}"
+                        class="form-control" required>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-4">
                     <label for="kkb">KKB</label>

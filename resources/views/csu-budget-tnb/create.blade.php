@@ -33,6 +33,15 @@
                    <input type="text" name="pe_name" id="pe_name" class="form-control" required >
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Budget</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="allocated_budget" id="allocated_budget" value=""
+                        class="form-control" required>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-4">
@@ -116,16 +125,18 @@
                 }
 
             })
-            
+
 
 
             $("input[type='number']").on('change', function() {
+                if(this.id!='allocated_budget'){
                 var changeVal = 0;
                 if (this.value !== "") {
                     changeVal = parseFloat(this.value);
                 }
                 total = total + changeVal - pre;
                 $('#total').val(total);
+            }
             });
 
 

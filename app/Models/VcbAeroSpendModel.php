@@ -33,6 +33,11 @@ class VcbAeroSpendModel extends Model
         'total',
     ];
 
+    public function SpendDetail() {
+        return $this->hasMany(VcbPaymentDetailModel::class, 'vcb_id');
+    }
+
+
     public function VcbBudget()
     {
         return $this->belongsTo(VcbBudgetTNBModel::class, 'id_vcb_budget');

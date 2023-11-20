@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\VcbBudgetTNBModel;
 use Exception;
 use App\Models\VcbAeroSpendModel;
+use App\Models\VcbPaymentDetailModel;
+
+
 
 
 class VcbBudgetTNBController extends Controller
@@ -45,11 +48,16 @@ class VcbBudgetTNBController extends Controller
     {
         //
         try {
-            //code...
 
-        VcbBudgetTNBModel::create($request->all());
+            $storeBudget =  VcbBudgetTNBModel::create($request->all());
+
+        if ($storeBudget) {
+            VcbAeroSpendModel::create(['id_vcb_budget'=>$storeBudget->id]);
+        }
+
         return redirect()->route('vcb-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
+        return $th->getMessage();
         return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
 
     }
@@ -115,7 +123,13 @@ class VcbBudgetTNBController extends Controller
         try {
             VcbBudgetTNBModel::find($id)->delete(); ;
             $data = VcbAeroSpendModel::where('id_vcb_budget',$id);
-            if ($data->get()) {
+            $getData = $data->first();
+            if ($getData) {
+              $paymentData = VcbPaymentDetailModel::where('vcb_id' , $getData->id);
+                if ($paymentData->get()) {
+                    $paymentData->delete();
+                }
+ 
                 $data->delete();
 
             }

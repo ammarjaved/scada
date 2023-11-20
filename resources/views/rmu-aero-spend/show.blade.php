@@ -1,4 +1,18 @@
 @extends('layouts.app')
+@section('css')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script>
+    var $jq = $.noConflict(true);
+</script>
+<style>
+    input ,textarea, select {
+    font-size: 15px !important;
+    padding: 0px 6px !important;
+
+}
+</style>
+@endsection
 
 @section('content')
     <section class="content-header">
@@ -24,78 +38,108 @@
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">
                             <th>NAME</th>
-                            <th>COSTS</th>
-                            <th>STATUS</th>
-                            <th>DESCRIPTION</th>
+                          <th class="text-center">DETAIL</th>
                         </thead>
                         <tbody>
-                        {{-- <tr>
-                            <th>PE NAME</th>
-                            <td colspan="3">{{ $data->RmuBudget->pe_name }}</td>
-                        </tr> --}}
 
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_kkb'],
-                            'rowCount' => $count['amt_kkb_count'],
-                            'name' => 'KKB',
-                        ])
+                            {{-- @foreach ($count as $key => $itm)
 
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_ir'],
-                            'rowCount' => $count['amt_ir_count'],
-                            'name' => 'IR',
-                        ])
-
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_bo'],
-                            'rowCount' => $count['amt_bo_count'],
-                            'name' => 'BO',
-                        ])
-
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_piw'],
-                            'rowCount' => $count['amt_piw_count'],
-                            'name' => 'PIW',
-                        ])
-
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_cable'],
-                            'rowCount' => $count['amt_cable_count'],
-                            'name' => 'Cable',
-                        ])
-
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_rtu'],
-                            'rowCount' => $count['amt_rtu_count'],
-                            'name' => 'RTU',
-                        ])
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_rtu_cable'],
-                            'rowCount' => $count['amt_rtu_cable_count'],
-                            'name' => 'RTU Cable',
-                        ])
-
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['tools'],
-                            'rowCount' => $count['tools_count'],
-                            'name' => 'Tools',
-                        ])
+                                {{$key}}
+                            @endforeach --}}
 
 
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_store_rental'],
-                            'rowCount' => $count['amt_store_rental_count'],
-                            'name' => 'Store Rental',
-                        ])
-                        @include('rmu-aero-spend.detail-component', [
-                            'arr' => $count['amt_transport'],
-                            'rowCount' => $count['amt_transport_count'],
-                            'name' => 'Transport',
-                        ])
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_kkb'],
+                                'arr_name' => 'amt_kkb',
+                                'name' => 'KKB',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_ir'],
+                                'arr_name' => 'amt_ir',
+                                'name' => 'IR',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_bo'],
+                                'arr_name' => 'amt_bo',
+                                'name' => 'BO',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+                             @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_piw'],
+                                'arr_name' => 'amt_piw',
+                                'name' => 'PIW',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+@include('vcb-aero-spend.detail-table', [
+    'arr' => $count['amt_cable'],
+    'arr_name' => 'amt_cable',
+    'name' => 'Cable',
+    'url' => 'rmu',
+                                'action' => false
+])
 
 
 
-</tbody>
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_rtu'],
+                                'arr_name' => 'amt_rtu',
+                                'name' => 'RTU',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+@include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_rtu_cable'],
+                                'arr_name' => 'amt_rtu_cable',
+                                'name' => 'RTU Cable',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['tools'],
+                                'arr_name' => 'tools',
+                                'name' => 'Tools',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_store_rental'],
+                                'arr_name' => 'amt_store_rental',
+                                'name' => 'Store Rental',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+                            @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_transport'],
+                                'arr_name' => 'amt_transport',
+                                'name' => 'Transport',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+
+
+
+
+                        </tbody>
+                        <tfoot style="background-color: #E4E3E3 !important">
+
+                            <td colspan="2" class="text-end"><strong>Total : <span id="subTotal">{{ $data->total }}</span></strong></td>
+                        </tfoot>
                     </table>
                 </div>
 
@@ -104,16 +148,33 @@
             </div>
         </div>
     </section>
-@endsection
 
-@section('script')
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
-    <script>
-        $(document).ready(function() {
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content ">
 
-            $("#myForm").validate();
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Remove Recored</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="" id="remove-foam" method="POST">
+                    @method('DELETE')
+                    @csrf
 
+                    <div class="modal-body">
+                        Are You Sure ?
+                        <input type="hidden" name="id" id="modal-id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
-        })
-    </script>
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 @endsection

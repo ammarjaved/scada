@@ -17,6 +17,7 @@ class CsuBudgetTNBModel extends Model
         'scada',
         'total',
         'date_time',
+        'allocated_budget',
 
     ];
 

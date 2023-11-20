@@ -3,8 +3,13 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">
-                             <h4>CSU SPENDINGS</h4>
+                            <div class="  d-flex  ">
+                                <div class="col-md-6"><h4>CSU SPENDINGS</h4></div>
+                                <div class="col-md-6 text-end">
+                                    <button type="button" class="btn btn-sm text-white"
+                                        data-id="{{$data->id}}" data-name="{{$data->CsuBudget->pe_name}}"
+                                      data-target="#spendingModal" data-toggle="modal" style="background  : #367FA9">Add Spending</button>
+                                </div>
                             </div>
 
                         </div>
@@ -19,28 +24,36 @@
 
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
-                                            <th>PE NAME</th>
+                                            <th>KKB</th>
+                                            <th>CSF</th>
+                                            <th>BO</th>
+                                            <th>RTU</th>
+                                            <th>TOOLS</th>
+                                            <th>STORE RENTAL</th>
+                                            <th>TRANSPORT</th>
+                                            <th>SALARY</th>
                                             <th>TOTAL</th>
-                                            <th>UPDATED AT</th>
-                                            <th>CREATED AT</th>
-
-                                            {{-- <th>TYPE FEEDER</th> --}}
+                                            <th>PROFIT</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        @foreach ($datas as $data)
+
                                             <tr>
-                                                <td class="align-middle">
-                                                    {{ $data->CsuBudget->pe_name}}</td>
-                                                <td class="align-middle">
-                                                    {{ $data->total}}</td>
-                                                <td class="align-middle">{{ $data->updated_at }}</td>
+                                                @if ($data != "" && $data != [])
 
-                                                <td class="align-middle">{{ $data->created_at }}</td>
+                                                <td class="text-center">{{$data->amt_kkb == "" ? 0 : $data->amt_kkb }}</td>
+                                                <td class="text-center">{{$data->amt_cfs == "" ? 0 : $data->amt_cfs }}</td>
+                                                <td class="text-center">{{$data->amt_bo == "" ? 0 : $data->amt_bo }}</td>
+                                                <td class="text-center">{{$data->amt_rtu == "" ? 0 : $data->amt_rtu }}</td>
+                                                <td class="text-center">{{$data->tools == "" ? 0 : $data->tools }}</td>
+                                                <td class="text-center">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
+                                                <td class="text-center">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
+                                                <td class="text-center">{{$data->amt_salary == "" ? 0 : $data->amt_salary }}</td>
+                                                <td class="text-center">{{ $data->total == "" ? 0 : $data->total }}</td>
+                                                <td class="text-center">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
 
-                                                {{-- <td class="align-middle">{{ $data->type_feeder ? $data->type_feeder : '-' }}</td> --}}
                                                 <td class="text-center">
                                                     <button type="button" class="btn  " data-toggle="dropdown">
                                                         <img
@@ -54,16 +67,19 @@
                                                         <a class="dropdown-item"
                                                             href="{{ route('csu-aero-spend.show', $data->id) }}">Detail</a>
 
-                                                        <button type="button" class="btn btn-primary dropdown-item"
+                                                        {{-- <button type="button" class="btn btn-primary dropdown-item"
                                                             data-id="{{ $data->id }}" data-toggle="modal" data-url="csu-aero-spend"
                                                             data-target="#myModal">
                                                             Remove
-                                                        </button>
+                                                        </button> --}}
                                                     </div>
 
                                                 </td>
+                                                @else
+                                                <td colspan="10" class="text-center"><strong>no recored found</strong></td>
+                                            @endif
                                             </tr>
-                                        @endforeach
+
                                     </tbody>
                                 </table>
                             </div>

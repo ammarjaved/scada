@@ -4,12 +4,11 @@ namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\RmuPaymentDetailModel;
-use App\Models\RmuAeroSpendModel;
+use App\Models\VcbPaymentDetailModel;
+use Exception;
+use App\Models\VcbAeroSpendModel;
 
-
-
-class RmuPaymentDetailController extends Controller
+class VcbPaymentDetailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,21 +41,21 @@ class RmuPaymentDetailController extends Controller
         //
         try {
 
-            $data =  RmuAeroSpendModel::find($request->id);
+            $data =  VcbAeroSpendModel::find($request->id);
             if ($data) {
                 $total = $data->total + $request->amount;
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
                 $data->update(['total'=>$total, $name => $nameTotal]);
-            RmuPaymentDetailModel::create([
+            VcbPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
                 'amount'        => $request->amount,
                 'status'        => $request->status,
                 'description'   => $request->description,
-                'rmu_id'        => $request->id,
+                'vcb_id'        => $request->id,
             ]);
          }
-            return response()->json(['success'=>true, 'id'=>$data->id_rmu_budget], 200);
+            return response()->json(['success'=>true, 'id'=>$data->id_vcb_budget], 200);
 
         } catch (\Throwable $th) {
             return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
@@ -94,15 +93,14 @@ class RmuPaymentDetailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
 
         $res_data = [];
         try{
-            $vcb_spend_data =  RmuPaymentDetailModel::find($id);
+            $vcb_spend_data =  VcbPaymentDetailModel::find($id);
 
             if ($vcb_spend_data) {
 
-                $data = RmuAeroSpendModel::find($vcb_spend_data->rmu_id);
+                $data = VcbAeroSpendModel::find($vcb_spend_data->vcb_id);
 
                 $oldVal = $vcb_spend_data->amount;
 
@@ -123,7 +121,7 @@ class RmuPaymentDetailController extends Controller
             $res_data['name'] = $request->inp_name;
 
 
-            return response()->json(['success'=>true, 'id'=>$data->id_rmu_budget , 'data'=>$res_data], 200);
+            return response()->json(['success'=>true, 'id'=>$data->id_vcb_budget , 'data'=>$res_data], 200);
     } catch (\Throwable $th) {
         return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
     }
@@ -137,12 +135,13 @@ class RmuPaymentDetailController extends Controller
      */
     public function destroy($id)
     {
+        //
         $res_data = [];
         try{
-          $data =  RmuPaymentDetailModel::find($id);
+          $data =  VcbPaymentDetailModel::find($id);
           if ($data) {
 
-            $dataVcb = RmuAeroSpendModel::find($data->rmu_id);
+            $dataVcb = VcbAeroSpendModel::find($data->vcb_id);
 
             $total = $dataVcb->total - $data->amount ;
             $name  = $data->pmt_name;

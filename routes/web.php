@@ -19,6 +19,10 @@ use App\Http\Controllers\web\RmuBudgetTNBController;
 use App\Http\Controllers\web\VcbAeroSpendController;
 use App\Http\Controllers\web\VcbBudgetTNBController;
 use App\Http\Controllers\web\RmuPaymentDetailController;
+use App\Http\Controllers\web\VcbPaymentDetailController;
+use App\Http\Controllers\web\CsuPaymentDetailController;
+
+
 
 
 
@@ -65,6 +69,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('scrap',scrapController::class);
 
+    Route::resource('csu-payment-details', CsuPaymentDetailController::class);
+
+
     Route::resource('csu-aero-spend', CsuAeroSpendController::class,['except' => ['create','index']]);
     Route::get('csu-aero-spend/create/{id}/{pe_name}', [CsuAeroSpendController::class, 'create'])->name('csu-aero-spend.create');
     Route::get('csu-aero-spend/index/{id}', [CsuAeroSpendController::class, 'index'])->name('csu-aero-spend.index');
@@ -82,6 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('rmu-budget-tnb', RmuBudgetTNBController::class);
 
 
+    Route::resource('vcb-payment-details', VcbPaymentDetailController::class);
 
     Route::resource('vcb-aero-spend', VcbAeroSpendController::class,['except' => ['create','index']]);
     Route::get('vcb-aero-spend/create/{id}/{pe_name}', [VcbAeroSpendController::class, 'create'])->name('vcb-aero-spend.create');

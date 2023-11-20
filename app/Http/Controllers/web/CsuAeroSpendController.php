@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\CsuAeroSpendModel;
 use Exception;
 
-
-
 class CsuAeroSpendController extends Controller
 {
     /**
@@ -20,11 +18,11 @@ class CsuAeroSpendController extends Controller
     {
         //
         $datas = CsuAeroSpendModel::where('id_csu_budget', $id)
-        ->with('CsuBudget')
-        ->get();
-
-        return view('csu-aero-spend.index', ['datas' => $datas])->render();
-
+            ->with('CsuBudget')
+            ->first();
+             $profit = (($datas->CsuBudget->allocated_budget -  $datas -> total)/$datas->CsuBudget->allocated_budget) * 100;
+        $datas['profit'] = number_format($profit , 2);
+        return view('csu-aero-spend.index', ['data' => $datas])->render();
     }
 
     /**
@@ -50,12 +48,15 @@ class CsuAeroSpendController extends Controller
         try {
             //code...
 
-        CsuAeroSpendModel::create($request->all());
-        return redirect()->route('csu-budget-tnb.index')->with('success',"Form Submitted");
-    } catch (\Throwable $th) {
-        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
+            CsuAeroSpendModel::create($request->all());
+            return redirect()
+                ->route('csu-budget-tnb.index')
+                ->with('success', 'Form Submitted');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('csu-budget-tnb.index')
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**
@@ -67,8 +68,26 @@ class CsuAeroSpendController extends Controller
     public function show($id)
     {
         //
-        $data = CsuAeroSpendModel::find($id);
-        return $data ? view('csu-aero-spend.show',['data'=>$data]) : abrot(404);
+
+        $data = CsuAeroSpendModel::where('id', $id)
+            ->with(['CsuBudget', 'SpendDetail'])
+            ->first();
+        $count = [];
+        $count['amt_kkb'] = [];
+        $count['amt_cfs'] = [];
+        $count['amt_bo'] = [];
+        $count['amt_rtu'] = [];
+        $count['tools'] = [];
+        $count['amt_store_rental'] = [];
+        $count['amt_transport'] = [];
+        $count['amt_salary'] = [];
+
+        foreach ($data->SpendDetail as $key => $value) {
+            array_push($count[$value->pmt_name], $value);
+
+        }
+
+        return $data ? view('csu-aero-spend.show', ['data' => $data,'count'=>$count]) : abrot(404);
     }
 
     /**
@@ -80,9 +99,25 @@ class CsuAeroSpendController extends Controller
     public function edit($id)
     {
         //
-        $data = CsuAeroSpendModel::where('id',$id)->with('CsuBudget')->first();
+        $data = CsuAeroSpendModel::where('id', $id)
+            ->with(['CsuBudget', 'SpendDetail'])
+            ->first();
+        $count = [];
+        $count['amt_kkb'] = [];
+        $count['amt_cfs'] = [];
+        $count['amt_bo'] = [];
+        $count['amt_rtu'] = [];
+        $count['tools'] = [];
+        $count['amt_store_rental'] = [];
+        $count['amt_transport'] = [];
+        $count['amt_salary'] = [];
 
-        return $data ? view('csu-aero-spend.edit',['data'=>$data]) : abrot(404);
+        foreach ($data->SpendDetail as $key => $value) {
+            array_push($count[$value->pmt_name], $value);
+
+        }
+
+        return $data ? view('csu-aero-spend.edit', ['data' => $data , 'count'=>$count]) : abrot(404);
     }
 
     /**
@@ -97,12 +132,15 @@ class CsuAeroSpendController extends Controller
         try {
             //code...
 
-        $data = CsuAeroSpendModel::find($id)->update($request->all());
-        return redirect()->route('csu-budget-tnb.index')->with('success',"Form update");
-    } catch (\Throwable $th) {
-        return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
-
-    }
+            $data = CsuAeroSpendModel::find($id)->update($request->all());
+            return redirect()
+                ->route('csu-budget-tnb.index')
+                ->with('success', 'Form update');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('csu-budget-tnb.index')
+                ->with('failed', 'Request Failed');
+        }
     }
 
     /**

@@ -47,7 +47,7 @@
                     <label for="pe name">Budget</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" value="{{$data->allocated_budget}}" name="allocated_budget" id="allocated_budget"  
+                    <input type="number" value="{{$data->allocated_budget}}" name="allocated_budget" id="allocated_budget"
                         class="form-control" required>
                 </div>
             </div>
@@ -124,12 +124,14 @@
 
 
             $("input[type='number']").on('change', function() {
+                if(this.id!='allocated_budget'){
                 var changeVal = 0;
                 if (this.value !== "") {
                     changeVal = parseFloat(this.value);
                 }
                 total = total + changeVal - pre;
                 $('#total').val(total);
+            }
             });
 
 

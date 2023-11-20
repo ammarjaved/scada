@@ -33,6 +33,7 @@
                                             <th>STORE RENTAL</th>
                                             <th>TRANSPORT</th>
                                             <th>TOTAL</th>
+                                            <th>PROFIT</th>
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -53,6 +54,8 @@
                                             <td class="text-center">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
                                             <td class="text-center">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
                                             <td class="text-center">{{ $data->total == "" ? 0 : $data->total }}</td>
+                                            <td class="text-center">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
+
 
                                             <td class="text-center">
                                                 <button type="button" class="btn  " data-toggle="dropdown">
@@ -60,18 +63,18 @@
                                                         src="{{ URL::asset('assets/web-images/three-dots-vertical.svg') }}">
                                                 </button>
                                                 <div class="dropdown-menu" role="menu">
-                                                    {{-- <a class="dropdown-item"
+                                                    <a class="dropdown-item"
                                                         href="{{ route('rmu-aero-spend.edit', $data->id) }}">Edit
-                                                        Foam</a> --}}
+                                                        Foam</a>
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('rmu-aero-spend.show', $data->id) }}">Detail</a>
 
-                                                    <button type="button" class="btn btn-primary dropdown-item"
+                                                    {{-- <button type="button" class="btn btn-primary dropdown-item"
                                                         data-id="{{ $data->id }}" data-url={{"rmu-aero-spend"}} data-toggle="modal"
                                                         data-target="#myModal">
                                                         Remove
-                                                    </button>
+                                                    </button> --}}
                                                 </div>
 
                                             </td>

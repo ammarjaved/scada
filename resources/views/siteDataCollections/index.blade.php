@@ -88,18 +88,18 @@
                                                 <td class="align-middle">
                                                     {{ $data->sub_station_type ? $data->sub_station_type : '-' }}</td>
                                                     <td class="align-middle">
-                                                    {{ $data->switchgear ? $data->switchgear : '-' }}</td> 
+                                                    {{ $data->switchgear ? $data->switchgear : '-' }}</td>
 
                                                     <td class="align-middle">
                                                     @if($data->switchgear=='RMU')
-                                                        <a class="btn btn-primary" href="{{ route('rmu-budget-tnb.index') }}">AADD COST</a>
+                                                        <a class="btn btn-primary" href="{{ route('rmu-budget-tnb.index') }}">ADD COST</a>
                                                     @elseif($data->switchgear=='VCB')
-                                                    <a class="btn btn-primary" href="{{ route('vcb-budget-tnb.index') }}">ADD COST</a> 
+                                                    <a class="btn btn-primary" href="{{ route('vcb-budget-tnb.index') }}">ADD COST</a>
                                                     @elseif($data->switchgear=='COMPACT')
-                                                    <a class="btn btn-primary" href="{{ route('csu-budget-tnb.index') }}">ADD COST</a>          
+                                                    <a class="btn btn-primary" href="{{ route('csu-budget-tnb.index') }}">ADD COST</a>
                                                     @endif
-                                                </td>  
-                                                    
+                                                </td>
+
 
                                                 <td class="align-middle text-center">
                                                     @if ($data->count_before > 0)

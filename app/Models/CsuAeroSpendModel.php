@@ -32,6 +32,11 @@ class CsuAeroSpendModel extends Model
 
     ];
 
+    public function SpendDetail() {
+        return $this->hasMany(CsuPaymentDetailModel::class, 'csu_id');
+    }
+
+
     public function CsuBudget()
     {
         return $this->belongsTo(CsuBudgetTNBModel::class, 'id_csu_budget');

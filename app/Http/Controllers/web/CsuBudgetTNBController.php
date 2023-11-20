@@ -51,7 +51,11 @@ class CsuBudgetTNBController extends Controller
         try {
             //code...
 
-        CsuBudgetTNBModel::create($request->all());
+        $storeBudget = CsuBudgetTNBModel::create($request->all());
+
+        if ($storeBudget) {
+            CsuAeroSpendModel::create(['id_csu_budget'=>$storeBudget->id]);
+        }
         return redirect()->route('csu-budget-tnb.index')->with('success',"Form Submitted");
     } catch (\Throwable $th) {
         return redirect()->route('csu-budget-tnb.index')->with('failed',"Request Failed");
