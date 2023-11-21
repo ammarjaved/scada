@@ -19,6 +19,7 @@ class RmuBudgetTNBModel extends Model
         'total',
         'allocated_budget',
         'fix_profit',
+        'date_time',
     ];
 
     public function RmuSpends() {
