@@ -23,7 +23,7 @@ class RmuAeroSpendController extends Controller
             try {
                 //code...
 
-            $profit = (($data->RmuBudget->allocated_budget -  $data -> total)/$data->RmuBudget->allocated_budget) * 100;
+                $profit = ($data->RmuBudget->total / $data->total) * 100;
             $data['profit'] = number_format($profit , 2);
         } catch (\Throwable $th) {
             $data['profit'] = "#error!";
@@ -102,15 +102,15 @@ class RmuAeroSpendController extends Controller
             $count['amt_transport'] = [];
         try {
             //code...
+            $profit = ($data->RmuBudget->total / $data->total) * 100;
 
-        $profit = (($data->RmuBudget->allocated_budget -  $data -> total)/$data->RmuBudget->allocated_budget) * 100;
         $data['profit'] = number_format($profit , 2);
     } catch (\Throwable $th) {
         $data['profit'] = "#error!";
     }
         foreach ($data->RmuSpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);
- 
+
         }
 
         return $data ? view('rmu-aero-spend.show', ['data' => $data, 'count' => $count]) : abrot(404);
@@ -142,8 +142,8 @@ class RmuAeroSpendController extends Controller
         $count['amt_transport'] = [];
         try {
             //code...
+            $profit = ($data->RmuBudget->total / $data->total) * 100;
 
-        $profit = (($data->RmuBudget->allocated_budget -  $data -> total)/$data->RmuBudget->allocated_budget) * 100;
         $data['profit'] = number_format($profit , 2);
     } catch (\Throwable $th) {
         $data['profit'] = "#error!";

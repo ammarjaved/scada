@@ -21,7 +21,7 @@ class CsuAeroSpendController extends Controller
             ->with('CsuBudget')
             ->first();
         try {
-            $profit = (($data->CsuBudget->allocated_budget - $data->total) / $data->CsuBudget->allocated_budget) * 100;
+            $profit = ($data->CsuBudget->total / $data->total) * 100;
             $data['profit'] = number_format($profit, 2);
         } catch (\Throwable $th) {
             $data['profit'] = '#error!';
