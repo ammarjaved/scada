@@ -80,14 +80,14 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-4">
                     <label for="pe name">Total Budget by Aerosynergy</label>
                 </div>
                 <div class="col-md-4">
                     <input disabled value="{{$data->total}}"   class="form-control">
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-4">

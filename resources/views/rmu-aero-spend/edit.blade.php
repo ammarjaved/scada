@@ -274,6 +274,8 @@
 
                 $(`.subTotal`).html(subTotal)
             $(`#${param}-total`).html(total)
+ 
+
             var  profit = (((budget )/total)*100).toFixed(2);
             $(`.total_profit`).html(profit)
 

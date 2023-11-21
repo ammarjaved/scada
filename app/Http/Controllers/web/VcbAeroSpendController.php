@@ -22,7 +22,8 @@ class VcbAeroSpendController extends Controller
             ->with('VcbBudget')
             ->first();
             try {
-                $profit = ($data->VcbBudget->total / $data->total) * 100;
+                $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
+
 
             $data['profit'] = number_format($profit , 2);
             } catch (\Throwable $th) {
@@ -91,7 +92,8 @@ class VcbAeroSpendController extends Controller
         $count['amt_transport'] = [];
 
         try {
-                   $profit = ($data->VcbBudget->total / $data->total) * 100;
+            $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
+
 
 
         $data['profit'] = number_format($profit , 2);
@@ -132,8 +134,9 @@ class VcbAeroSpendController extends Controller
         $count['amt_transport'] = [];
 
         try {
-            $profit = ($data->VcbBudget->total / $data->total) * 100;
-            
+         $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
+
+
         $data['profit'] = number_format($profit , 2);
         } catch (\Throwable $th) {
             $datas['profit'] = "#error!";
