@@ -114,11 +114,11 @@ class RmuBudgetTNBController extends Controller
 
             $data = RmuBudgetTNBModel::find($id)->update($request->all());
             return redirect()
-                ->route('rmu-budget-tnb.index', $request->name)
+                ->route('rmu-budget-tnb.index', $request->pe_name)
                 ->with('success', 'Form update');
         } catch (\Throwable $th) {
             return redirect()
-                ->route('rmu-budget-tnb.index', $request->name)
+                ->route('rmu-budget-tnb.index', $request->pe_name)
                 ->with('failed', 'Request Failed');
         }
     }
@@ -140,7 +140,7 @@ class RmuBudgetTNBController extends Controller
 
             if ($getData) {
                 $paymentData = RmuPaymentDetailModel::where('rmu_id', $getData->id);
- 
+
                 if ($paymentData->get()) {
                     $paymentData->delete();
                 }

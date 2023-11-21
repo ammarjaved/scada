@@ -42,7 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <label for="pe name">Budget</label>
+                    <label for="pe name">Allocated Budget</label>
                 </div>
                 <div class="col-md-4">
                     <input type="number" value="{{$data->allocated_budget}}" disabled
