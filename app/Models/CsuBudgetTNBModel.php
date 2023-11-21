@@ -18,6 +18,7 @@ class CsuBudgetTNBModel extends Model
         'total',
         'date_time',
         'allocated_budget',
+        'fix_profit',
 
     ];
 

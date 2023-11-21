@@ -18,6 +18,7 @@ class RmuBudgetTNBModel extends Model
         'scada',
         'total',
         'allocated_budget',
+        'fix_profit',
     ];
 
     public function RmuSpends() {

@@ -39,15 +39,7 @@
 
 
 
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="pe name">Allocated Budget</label>
-                </div>
-                <div class="col-md-4">
-                    <input type="number" name="allocated_budget" value="{{$data->allocated_budget}}" id="allocated_budget"
-                        class="form-control" required>
-                </div>
-            </div>
+
             <div class="row">
                 <div class="col-md-4">
                     <label for="kkb">KKB</label>
@@ -81,13 +73,31 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="total">Total</label>
+                    <label for="total">Total Budget by TNB</label>
                 </div>
                 <div class="col-md-4">
                     <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control" readonly>
                 </div>
             </div>
+ <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Total Budget by Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="allocated_budget" value="{{$data->allocated_budget}}" id="allocated_budget"
+                        class="form-control" required>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Fix Profit Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="fix_profit" id="fix_profit"  value="{{$data->fix_profit}}"
+                        class="form-control" required>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-4">

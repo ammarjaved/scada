@@ -18,6 +18,7 @@ class VcbBudgetTNBModel extends Model
         'total',
         'date_time',
         'allocated_budget',
+        'fix_profit',
     ];
 
     public function VcbSpends() {

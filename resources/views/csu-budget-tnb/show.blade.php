@@ -34,15 +34,7 @@
 
 
 
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="pe name">Allocated Budget</label>
-                </div>
-                <div class="col-md-4">
-                    <input  disabled value="{{$data->allocated_budget}}"
-                        class="form-control" required>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-md-4">
@@ -77,14 +69,32 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="total">Total</label>
+                    <label for="total">Total Budget by TNB</label>
                 </div>
                 <div class="col-md-4">
                     <input disabled value="{{$data->total}}"  class="form-control">
                 </div>
             </div>
 
+   <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Total Budget by Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input  disabled value="{{$data->allocated_budget}}"
+                        class="form-control" required>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Fix Profit Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" readonly disabled  value="{{$data->fix_profit}}"
+                        class="form-control" required>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="date_time">Date Time</label>

@@ -33,15 +33,7 @@
                    <input type="text" name="pe_name" id="pe_name" value="{{$name}}" class="form-control" required  readonly>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="pe name">Allocated Budget</label>
-                </div>
-                <div class="col-md-4">
-                    <input type="number" name="allocated_budget" id="allocated_budget" value=""
-                        class="form-control" required>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-md-4">
@@ -76,14 +68,32 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="total">Total</label>
+                    <label for="total">Total Budget by TNB</label>
                 </div>
                 <div class="col-md-4">
                     <input type="number" name="total" id="total" class="form-control" readonly>
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Total Budget by Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="allocated_budget" id="allocated_budget"  
+                        class="form-control" required>
+                </div>
+            </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="pe name">Fix Profit Aerosynergy</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" name="fix_profit" id="fix_profit"
+                        class="form-control" required>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="date_time">Date Time</label>
