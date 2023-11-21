@@ -1,6 +1,6 @@
 @extends('layouts.app', ['page_title' => 'Index'])
 @section('css')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
     <script src="https://malsup.github.io/jquery.form.js"></script>
     <script>
         var $jq = $.noConflict(true);
@@ -9,12 +9,28 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
-      <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <style>
-        .error{color: red}
+        .error {
+            color: red
+        }
+        tr{
+
+        }
+        td {
+            border: 0px !important
+        }
+
+        input,
+        textarea,
+        select {
+            font-size: 15px !important;
+            padding: 0px 6px !important;
+
+        }
     </style>
 @endsection
 
@@ -38,7 +54,7 @@
         <div class="container-fluid">
 
 
-@include('components.messages')
+            @include('components.messages')
 
 
 
@@ -47,25 +63,39 @@
                     <div class="card">
                         <div class="card-header">
                             <div class=" d-flex justify-content-between">
-                               <h5> Payment Summary </h5>
-                                <button type="button" class="btn  btn-sm" data-toggle="modal"   data-target="#addPayments"
+                                <h5> Payment Summary </h5>
+                                <button type="button" class="btn  btn-sm" data-toggle="modal" data-target="#addPayments"
                                     style="background-color: #367FA9; border-radius:0px; color:white">Add new</button>
                             </div>
 
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="search_type">Type : </label>
+                                    <select name="search_type" id="search_type" onchange="filterTable(this.value)">
+                                        <option value="" >all</option>
+                                        <option value="claim">Claim</option>
+                                        <option value="salary">Salary</option>
+                                        <option value="tools">Tools</option>
+                                        <option value="others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="text-end mb-4">
 
                             </div>
 
                             <div class="table-responsive">
-                                <table id="example2" class="table table-bordered table-hover">
+                                <table id="example2" class="table table-bordered  ">
 
 
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
                                             <th>RECIVER NAME</th>
+                                            <th class="d-none">SEARCH</th>
                                             <th>PAYMENT TYPE</th>
                                             <th>AMOUNT</th>
                                             <th>DESCRIPTION</th>
@@ -79,36 +109,64 @@
 
                                         @foreach ($datas as $data)
                                             <tr>
-                                                <td>{{$data->pmt_receiver_name}}</td>
-                                               <td class="align-middle"> {{ $data->pmt_type}}   </td>
-                                                <td>{{$data->pmt_amount}}</td>
+                                                <form action="{{route('payment-summary-details.update' , $data->id)}}" class="payment-summary-form" method="post">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                <td class="align-middle"><input type="text" name="pmt_receiver_name" required
+                                                        id="pmt_receiver_name_{{$data->id}}" value="{{ $data->pmt_receiver_name }}" disabled
+                                                        class="border-0"> </td>
+                                                        <td  class="d-none" id="search-type-{{$data->id}}">{{ $data->pmt_type }}</td>
+                                                <td class="align-middle">
 
-                                                <td class="col-3">{{$data->description}}</td>
-                                                <td>{{$data->date_time}}</td>
+                                                    <select name="pmt_type" id="pmt_name_{{$data->id}}" class="border-0" required
+                                                        disabled>
+                                                        <option value="{{ $data->pmt_type }}" hidden>{{ $data->pmt_type }}
+                                                        </option>
+                                                        <option value="claim">Claim</option>
+                                                        <option value="salary">Salary</option>
+                                                        <option value="tools">Tools</option>
+                                                        <option value="others">Others</option>
+                                                    </select>
+                                                </td>
+                                                <td class="align-middle"> <input type="number" name="pmt_amount"
+                                                        id="pmt_amount_{{$data->id}}" value="{{ $data->pmt_amount }}" class="border-0" min="0" required
+                                                        disabled></td>
+
+                                                <td class="col-3">
+                                                    <textarea name="description" id="description_{{$data->id}}" cols="30" rows="5" class="border-0" disabled>{{ $data->description }}</textarea>
+                                                </td>
+                                                <td class="align-middle"><input type="datetime-local" name="date_time" disabled class="border-0" id="date_time_{{$data->id}}" value="{{ $data->date_time }}"> </td>
 
 
 
-                                                <td class="text-center">
-                                                    <button type="button" class="btn  " data-toggle="dropdown">
+                                                <td class="text-center align-middle">
+
+                                                    <div class="btn-group btn-group-sm">
+                                                        <button type="submit" class="d-none btn btn-success btn-sm" id="{{$data->id}}-submit-button"  > <i class="fas fa-save"></i></button>
+                                                        <button type="button" class="btn btn-sm btn-primary" id="{{$data->id}}-edit-button"  onclick="editDetails({{$data->id}})"><i class="fas fa-edit"></i></button>
+                                                        <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-id="{{$data->id}}"
+                                                        data-target="#myModal"><i class="fas fa-trash"></i></button>
+                                                          </div>
+                                                    {{-- <button type="button" class="btn  " data-toggle="dropdown">
                                                         <img
-                                                            src="{{ URL::asset('assets/web-images/three-dots-vertical.svg')  }}">
+                                                            src="{{ URL::asset('assets/web-images/three-dots-vertical.svg') }}">
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item"
-                                                            href="#">Edit
+                                                        <a class="dropdown-item" href="#">Edit
                                                             Foam</a>
 
-                                                        {{-- <a class="dropdown-item"
-                                                            href="{{ route('rmu-budget-tnb.show', $data->id) }}">Detail</a> --}}
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('rmu-budget-tnb.show', $data->id) }}">Detail</a>
 
                                                         <button type="button" class="btn btn-primary dropdown-item"
-                                                            data-id="{{ $data->id }}" data-toggle="modal" data-url="payment-summary-details"
-                                                            data-target="#myModal">
+                                                            data-id="{{ $data->id }}" data-toggle="modal"
+                                                            data-url="payment-summary-details" data-target="#myModal">
                                                             Remove
                                                         </button>
-                                                    </div>
+                                                    </div> --}}
 
                                                 </td>
+                                            </form>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -139,7 +197,7 @@
                     <h4 class="modal-title">Remove Recored</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="" id="remove-foam" method="POST">
+                <form action="" id="remove-foam" class="payment-remove-form" method="POST">
                     @method('DELETE')
                     @csrf
 
@@ -168,18 +226,19 @@
                     <h6 class="modal-title text-white">Add Payments</h6>
                     <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="{{route('payment-summary-details.store')}}"   method="POST">
+                <form action="{{ route('payment-summary-details.store') }}" method="POST">
 
                     @csrf
 
                     <div class="modal-body">
 
-                        <input type="hidden" name="id" id="spending-modal-id">
+
 
                         <div class="row">
                             <div class="col-md-4"><label for="total">Name</label></div>
                             <div class="col-md-8">
-                                <input type="text"     name="pmt_receiver_name" id="spending-modal-pe-name" required class="form-control">
+                                <input type="text" name="pmt_receiver_name" id="pmt_receiver_name" required
+                                    class="form-control">
                             </div>
                         </div>
                         <div class="row">
@@ -198,14 +257,16 @@
                         <div class="row">
                             <div class="col-md-4"><label for="amount">Amount</label></div>
                             <div class="col-md-8">
-                              <input type="number" name="pmt_amount" id="amount" class="form-control" min="0" required>
+                                <input type="number" name="pmt_amount" id="amount" class="form-control"
+                                    min="0" required>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4"><label for="status">Date Time</label></div>
                             <div class="col-md-8">
-                                <input type="datetime-local" name="date_time" id="date_time" class="form-control" required>
+                                <input type="datetime-local" name="date_time" id="date_time" class="form-control"
+                                    required>
                             </div>
                         </div>
 
@@ -227,7 +288,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
@@ -235,10 +295,10 @@
     <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
 
-<!-- SweetAlert2 -->
-<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<!-- Toastr -->
-<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
 
@@ -248,20 +308,19 @@
 
 
             var Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000
-      });
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
 
-            $("#spendingForm").validate();
+            $("form").validate();
 
             $('#myModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
-                var modal = $(this);
-                var url = button.data('url');
-                $('#remove-foam').attr('action', '/'+url + '/' + id)
+
+                $('#remove-foam').attr('action', '/payment-summary-details/' + id)
             });
 
             $('#spendingModal').on('show.bs.modal', function(event) {
@@ -271,29 +330,34 @@
                 var modal = $(this);
                 $('#spending-modal-id').val(id);
                 $('#spending-modal-pe-name').val(peName);
-             });
+            });
 
-             $('#spendingModal').on('hide.bs.modal', function(event) {
 
-                $('#spending-modal-id').val('');
-                $('#spending-modal-pe-name').val('');
-                $('#description').val('');
+
+            $('#addPayments').on('hide.bs.modal', function(event) {
+
+                $('#pmt_receiver_name').val('');
                 $('#amount').val('');
+                $('#description').val('');
+                $('#date_time').val('');
 
-             });
+            });
 
-             $jq('#spendingForm').ajaxForm({
+
+
+            $jq('.payment-summary-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
                     toastr.success('Spending update successfully!')
-                    $('#spendingModal').modal('hide');
-                    showSpendDetails(responseText.id)
+                    // $('#spendingModal').modal('hide');
+                    formSubmitted(responseText.id);
                 },
                 error: function(xhr, status, error, $form) {
                     toastr.error('Request failed. Please try again.')
 
-            }
+                }
 
-});
+            });
+
 
 
             $("#example2").DataTable({
@@ -302,22 +366,51 @@
             })
 
         })
+        function filterTable(type) {
+            
+        var table = $('#example2').DataTable();
 
-        function showSpendDetails(id){
-            $.ajax({
-                url: `/rmu-aero-spend/index/${id}`,
-                method: 'GET',
-                dataType: 'html',
-                success: function(data) {
 
-                    $('#tnb-spends').html(data);
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(xhr.responseText);
-                    $('#responseData').html('Error occurred');
-                }
-            });
+        table.columns(1).search(type); // Filter Column 1
+
+
+
+        table.draw();
+
+}
+
+
+
+        function editDetails(param){
+
+                $(`#pmt_receiver_name_${param}`).removeAttr('disabled').removeClass('border-0');
+                $(`#pmt_name_${param}`).removeAttr('disabled').removeClass('border-0');
+                $(`#pmt_amount_${param}`).removeAttr('disabled').removeClass('border-0');
+                $(`#description_${param}`).removeAttr('disabled').removeClass('border-0');
+                $(`#date_time_${param}`).removeAttr('disabled').removeClass('border-0');
+
+                $(`#${param}-submit-button`).removeClass('d-none');
+                $(`#${param}-edit-button`).addClass('d-none');
+
+
         }
+
+        function formSubmitted(param ){
+
+                $(`#pmt_receiver_name_${param}`).addClass('border-0').attr('disabled',true);
+                $(`#pmt_name_${param}`).addClass('border-0').attr('disabled',true);
+                $(`#pmt_amount_${param}`).addClass('border-0').attr('disabled',true);
+                $(`#description_${param}`).addClass('border-0').attr('disabled',true);
+                $(`#date_time_${param}`).addClass('border-0').attr('disabled',true);
+
+
+
+                $(`#${param}-submit-button`).addClass('d-none');
+                $(`#${param}-edit-button`).removeClass('d-none');
+
+                var pmtTyype = $(`#pmt_name_${param}`).val();
+                $(`#search-type-${param}`).html(pmtTyype);
+
+            }
     </script>
 @endsection

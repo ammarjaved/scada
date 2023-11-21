@@ -45,6 +45,10 @@
                             <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
+                            <th>FIX PROFIT :</th>
+                            <td><span class="subTotal">{{$data->VcbBudget->fix_profit}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
                             <th>TOTAL SPENDING :</th>
                             <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
                         </tr>

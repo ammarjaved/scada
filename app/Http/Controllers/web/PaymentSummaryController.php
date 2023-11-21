@@ -5,6 +5,8 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PaymentSummaryModel;
+use App\Models\CsuBudgetTNBModel;
+
 
 class PaymentSummaryController extends Controller
 {
@@ -16,6 +18,23 @@ class PaymentSummaryController extends Controller
     public function index()
     {
         //
+        // $total = 0 ;
+        // $csu_budget =  \App\Models\CsuBudgetTNBModel::sum('total');
+        // $rmu_budget =  \App\Models\RmuBudgetTNBModel::sum('total');
+        // $vcb_budget =  \App\Models\VcbBudgetTNBModel::sum('total');
+        // $total_budget = $csu_budget + $rmu_budget + $vcb_budget ;
+
+        // $csu_spend = \App\Models\CsuAeroSpendModel::sum('total');
+        // $rmu_spend = \App\Models\RmuAeroSpendModel::sum('total');
+        // $vcb_spend = \App\Models\VcbAeroSpendModel::sum('total');
+        // $total_spend = $csu_spend + $vcb_spend + $rmu_spend;
+
+        // $csu_profit = \App\Models\CsuBudgetTNBModel::sum('fix_profit');
+        // $rmu_profit = \App\Models\RmuBudgetTNBModel::sum('fix_profit');
+        // $vcb_profit = \App\Models\VcbBudgetTNBModel::sum('fix_profit');
+        // $total_profit = $csu_profit + $vcb_profit + $vcb_profit;
+
+        //   $total_profit;
 
         return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all()]);
     }
@@ -81,6 +100,14 @@ class PaymentSummaryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try {
+
+            PaymentSummaryModel::find($id)->update($request->all());
+            return response()->json(['success'=>true, 'id'=>$id], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>false, 'error'=>$th->getMessage()], 500);
+        }
     }
 
     /**

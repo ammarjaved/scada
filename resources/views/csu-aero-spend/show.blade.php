@@ -47,6 +47,10 @@
                             <td><span id="budget"> {{ $data->CsuBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
+                            <th>FIX PROFIT :</th>
+                            <td> {{$data->CsuBudget->fix_profit}} <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
                             <th>TOTAL SPENDING :</th>
                             <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
                         </tr>

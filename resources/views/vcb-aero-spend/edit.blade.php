@@ -53,6 +53,11 @@
                             <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
+                            <th>FIX PROFIT :</th>
+                            <td> {{$data->VcbBudget->fix_profit}}  <strong>(RMB) </strong></td>
+                        </tr>
+
+                        <tr>
                             <th>TOTAL SPENDING :</th>
                             <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
                         </tr>
@@ -197,6 +202,7 @@
 
     <script>
         var budget = 0;
+        var fixProfit = 0;
         $(document).ready(function() {
 
             var Toast = Swal.mixin({
@@ -227,7 +233,8 @@
                 }
             })
 
-            budget = {{ $data->VcbBudget->allocated_budget }};
+            budget = {{ $data->VcbBudget->total != '' ?$data->VcbBudget->total : 0 }};
+            fixProfit = {{ $data->VcbBudget->fix_profit != '' ?  $data->VcbBudget->fix_profit : 0 }};
 
 
 
@@ -260,7 +267,7 @@
 
             $(`.subTotal`).html(subTotal)
             $(`#${param}-total`).html(total)
-            var  profit = (((budget )/total)*100).toFixed(2);
+            var  profit = (((budget - total)/fixProfit)*100).toFixed(2);
 
             $(`.total_profit`).html(profit)
 
