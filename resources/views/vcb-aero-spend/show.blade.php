@@ -34,7 +34,26 @@
     <section class="content">
         <div class="container-fluid">
             <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
-
+                <table class=" mb-3 table-borderless col-md-3">
+                    <tbody>
+                        <tr>
+                            <th>PE NAME : </th>
+                            <td>{{ $data->VcbBudget->pe_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>BUDGET BY TNB : </th>
+                            <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL SPENDING :</th>
+                            <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL PROFIT :</th>
+                            <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">

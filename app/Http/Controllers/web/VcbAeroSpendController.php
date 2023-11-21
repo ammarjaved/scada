@@ -18,18 +18,19 @@ class VcbAeroSpendController extends Controller
      */
     public function index($id)
     {
-        $datas = VcbAeroSpendModel::where('id_vcb_budget', $id)
+        $data = VcbAeroSpendModel::where('id_vcb_budget', $id)
             ->with('VcbBudget')
             ->first();
             try {
-                $profit = (($datas->VcbBudget->allocated_budget -  $datas -> total)/$datas->VcbBudget->allocated_budget) * 100;
-            $datas['profit'] = number_format($profit , 2);
+                $profit = ($data->VcbBudget->total / $data->total) * 100;
+
+            $data['profit'] = number_format($profit , 2);
             } catch (\Throwable $th) {
-                $datas['profit'] = "#error!";
+                $data['profit'] = "#error!";
             }
 
         // return $id;
-        return view('vcb-aero-spend.index', ['data' => $datas])->render();
+        return view('vcb-aero-spend.index', ['data' => $data])->render();
 
     }
 
@@ -90,7 +91,9 @@ class VcbAeroSpendController extends Controller
         $count['amt_transport'] = [];
 
         try {
-            $profit = (($data->VcbBudget->allocated_budget -  $data-> total)/$data->VcbBudget->allocated_budget) * 100;
+                   $profit = ($data->VcbBudget->total / $data->total) * 100;
+
+
         $data['profit'] = number_format($profit , 2);
         } catch (\Throwable $th) {
             $datas['profit'] = "#error!";
@@ -98,7 +101,7 @@ class VcbAeroSpendController extends Controller
 
         foreach ($data->SpendDetail as $key => $value) {
             array_push($count[$value->pmt_name], $value);
-      
+
         }
         return $data ? view('vcb-aero-spend.show',['data'=>$data,'count'=>$count]) : abrot(404);
     }
@@ -129,7 +132,8 @@ class VcbAeroSpendController extends Controller
         $count['amt_transport'] = [];
 
         try {
-            $profit = (($data->VcbBudget->allocated_budget -  $data-> total)/$data->VcbBudget->allocated_budget) * 100;
+            $profit = ($data->VcbBudget->total / $data->total) * 100;
+            
         $data['profit'] = number_format($profit , 2);
         } catch (\Throwable $th) {
             $datas['profit'] = "#error!";

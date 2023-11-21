@@ -76,7 +76,7 @@
                     <input value="{{$data->total}}" type="number" name="total" id="total" class="form-control" readonly>
                 </div>
             </div>
-
+{{--
             <div class="row">
                 <div class="col-md-4">
                     <label for="pe name">Total Budget by Aerosynergy</label>
@@ -85,7 +85,7 @@
                     <input type="number" name="allocated_budget" value="{{$data->allocated_budget}}" id="allocated_budget"
                         class="form-control" required>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-4">

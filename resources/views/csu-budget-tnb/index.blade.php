@@ -65,9 +65,7 @@
                                             <th>KKB</th>
                                             <th>CFS</th>
                                             <th>SCADA</th>
-                                            <th>TOTAL</th>
-                                            <th>BUDGET</th>
-
+                                            <th>TOTAL BUDGET</th> 
                                             <th>ACTION</th>
                                         </tr>
                                     </thead>
@@ -80,7 +78,6 @@
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>
                                                 <td class="align-middle">{{ $data->total }}</td>
-                                                <td class="align-middle">{{ $data->allocated_budget }}</td>
 
 
                                                 <td class="text-center">

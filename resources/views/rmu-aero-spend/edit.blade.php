@@ -47,8 +47,9 @@
                             <td>{{ $data->RmuBudget->pe_name }}</td>
                         </tr>
                         <tr>
-                            <th>ALLOCATED BUDGET : </th>
-                            <td><span id="budget"> {{ $data->RmuBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                            <th>BUDGET BY TNB : </th>
+
+                            <td><span id="budget"> {{ $data->RmuBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL SPENDING :</th>
@@ -243,7 +244,7 @@
                 }
             })
 
-            budget = {{ $data->RmuBudget->allocated_budget }};
+            budget = {{ $data->RmuBudget->total }};
 
         })
         function editDetails(id){
@@ -273,7 +274,7 @@
 
                 $(`.subTotal`).html(subTotal)
             $(`#${param}-total`).html(total)
-            var  profit = (((budget - subTotal)/budget)*100).toFixed(2);
+            var  profit = (((budget )/total)*100).toFixed(2);
             $(`.total_profit`).html(profit)
 
             }

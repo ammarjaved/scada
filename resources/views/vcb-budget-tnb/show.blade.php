@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-4">
                     <label for="pe name">Total Budget by Aerosynergy</label>
                 </div>
@@ -84,7 +84,7 @@
                     <input   value="{{$data->allocated_budget}}"  disabled
                         class="form-control" required>
                 </div>
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-md-4">
                     <label for="pe name">Fix Profit Aerosynergy</label>

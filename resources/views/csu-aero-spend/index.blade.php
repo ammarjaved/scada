@@ -32,7 +32,7 @@
                                             <th>STORE RENTAL</th>
                                             <th>TRANSPORT</th>
                                             <th>SALARY</th>
-                                            <th>TOTAL</th>
+                                            <th>TOTAL SPENDINGS</th>
                                             <th>PROFIT</th>
                                             <th>ACTION</th>
                                         </tr>

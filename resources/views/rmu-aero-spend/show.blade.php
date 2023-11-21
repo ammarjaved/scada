@@ -42,8 +42,9 @@
                             <td>{{ $data->RmuBudget->pe_name }}</td>
                         </tr>
                         <tr>
-                            <th>ALLOCATED BUDGET : </th>
-                            <td><span id="budget"> {{ $data->RmuBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                            <th>BUDGET BY TNB : </th>
+
+                            <td><span id="budget"> {{ $data->RmuBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL SPENDING :</th>

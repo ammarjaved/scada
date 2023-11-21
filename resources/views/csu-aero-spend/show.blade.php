@@ -42,8 +42,9 @@
                             <td>{{ $data->CsuBudget->pe_name }}</td>
                         </tr>
                         <tr>
-                            <th>ALLOCATED BUDGET : </th>
-                            <td><span id="budget"> {{ $data->CsuBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                            <th>BUDGET BY TNB : </th>
+
+                            <td><span id="budget"> {{ $data->CsuBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL SPENDING :</th>

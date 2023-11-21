@@ -49,8 +49,8 @@
                             <td>{{ $data->VcbBudget->pe_name }}</td>
                         </tr>
                         <tr>
-                            <th>ALLOCATED BUDGET : </th>
-                            <td><span id="budget"> {{ $data->VcbBudget->allocated_budget }} </span><strong> (RMB)</strong></td>
+                            <th>BUDGET BY TNB : </th>
+                            <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL SPENDING :</th>
@@ -260,7 +260,8 @@
 
             $(`.subTotal`).html(subTotal)
             $(`#${param}-total`).html(total)
-            var  profit = ((budget - subTotal)/budget)*100;
+            var  profit = (((budget )/total)*100).toFixed(2);
+
             $(`.total_profit`).html(profit)
 
         }
