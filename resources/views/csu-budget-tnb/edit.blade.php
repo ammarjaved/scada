@@ -151,7 +151,7 @@
 
 
             $("input[type='number']").on('change', function() {
-                if (this.id != 'allocated_budget') {
+                if (this.id != 'fix_profit') {
                     var changeVal = 0;
                     if (this.value !== "") {
                         changeVal = parseFloat(this.value);

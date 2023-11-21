@@ -69,6 +69,7 @@
                                             <th>CFS</th>
                                             <th>SCADA</th>
                                             <th>TOTAL BUDGET</th>
+                                            <th>FIX PROFIT</th>
 
                                             <th>ACTION</th>
                                         </tr>
@@ -82,7 +83,8 @@
                                                 <td>{{$data->rtu_status}}</td>
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>
-                                                <td class="align-middle">{{ $data->total }}</td> 
+                                                <td class="align-middle">{{ $data->total }}</td>
+                                                <td class="align-middle">{{ $data->fix_profit }}</td>
 
                                                 <td class="text-center">
                                                     <button type="button" class="btn  " data-toggle="dropdown">
