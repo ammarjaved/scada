@@ -107,6 +107,14 @@
 
 
 
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="date_time">Date Time</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="datetime-local" name="date_time" id="date_time" class="form-control">
+                </div>
+            </div>
 
 
 

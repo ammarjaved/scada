@@ -106,7 +106,14 @@
                 </div>
             </div>
 
-
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="date_time">Date Time</label>
+                </div>
+                <div class="col-md-4">
+                    <input type="datetime-local" name="date_time" id="date_time" class="form-control" value="{{$data->date_time}}">
+                </div>
+            </div>
 
             <div class="text-center">
                 <button class="btn btn-success mt-4" style="cursor: pointer !important" type="submit">Update</button>
