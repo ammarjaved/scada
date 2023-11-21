@@ -124,6 +124,9 @@
 
                 </li>
 
+
+
+
                 @if (Auth::user()->type === true)
                     <ul>
                         <li class="nav-item">
@@ -147,9 +150,15 @@
 
 
 
-                    
-
-
+                    <ul>
+                    <li class="nav-item">
+                        <a href="{{ route('payment-summary-details.index') }}"
+                            class="nav-link  ">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>Payments</p>
+                        </a>
+                    </li>
+                </ul>
 
 
                 @endif
