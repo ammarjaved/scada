@@ -62,6 +62,7 @@ class CsuBudgetTNBController extends Controller
         }
         return redirect()->route('csu-budget-tnb.index', $request->pe_name)->with('success',"Form Submitted");
     } catch (\Throwable $th) {
+        return $th->getMessage();
         return redirect()->route('csu-budget-tnb.index' , $request->pe_name)->with('failed',"Request Failed");
 
     }
