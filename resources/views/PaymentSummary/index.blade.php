@@ -380,7 +380,10 @@
                 success: function(responseText, status, xhr, $form) {
 
                     $('#payment-table').html(responseText);
-
+                    $("#example2").DataTable({
+                "lengthChange": false,
+                "autoWidth": false,
+            })
                 },
                 error: function(xhr, status, error, $form) {
                     toastr.error('Request failed. Please try again.')
