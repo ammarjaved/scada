@@ -17,9 +17,9 @@
         .error {
             color: red
         }
-        tr{
 
-        }
+        tr {}
+
         td {
             border: 0px !important
         }
@@ -63,6 +63,82 @@
                     <div class="card">
                         <div class="card-header">
                             <div class=" d-flex justify-content-between">
+                                <h5> Project Summary </h5>
+                            </div>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+
+                            <div class="text-end mb-4">
+
+                            </div>
+
+                            <div class="table-responsive">
+                                <table id="example3" class="table table-bordered  ">
+
+
+                                    <thead style="background-color: #E4E3E3 !important">
+                                        <tr>
+                                            <th>Total Received</th>
+                                            <th>Total Spend PE</th>
+                                            <th>Total Spend Other</th>
+                                            <th>Total Spend</th>
+                                            <th>Total Profit( if any)</th>
+                                            <th>Total Loss( if any)</th>
+
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+                                        <tr>
+
+                                            <td class="align-middle">{{ $summary['amt_received'] }}</td>
+                                            <td class="align-middle">{{ $summary['amt_spend'] }}</td>
+                                            <td class="align-middle">{{ $summary['other_spend'] }}</td>
+                                            <td class="align-middle">{{ $summary['other_spend'] + $summary['amt_spend'] }}
+                                            </td>
+                                            @if ($summary['other_spend'] + $summary['amt_spend'] < $summary['amt_received'])
+                                                <td class="align-middle">
+                                                    {{ $summary['amt_received'] - ($summary['other_spend'] + $summary['amt_spend']) }}
+                                                </td>
+                                            @else
+                                                <td class="align-middle">0</td>
+                                            @endif
+
+                                            @if ($summary['other_spend'] + $summary['amt_spend'] > $summary['amt_received'])
+                                                <td class="align-middle">
+                                                    {{ $summary['other_spend'] + $summary['amt_spend'] - $summary['amt_received'] }}
+                                                </td>
+                                            @else
+                                                <td class="align-middle">
+                                                    0
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class=" d-flex justify-content-between">
                                 <h5> Payment Summary </h5>
                                 <button type="button" class="btn  btn-sm" data-toggle="modal" data-target="#addPayments"
                                     style="background-color: #367FA9; border-radius:0px; color:white">Add new</button>
@@ -71,106 +147,42 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <form action="{{ route('payment-summary-search') }}" id="payment-filter" method="POST">
+                                @csrf
+                                <div class="row">
 
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="search_type">Type : </label>
-                                    <select name="search_type" id="search_type" onchange="filterTable(this.value)">
-                                        <option value="" >all</option>
-                                        <option value="claim">Claim</option>
-                                        <option value="salary">Salary</option>
-                                        <option value="tools">Tools</option>
-                                        <option value="others">Others</option>
-                                    </select>
+                                    <div class="col-md-2">
+                                        <label for="search_type">Type : </label>
+                                        <select name="search_type" id="search_type">
+                                            <option value="">all</option>
+                                            <option value="claim">Claim</option>
+                                            <option value="salary">Salary</option>
+                                            <option value="tools">Tools</option>
+                                            <option value="others">Others</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="from_search">From : </label>
+                                        <input type="date" name="from_search" id="from_search">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label for="to_search">To : </label>
+                                        <input type="date" name="to_search" id="to_search">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button class="btn btn-sm btn secondary" type="submit">filter</button>
+                                    </div>
+
                                 </div>
-                            </div>
+                            </form>
                             <div class="text-end mb-4">
 
                             </div>
 
-                            <div class="table-responsive">
-                                <table id="example2" class="table table-bordered  ">
+                            <div class="table-responsive" id="payment-table">
 
-
-                                    <thead style="background-color: #E4E3E3 !important">
-                                        <tr>
-                                            <th>RECEIVER NAME</th>
-                                            <th class="d-none">SEARCH</th>
-                                            <th>PAYMENT TYPE</th>
-                                            <th>AMOUNT</th>
-                                            <th>DESCRIPTION</th>
-                                            <th>DATE TIME</th>
-                                            <th>ACTION</th>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach ($datas as $data)
-                                            <tr>
-                                                <form action="{{route('payment-summary-details.update' , $data->id)}}" class="payment-summary-form" method="post">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                <td class="align-middle"><input type="text" name="pmt_receiver_name" required
-                                                        id="pmt_receiver_name_{{$data->id}}" value="{{ $data->pmt_receiver_name }}" disabled
-                                                        class="border-0"> </td>
-                                                        <td  class="d-none" id="search-type-{{$data->id}}">{{ $data->pmt_type }}</td>
-                                                <td class="align-middle">
-
-                                                    <select name="pmt_type" id="pmt_name_{{$data->id}}" class="border-0" required
-                                                        disabled>
-                                                        <option value="{{ $data->pmt_type }}" hidden>{{ $data->pmt_type }}
-                                                        </option>
-                                                        <option value="claim">Claim</option>
-                                                        <option value="salary">Salary</option>
-                                                        <option value="tools">Tools</option>
-                                                        <option value="others">Others</option>
-                                                    </select>
-                                                </td>
-                                                <td class="align-middle"> <input type="number" name="pmt_amount"
-                                                        id="pmt_amount_{{$data->id}}" value="{{ $data->pmt_amount }}" class="border-0" min="0" required
-                                                        disabled></td>
-
-                                                <td class="col-3">
-                                                    <textarea name="description" id="description_{{$data->id}}" cols="30" rows="5" class="border-0" disabled>{{ $data->description }}</textarea>
-                                                </td>
-                                                <td class="align-middle"><input type="datetime-local" name="date_time" disabled class="border-0" id="date_time_{{$data->id}}" value="{{ $data->date_time }}"> </td>
-
-
-
-                                                <td class="text-center align-middle">
-
-                                                    <div class="btn-group btn-group-sm">
-                                                        <button type="submit" class="d-none btn btn-success btn-sm" id="{{$data->id}}-submit-button"  > <i class="fas fa-save"></i></button>
-                                                        <button type="button" class="btn btn-sm btn-primary" id="{{$data->id}}-edit-button"  onclick="editDetails({{$data->id}})"><i class="fas fa-edit"></i></button>
-                                                        <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-id="{{$data->id}}"
-                                                        data-target="#myModal"><i class="fas fa-trash"></i></button>
-                                                          </div>
-                                                    {{-- <button type="button" class="btn  " data-toggle="dropdown">
-                                                        <img
-                                                            src="{{ URL::asset('assets/web-images/three-dots-vertical.svg') }}">
-                                                    </button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <a class="dropdown-item" href="#">Edit
-                                                            Foam</a>
-
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('rmu-budget-tnb.show', $data->id) }}">Detail</a>
-
-                                                        <button type="button" class="btn btn-primary dropdown-item"
-                                                            data-id="{{ $data->id }}" data-toggle="modal"
-                                                            data-url="payment-summary-details" data-target="#myModal">
-                                                            Remove
-                                                        </button>
-                                                    </div> --}}
-
-                                                </td>
-                                            </form>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @include('PaymentSummary.payment-table')
                             </div>
 
                         </div>
@@ -288,90 +300,11 @@
             </div>
         </div>
     </div>
-    <section class="content">
-        <div class="container-fluid">
-
-        <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class=" d-flex justify-content-between">
-                                <h5> Project Summary </h5>
-                            </div>
-
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-
-                           
-                            <div class="text-end mb-4">
-
-                            </div>
-
-                            <div class="table-responsive">
-                                <table id="example3" class="table table-bordered  ">
-
-
-                                    <thead style="background-color: #E4E3E3 !important">
-                                        <tr>
-                                            <th>Total Received</th>
-                                            <th>Total Spend PE</th>
-                                            <th>Total Spend Other</th>
-                                            <th>Total Spend</th>
-                                            <th>Total Profit( if any)</th>
-                                            <th>Total Loss( if any)</th>
-                                            
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    
-                                            <tr>
-                                               
-                                                <td class="align-middle">{{$summary['amt_received']}}</td>      
-                                                <td class="align-middle">{{$summary['amt_spend']}}</td>
-                                                <td class="align-middle">{{$summary['other_spend']}}</td>
-                                                <td class="align-middle">{{$summary['other_spend']+$summary['amt_spend']}}</td>
-                                                @if($summary['other_spend']+$summary['amt_spend']< $summary['amt_received'])
-                                                <td class="align-middle">{{
-                                                    $summary['amt_received']-($summary['other_spend']+$summary['amt_spend'])
-                                                }}</td>
-                                               
-                                               @else
-                                                <td class="align-middle">0</td>
-                                               
-                                               @endif
-
-                                               @if($summary['other_spend']+$summary['amt_spend']> $summary['amt_received'])
-                                                <td class="align-middle">
-                                                     {{$summary['other_spend']+$summary['amt_spend']- $summary['amt_received']}}
-                                                 </td>
-                                               @else
-                                                <td class="align-middle">
-                                                 0
-                                                 </td>
-                                               
-                                               @endif 
-                                            </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
 
 
 
-                </div>
-
-
-            </div>
-
-        </div>
     </div>
-
+    </div>
 @endsection
 
 @section('script')
@@ -443,6 +376,21 @@
             });
 
 
+            $jq('#payment-filter').ajaxForm({
+                success: function(responseText, status, xhr, $form) {
+
+                    $('#payment-table').html(responseText);
+
+                },
+                error: function(xhr, status, error, $form) {
+                    toastr.error('Request failed. Please try again.')
+
+                }
+            });
+
+
+
+
 
             $("#example2").DataTable({
                 "lengthChange": false,
@@ -450,51 +398,52 @@
             })
 
         })
+
         function filterTable(type) {
-            
-        var table = $('#example2').DataTable();
+
+            var table = $('#example2').DataTable();
 
 
-        table.columns(1).search(type); // Filter Column 1
-
-
-
-        table.draw();
-
-}
+            table.columns(1).search(type); // Filter Column 1
 
 
 
-        function editDetails(param){
+            table.draw();
 
-                $(`#pmt_receiver_name_${param}`).removeAttr('disabled').removeClass('border-0');
-                $(`#pmt_name_${param}`).removeAttr('disabled').removeClass('border-0');
-                $(`#pmt_amount_${param}`).removeAttr('disabled').removeClass('border-0');
-                $(`#description_${param}`).removeAttr('disabled').removeClass('border-0');
-                $(`#date_time_${param}`).removeAttr('disabled').removeClass('border-0');
+        }
 
-                $(`#${param}-submit-button`).removeClass('d-none');
-                $(`#${param}-edit-button`).addClass('d-none');
+
+
+        function editDetails(param) {
+
+            $(`#pmt_receiver_name_${param}`).removeAttr('disabled').removeClass('border-0');
+            $(`#pmt_name_${param}`).removeAttr('disabled').removeClass('border-0');
+            $(`#pmt_amount_${param}`).removeAttr('disabled').removeClass('border-0');
+            $(`#description_${param}`).removeAttr('disabled').removeClass('border-0');
+            $(`#date_time_${param}`).removeAttr('disabled').removeClass('border-0');
+
+            $(`#${param}-submit-button`).removeClass('d-none');
+            $(`#${param}-edit-button`).addClass('d-none');
 
 
         }
 
-        function formSubmitted(param ){
+        function formSubmitted(param) {
 
-                $(`#pmt_receiver_name_${param}`).addClass('border-0').attr('disabled',true);
-                $(`#pmt_name_${param}`).addClass('border-0').attr('disabled',true);
-                $(`#pmt_amount_${param}`).addClass('border-0').attr('disabled',true);
-                $(`#description_${param}`).addClass('border-0').attr('disabled',true);
-                $(`#date_time_${param}`).addClass('border-0').attr('disabled',true);
+            $(`#pmt_receiver_name_${param}`).addClass('border-0').attr('disabled', true);
+            $(`#pmt_name_${param}`).addClass('border-0').attr('disabled', true);
+            $(`#pmt_amount_${param}`).addClass('border-0').attr('disabled', true);
+            $(`#description_${param}`).addClass('border-0').attr('disabled', true);
+            $(`#date_time_${param}`).addClass('border-0').attr('disabled', true);
 
 
 
-                $(`#${param}-submit-button`).addClass('d-none');
-                $(`#${param}-edit-button`).removeClass('d-none');
+            $(`#${param}-submit-button`).addClass('d-none');
+            $(`#${param}-edit-button`).removeClass('d-none');
 
-                var pmtTyype = $(`#pmt_name_${param}`).val();
-                $(`#search-type-${param}`).html(pmtTyype);
+            var pmtTyype = $(`#pmt_name_${param}`).val();
+            $(`#search-type-${param}`).html(pmtTyype);
 
-            }
+        }
     </script>
 @endsection

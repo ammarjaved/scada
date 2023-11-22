@@ -22,6 +22,8 @@ use App\Http\Controllers\web\RmuPaymentDetailController;
 use App\Http\Controllers\web\VcbPaymentDetailController;
 use App\Http\Controllers\web\CsuPaymentDetailController;
 use App\Http\Controllers\web\PaymentSummaryController;
+use App\Http\Controllers\web\FilterPaymentSummaryController;
+
 
 
 
@@ -112,6 +114,7 @@ Route::middleware('auth')->group(function () {
     Route::get('vcb-budget-tnb/create/{name}', [VcbBudgetTNBController::class, 'create'])->name('vcb-budget-tnb.create');
 
     Route::resource('payment-summary-details', PaymentSummaryController::class);
+    Route::post('/payment-summary-search', [FilterPaymentSummaryController::class, 'index'])->name('payment-summary-search');
 
 
 
