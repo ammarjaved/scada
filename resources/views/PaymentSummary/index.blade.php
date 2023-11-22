@@ -171,7 +171,7 @@
                                         <input type="date" name="to_search" id="to_search">
                                     </div>
                                     <div class="col-md-1">
-                                        <button class="btn btn-sm btn secondary" type="submit">filter</button>
+                                        <button class="btn btn-sm btn-secondary" type="submit">FILTER</button>
                                     </div>
 
                                 </div>
