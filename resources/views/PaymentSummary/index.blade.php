@@ -94,7 +94,7 @@
 
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
-                                            <th>RECIVER NAME</th>
+                                            <th>RECEIVER NAME</th>
                                             <th class="d-none">SEARCH</th>
                                             <th>PAYMENT TYPE</th>
                                             <th>AMOUNT</th>
@@ -235,7 +235,7 @@
 
 
                         <div class="row">
-                            <div class="col-md-4"><label for="total">Name</label></div>
+                            <div class="col-md-4"><label for="total">Receiver Name</label></div>
                             <div class="col-md-8">
                                 <input type="text" name="pmt_receiver_name" id="pmt_receiver_name" required
                                     class="form-control">
@@ -288,6 +288,90 @@
             </div>
         </div>
     </div>
+    <section class="content">
+        <div class="container-fluid">
+
+        <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class=" d-flex justify-content-between">
+                                <h5> Project Summary </h5>
+                            </div>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                           
+                            <div class="text-end mb-4">
+
+                            </div>
+
+                            <div class="table-responsive">
+                                <table id="example3" class="table table-bordered  ">
+
+
+                                    <thead style="background-color: #E4E3E3 !important">
+                                        <tr>
+                                            <th>Total Received</th>
+                                            <th>Total Spend PE</th>
+                                            <th>Total Spend Other</th>
+                                            <th>Total Spend</th>
+                                            <th>Total Profit( if any)</th>
+                                            <th>Total Loss( if any)</th>
+                                            
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    
+                                            <tr>
+                                               
+                                                <td class="align-middle">{{$summary['amt_received']}}</td>      
+                                                <td class="align-middle">{{$summary['amt_spend']}}</td>
+                                                <td class="align-middle">{{$summary['other_spend']}}</td>
+                                                <td class="align-middle">{{$summary['other_spend']+$summary['amt_spend']}}</td>
+                                                @if($summary['other_spend']+$summary['amt_spend']< $summary['amt_received'])
+                                                <td class="align-middle">{{
+                                                    $summary['amt_received']-($summary['other_spend']+$summary['amt_spend'])
+                                                }}</td>
+                                               
+                                               @else
+                                                <td class="align-middle">0</td>
+                                               
+                                               @endif
+
+                                               @if($summary['other_spend']+$summary['amt_spend']> $summary['amt_received'])
+                                                <td class="align-middle">
+                                                     {{$summary['other_spend']+$summary['amt_spend']- $summary['amt_received']}}
+                                                 </td>
+                                               @else
+                                                <td class="align-middle">
+                                                 0
+                                                 </td>
+                                               
+                                               @endif 
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
 @endsection
 
 @section('script')

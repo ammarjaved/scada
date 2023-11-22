@@ -19,15 +19,22 @@ class PaymentSummaryController extends Controller
     {
         //
         // $total = 0 ;
-        // $csu_budget =  \App\Models\CsuBudgetTNBModel::sum('total');
-        // $rmu_budget =  \App\Models\RmuBudgetTNBModel::sum('total');
-        // $vcb_budget =  \App\Models\VcbBudgetTNBModel::sum('total');
-        // $total_budget = $csu_budget + $rmu_budget + $vcb_budget ;
+        $total_arr=[];
+         $csu_budget =  \App\Models\CsuBudgetTNBModel::sum('total');
+         $rmu_budget =  \App\Models\RmuBudgetTNBModel::sum('total');
+          $vcb_budget =  \App\Models\VcbBudgetTNBModel::sum('total');
+         $total_budget = $csu_budget + $rmu_budget + $vcb_budget ;
+         $total_arr['amt_received']= $total_budget;
 
-        // $csu_spend = \App\Models\CsuAeroSpendModel::sum('total');
-        // $rmu_spend = \App\Models\RmuAeroSpendModel::sum('total');
-        // $vcb_spend = \App\Models\VcbAeroSpendModel::sum('total');
-        // $total_spend = $csu_spend + $vcb_spend + $rmu_spend;
+         $csu_spend = \App\Models\CsuAeroSpendModel::sum('total');
+         $rmu_spend = \App\Models\RmuAeroSpendModel::sum('total');
+         $vcb_spend = \App\Models\VcbAeroSpendModel::sum('total');
+         $total_spend = $csu_spend + $vcb_spend + $rmu_spend;
+         $total_arr['amt_spend']= $total_spend;
+
+         $other_payments = \App\Models\PaymentSummaryModel::sum('pmt_amount');
+         $total_arr['other_spend']= $other_payments;
+
 
         // $csu_profit = \App\Models\CsuBudgetTNBModel::sum('fix_profit');
         // $rmu_profit = \App\Models\RmuBudgetTNBModel::sum('fix_profit');
@@ -36,7 +43,7 @@ class PaymentSummaryController extends Controller
 
         //   $total_profit;
 
-        return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all()]);
+        return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all(),'summary'=>$total_arr]);
     }
 
     /**
