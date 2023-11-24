@@ -18,16 +18,18 @@
 
         @foreach ($datas as $data)
             <tr>
-                <form action="{{ route('payment-summary-details.update', $data->id) }}"
-                    class="payment-summary-form" method="post">
-                    @csrf
-                    @method('PATCH')
-                    <td class="align-middle"><input type="text" name="pmt_receiver_name"
+ <form action="{{ route('payment-summary-details.update', $data->id) }}"
+                            class="payment-summary-form" method="post">
+                            @csrf
+                            @method('PATCH')
+                    <td class="align-middle">
+
+                            <input type="text" name="pmt_receiver_name"
                             required id="pmt_receiver_name_{{ $data->id }}"
                             value="{{ $data->pmt_receiver_name }}" disabled
                             class="border-0"> </td>
                     <td class="d-none" id="search-type-{{ $data->id }}">
-                        {{ $data->pmt_type }}</td>
+                        {{ $data->pmt_receiver_name }}  {{ $data->pmt_type }}</td>
                     <td class="align-middle">
 
                         <select name="pmt_type" id="pmt_name_{{ $data->id }}"
@@ -61,7 +63,7 @@
 
                         <div class="btn-group btn-group-sm">
                             <button type="submit" class="d-none btn btn-success btn-sm"
-                                id="{{ $data->id }}-submit-button"> <i
+                                id="{{ $data->id }}-submit-button"  > <i
                                     class="fas fa-save"></i></button>
                             <button type="button" class="btn btn-sm btn-primary"
                                 id="{{ $data->id }}-edit-button"
@@ -74,7 +76,7 @@
                         </div>
 
                     </td>
-                </form>
+ </form>
             </tr>
         @endforeach
     </tbody>

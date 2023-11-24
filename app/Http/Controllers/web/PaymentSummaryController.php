@@ -20,11 +20,12 @@ class PaymentSummaryController extends Controller
         //
         // $total = 0 ;
         $total_arr=[];
-         $csu_budget =  \App\Models\CsuBudgetTNBModel::sum('total');
-         $rmu_budget =  \App\Models\RmuBudgetTNBModel::sum('total');
-          $vcb_budget =  \App\Models\VcbBudgetTNBModel::sum('total');
-         $total_budget = $csu_budget + $rmu_budget + $vcb_budget ;
-         $total_arr['amt_received']= $total_budget;
+        $site_data = [];
+        $csu_budget =  \App\Models\CsuBudgetTNBModel::sum('total');
+        $rmu_budget =  \App\Models\RmuBudgetTNBModel::sum('total');
+        $vcb_budget =  \App\Models\VcbBudgetTNBModel::sum('total');
+        $total_budget = $csu_budget + $rmu_budget + $vcb_budget ;
+        $total_arr['amt_received']= $total_budget;
 
          $csu_spend = \App\Models\CsuAeroSpendModel::sum('total');
          $rmu_spend = \App\Models\RmuAeroSpendModel::sum('total');
@@ -36,6 +37,12 @@ class PaymentSummaryController extends Controller
          $total_arr['other_spend']= $other_payments;
 
 
+         $site_data['pe_csu'] = \App\Models\CsuBudgetTNBModel::with('CsuSpends')->get();
+         $site_data['pe_vcb'] = \App\Models\VcbBudgetTNBModel::with('VcbSpends')->get();
+         $site_data['pe_rmu'] = \App\Models\RmuBudgetTNBModel::with('RmuSpends')->get();
+
+
+
         // $csu_profit = \App\Models\CsuBudgetTNBModel::sum('fix_profit');
         // $rmu_profit = \App\Models\RmuBudgetTNBModel::sum('fix_profit');
         // $vcb_profit = \App\Models\VcbBudgetTNBModel::sum('fix_profit');
@@ -43,7 +50,7 @@ class PaymentSummaryController extends Controller
 
         //   $total_profit;
 
-        return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all(),'summary'=>$total_arr]);
+        return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all(),'summary'=>$total_arr , 'site_data'=>$site_data]);
     }
 
     /**

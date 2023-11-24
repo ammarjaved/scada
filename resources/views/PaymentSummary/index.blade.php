@@ -20,7 +20,7 @@
 
         tr {}
 
-        td {
+        #payment-table td {
             border: 0px !important
         }
 
@@ -81,12 +81,12 @@
 
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
-                                            <th>Total Received</th>
-                                            <th>Total Spend PE</th>
-                                            <th>Total Spend Other</th>
-                                            <th>Total Spend</th>
-                                            <th>Total Profit( if any)</th>
-                                            <th>Total Loss( if any)</th>
+                                            <th>TOTAL RECEVIED</th>
+                                            <th>TOTAL SPEND PE</th>
+                                            <th>TOTAL SPEND OTHER</th>
+                                            <th>TOTAL SPEND</th>
+                                            <th>TOTAL PROFIT( IF ANY)</th>
+                                            <th>TOTAL LOSS( IF ANY)</th>
 
 
 
@@ -103,19 +103,19 @@
                                             <td class="align-middle">{{ $summary['other_spend'] + $summary['amt_spend'] }}
                                             </td>
                                             @if ($summary['other_spend'] + $summary['amt_spend'] < $summary['amt_received'])
-                                                <td class="align-middle">
+                                                <td class="align-middle text-success text-center">
                                                     {{ $summary['amt_received'] - ($summary['other_spend'] + $summary['amt_spend']) }}
                                                 </td>
                                             @else
-                                                <td class="align-middle">0</td>
+                                                <td class="align-middle text-center">0</td>
                                             @endif
 
                                             @if ($summary['other_spend'] + $summary['amt_spend'] > $summary['amt_received'])
-                                                <td class="align-middle">
+                                                <td class="align-middle text-danger text-center">
                                                     {{ $summary['other_spend'] + $summary['amt_spend'] - $summary['amt_received'] }}
                                                 </td>
                                             @else
-                                                <td class="align-middle">
+                                                <td class="align-middle text-center">
                                                     0
                                                 </td>
                                             @endif
@@ -198,6 +198,121 @@
             <div id="tnb-spends" class="mt-4">
 
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class=" d-flex justify-content-between">
+                            <h5> SITE DATA SUMMARY </h5>
+                        </div>
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+
+                        <div class="text-end mb-4">
+
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="site-data" class="table table-bordered  ">
+
+
+                                <thead style="background-color: #E4E3E3 !important">
+                                    <tr>
+                                        <th>PE NAME</th>
+                                        <th>SWITCHGEAR</th>
+                                        <th>BUDGET</th>
+                                        <th>FIX PROFIT</th>
+                                        <th>TOTAL SPEND</th>
+                                        <th>TOTAL PROFIT( IF ANY)</th>
+                                        <th>TOTAL LOSS( IF ANY)</th>
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach ($site_data['pe_csu'] as $csu)
+                                    <tr>
+                                        <td class="align-middle">{{ $csu->pe_name }}</td>
+                                        <td class="align-middle">COMPACT</td>
+                                        <td class="align-middle">{{ $csu->total }}</td>
+                                        <td>{{$csu->fix_profit}}</td>
+                                        <td class="align-middle">{{ $csu->CsuSpends->total }}
+                                        </td>
+                                       @php
+                                            try {
+                                                $csu->fix_profit = $csu->fix_profit == '' ? 1 : $csu->fix_profit;
+                                             $profit  =  (($csu->total - $csu->CsuSpends->total) / $csu->fix_profit) * 100;
+                                            } catch (\Throwable $th) {
+                                                //throw $th;
+                                            }
+                                              @endphp
+                                      <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
+                                      <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+                                    </tr>
+                                    @endforeach
+
+                                    @foreach ($site_data['pe_rmu'] as $rmu)
+                                    <tr>
+                                        <td class="align-middle">{{ $rmu->pe_name }}</td>
+                                        <td class="align-middle">RMU</td>
+                                        <td class="align-middle">{{ $rmu->total }}</td>
+                                        <td>{{$rmu->fix_profit}}</td>
+                                        <td class="align-middle">{{ $rmu->RmuSpends->total }}
+                                        </td>
+                                       @php
+                                            try {
+                                                $rmu->fix_profit = $rmu->fix_profit == '' ? 1 : $rmu->fix_profit;
+                                             $profit  =  (($rmu->total - $rmu->RmuSpends->total) / $rmu->fix_profit) * 100;
+                                            } catch (\Throwable $th) {
+                                                //throw $th;
+                                            }
+                                              @endphp
+                                        <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
+                                        <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+                                    </tr>
+                                    @endforeach
+
+                                    @foreach ($site_data['pe_vcb'] as $vcb)
+                                    <tr>
+                                        <td class="align-middle">{{ $vcb->pe_name }}</td>
+                                        <td class="align-middle">COMPACT</td>
+                                        <td class="align-middle">{{ $vcb->total }}</td>
+                                        <td>{{$vcb->fix_profit}}</td>
+                                        <td class="align-middle">{{ $vcb->VcbSpends->total }}
+                                        </td>
+                                       @php
+                                            try {
+                                                $vcb->fix_profit = $vcb->fix_profit == '' ? 1 : $vcb->fix_profit;
+                                             $profit  =  (($vcb->total - $vcb->VcbSpends->total) / $vcb->fix_profit) * 100;
+                                            } catch (\Throwable $th) {
+                                                //throw $th;
+                                            }
+                                              @endphp
+
+                                            <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
+                                            <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
         </div>
     </section>
     <div class="modal fade" id="myModal">
@@ -321,7 +436,7 @@
 
     <script>
         $(document).ready(function() {
-            // $('#myTable').DataTable();
+            $('#site-data').DataTable();
 
 
             var Toast = Swal.mixin({
