@@ -38,6 +38,8 @@
         </div>
 
     </section>
+    @include('components.script-messages')
+
     <section class="content">
         <div class="container-fluid">
             <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
