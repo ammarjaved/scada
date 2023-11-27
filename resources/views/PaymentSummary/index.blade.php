@@ -253,8 +253,8 @@
                                                 //throw $th;
                                             }
                                               @endphp
-                                      <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
-                                      <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+                                      <td class="align-middle text-center text-success"> {{ $profit > 0 ? number_format($profit,2) .' % ' : ''}} </td>
+                                      <td class="align-middle text-center text-danger"> {{ $profit < 0 ? number_format($profit,2) .' % ' : ''}} </td>
                                     </tr>
                                     @endforeach
 
@@ -274,8 +274,8 @@
                                                 //throw $th;
                                             }
                                               @endphp
-                                        <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
-                                        <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+                                        <td class="align-middle text-center text-success"> {{ $profit > 0 ? number_format($profit,2) .' % ' : '' }} </td>
+                                        <td class="align-middle text-center text-danger"> {{ $profit < 0 ? number_format($profit,2) .' % ' : '' }} </td>
                                     </tr>
                                     @endforeach
 
@@ -296,8 +296,8 @@
                                             }
                                               @endphp
 
-                                            <td class="align-middle text-center text-success"> {{ $profit > 0 ? $profit .' % ' : '' }} </td>
-                                            <td class="align-middle text-center text-danger"> {{ $profit < 0 ? $profit .' % ' : '' }} </td>
+                                            <td class="align-middle text-center text-success"> {{ $profit > 0 ? number_format($profit,2) .' % ' : '' }} </td>
+                                            <td class="align-middle text-center text-danger"> {{ $profit < 0 ? number_format($profit,2) .' % ' : '' }} </td>
 
                                     </tr>
                                     @endforeach

@@ -44,10 +44,17 @@ class RmuPaymentDetailController extends Controller
 
             $data =  RmuAeroSpendModel::find($request->id);
             if ($data) {
+                if($request->status!='work done but not payed'){
                 $total = $data->total + $request->amount;
+                $pending= $data->pending_payment;
+                }else{
+                    $total = $data->total;
+                    $pending = $data->pending_payment+$request->amount;;
+                }
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $mystatus=$name.'_status';
+                $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status,'pending_payment'=>  $pending]);
             RmuPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
                 'amount'        => $request->amount,
@@ -109,7 +116,10 @@ class RmuPaymentDetailController extends Controller
                 $total = $data->total + $request->amount - $oldVal;
                 $name  = $vcb_spend_data->pmt_name;
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $mystatus=$name.'_status';
+                // return  $mystatus;
+                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
+ 
                 $vcb_spend_data->update([
                 'amount'        => $request->amount,
                 'status'        => $request->status,

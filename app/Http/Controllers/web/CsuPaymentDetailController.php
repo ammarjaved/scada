@@ -46,7 +46,9 @@ class CsuPaymentDetailController extends Controller
                 $total = $data->total + $request->amount;
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $nameTotal = $data->$name + $request->amount;
+                $mystatus=$name.'_status';
+                $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status]);
             CsuPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
                 'amount'        => $request->amount,
@@ -108,7 +110,10 @@ class CsuPaymentDetailController extends Controller
                 $total = $data->total + $request->amount - $oldVal;
                 $name  = $vcb_spend_data->pmt_name;
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $mystatus=$name.'_status';
+                
+                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
+ 
                 $vcb_spend_data->update([
                 'amount'        => $request->amount,
                 'status'        => $request->status,

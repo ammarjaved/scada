@@ -15,6 +15,30 @@
   <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <style>
         .error{color: red}
+        .work_done_and_payed{
+         background-color:green;
+         color:white;
+     }
+
+     .work_done_but_not_payed{
+         background-color:red;
+         color:white;
+     }
+     .work_not_done_but_payed{
+         background-color:black;
+         color:white;
+     }
+     .not_work_done_and_not_payed{
+         background-color:white;
+     }
+     .work_done_partial_payment{
+         background-color:yellow;
+
+     }
+     .partial_work_done_partial_payment{
+         background-color:#DAA520;
+         color:white;
+     }
     </style>
 @endsection
 

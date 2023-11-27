@@ -47,7 +47,9 @@ class VcbPaymentDetailController extends Controller
                 $total = $data->total + $request->amount;
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $mystatus=$name.'_status';
+               // return  $mystatus;
+                $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
 
             VcbPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
@@ -109,7 +111,10 @@ class VcbPaymentDetailController extends Controller
                 $total = $data->total + $request->amount - $oldVal;
                 $name  = $vcb_spend_data->pmt_name;
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $data->update(['total'=>$total, $name => $nameTotal]);
+                $mystatus=$name.'_status';
+                // return  $mystatus;
+                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
+ 
                 $vcb_spend_data->update([
                 'amount'        => $request->amount,
                 'status'        => $request->status,
