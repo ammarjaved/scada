@@ -39,6 +39,7 @@ class VcbPaymentDetailController extends Controller
     public function store(Request $request)
     {
         //
+        
         try {
 
             $data =  VcbAeroSpendModel::find($request->id);
@@ -47,6 +48,7 @@ class VcbPaymentDetailController extends Controller
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
                 $data->update(['total'=>$total, $name => $nameTotal]);
+
             VcbPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
                 'amount'        => $request->amount,

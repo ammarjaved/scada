@@ -34,6 +34,8 @@ class RmuAeroSpendModel extends Model
         'id_rmu_budget',
         'total',
         'allocated_budget',
+        'amt_pk',
+        'amt_pk_status'
 
     ];
 

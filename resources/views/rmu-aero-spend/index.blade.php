@@ -23,6 +23,7 @@
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
                                             <th>KKB</th>
+                                            <th>PK</th>
                                             <th>IR</th>
                                             <th>BO</th>
                                             <th>PIW</th>
@@ -40,10 +41,12 @@
                                     <tbody>
 
                                         <tr>
+                                            
                                             @if ($data != "" && $data != [])
 
 
                                             <td class="text-center">{{$data->amt_kkb == "" ? 0 : $data->amt_kkb }}</td>
+                                            <td class="text-center">{{$data->amt_kkb == "" ? 0 : $data->amt_pk }}</td>
                                             <td class="text-center">{{$data->amt_ir == "" ? 0 : $data->amt_ir }}</td>
                                             <td class="text-center">{{$data->amt_bo == "" ? 0 : $data->amt_bo }}</td>
                                             <td class="text-center">{{$data->amt_piw == "" ? 0 : $data->amt_piw }}</td>

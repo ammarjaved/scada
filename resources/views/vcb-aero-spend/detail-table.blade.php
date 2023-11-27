@@ -5,6 +5,7 @@
         <table class="table table-borderless" style="border: 0">
             <tbody>
             @foreach ($arr  as  $item)
+    
                 <tr>
                     <form action="{{route("$url-payment-details.update",$item->id)}}" class="submit-form" method="post">
                         @csrf
@@ -18,6 +19,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
                             <input type="hidden" name="inp_name" value="{{$arr_name}}-{{$item->id}}" >
                         </td>

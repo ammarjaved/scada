@@ -190,7 +190,9 @@
                                 <select name="pmt_name" id="pmt_name" class="form-control" required>
                                     <option value="" hidden>select</option>
                                     <option value="amt_kkb">KKB</option>
+
                                     <option value="amt_ir">IR</option>
+                                    <option value="amt_pk">PK</option>
                                     <option value="amt_bo">BO</option>
                                     <option value="amt_piw">PIW</option>
                                     <option value="amt_cable">CABLE</option>
@@ -219,6 +221,8 @@
                                     <option value="work done but not payed">work done but not payed</option>
                                     <option value="work not done but payed">work not done but payed</option>
                                     <option value="not work done and  not payed">not work done and not payed</option>
+                                    <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                                 </select>
                             </div>
                         </div>

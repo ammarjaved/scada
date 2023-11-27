@@ -68,6 +68,15 @@ class siteDateCollection extends Controller
     public function store(Request $request)
     {
         try {
+
+        
+            $pe_check=SiteDataCollection::where('nama_pe',$request->nama_pe)->first();
+
+            if($pe_check){
+                return redirect()
+                ->route('site-data-collection.index')
+                ->with('failed', 'Request Failed PE Name already exist');
+            }
             $data = SiteDataCollection::create($request->all());
 
             if ($request->image) {

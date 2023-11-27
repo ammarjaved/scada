@@ -83,6 +83,16 @@
                             ])
 
                             @include('vcb-aero-spend.detail-table', [
+                                'arr' => $count['amt_pk'],
+                                'arr_name' => 'amt_pk',
+                                'name' => 'PK',
+                                'url' => 'rmu',
+                                'action' => false
+                            ])
+
+                          
+
+                            @include('vcb-aero-spend.detail-table', [
                                 'arr' => $count['amt_ir'],
                                 'arr_name' => 'amt_ir',
                                 'name' => 'IR',

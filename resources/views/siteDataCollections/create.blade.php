@@ -21,7 +21,7 @@
             <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
 
                 <h3 class="text-center mb-4"> Site Data Collections</h3>
-                <form action="{{ route('site-data-collection.store') }}" onsubmit="return submitFoam()" method="post"
+                <form action="{{ route('site-data-collection.store') }}"  method="post"
                     enctype="multipart/form-data">
                     @csrf
 
@@ -644,9 +644,9 @@
                             <button onclick="getLocation()" class="btn-sm btn-secondary" type="button">Get
                                 Location</button><br>
                             <label for="lat">lat</label>
-                            <input type="text" name="lat" id="lat" class="form-control">
+                            <input type="text" name="lat" id="lat" value="0" class="form-control">
                             <label for="log">log</label>
-                            <input type="text" name="log" id="log" class="form-control">
+                            <input type="text" name="log" id="log" value="0" class="form-control">
                         </div>
                     </div>
 

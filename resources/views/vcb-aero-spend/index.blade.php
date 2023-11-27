@@ -18,6 +18,8 @@
                             <div class=" mb-4">
                                 <strong>PE NAME :</strong>   {{ $data  ? $data->VcbBudget->pe_name : ""}}
                             </div>
+
+                            {{print_r($data)}}
                             <div class="table-responsive">
                                 <table id="example2" class="table table-bordered table-hover">
 

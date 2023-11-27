@@ -62,6 +62,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
                         </div>
                     </div>
@@ -90,6 +92,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
                         </div>
                     </div>
@@ -116,6 +120,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
                         </div>
@@ -144,6 +150,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
                         </div>
@@ -171,6 +179,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
                         </div>
@@ -198,6 +208,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
                         </div>
@@ -224,6 +236,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
                         </div>
                     </div>
@@ -267,6 +281,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
                         </div>
                     </div>
@@ -294,6 +310,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
 
@@ -324,6 +342,8 @@
                                 <option value="work done but not payed">work done but not payed</option>
                                 <option value="work not done but payed">work not done but payed</option>
                                 <option value="not work done and  not payed">not work done and not payed</option>
+                                <option value="work done partial payment">work done partial payment</option>
+                                <option value="partial work done partial payment">partial work done partial payment</option>
                             </select>
 
 

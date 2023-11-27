@@ -89,6 +89,7 @@ class RmuAeroSpendController extends Controller
         $data = RmuAeroSpendModel::where('id', $id)
             ->with(['RmuBudget', 'RmuSpendDetail'])
             ->first();
+       // return $data;   
             $count = [];
             $count['amt_kkb'] = [];
             $count['amt_ir'] = [];
@@ -100,9 +101,11 @@ class RmuAeroSpendController extends Controller
             $count['tools'] = [];
             $count['amt_store_rental'] = [];
             $count['amt_transport'] = [];
+            $count['amt_pk'] = [];
         try {
             //code...
             $profit = (($data->RmuBudget->total - $data->total) / $data->RmuBudget->fix_profit) * 100;
+            //return $profit;
 
 
         $data['profit'] = number_format($profit , 2);
@@ -141,6 +144,7 @@ class RmuAeroSpendController extends Controller
         $count['tools'] = [];
         $count['amt_store_rental'] = [];
         $count['amt_transport'] = [];
+        $count['amt_pk'] = [];
         try {
             //code...
             $profit = (($data->RmuBudget->total - $data->total) / $data->RmuBudget->fix_profit) * 100;
