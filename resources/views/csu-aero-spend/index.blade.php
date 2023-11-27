@@ -48,7 +48,7 @@
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_cfs_status )}}">{{$data->amt_cfs == "" ? 0 : $data->amt_cfs }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_bo_status )}}">{{$data->amt_bo == "" ? 0 : $data->amt_bo }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_rtu_status )}}">{{$data->amt_rtu == "" ? 0 : $data->amt_rtu }}</td>
-                                                <td class="text-center {{str_replace(' ', '_' , $data->tools_status )}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
+                                                <td class="text-center {{str_replace(' ', '_' , $data->amt_tools_status )}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_store_rental_status )}}">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_transport_status )}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_salary_status )}}">{{$data->amt_salary == "" ? 0 : $data->amt_salary }}</td>
