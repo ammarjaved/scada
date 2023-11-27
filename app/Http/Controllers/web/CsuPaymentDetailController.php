@@ -52,7 +52,7 @@ class CsuPaymentDetailController extends Controller
                 }
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-               
+
                 $mystatus=$name.'_status';
                 $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status,  'pending_payment' => $pending]);
             CsuPaymentDetailModel::create([
@@ -175,7 +175,7 @@ class CsuPaymentDetailController extends Controller
           if ($data) {
 
             $dataVcb = CsuAeroSpendModel::find($data->csu_id);
-
+            $created_at = $data->created_at ;
             if ($data->status != 'work done but not payed') {
                 $total = $dataVcb->total - $data->amount;
                 $pending = $dataVcb->pending_payment;
@@ -186,12 +186,24 @@ class CsuPaymentDetailController extends Controller
             $name  = $data->pmt_name;
             $nameTotal = $dataVcb->$name - $data->amount;
 
-            $data->delete();
-            $status = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest()->first();
             $stat = '';
-            if ($status) {
-                $stat = $status->status;
-            }
+            $latestRecord = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest('created_at')->first();
+
+            $data->delete();
+            $status = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+                $stat = '';
+               if ($latestRecord && $created_at == $latestRecord->created_at) {
+                // return "inside if";
+                $status = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+                if ($status) {
+
+                    $stat = $status->status;
+                }
+                }else{
+                    $stat_name = $name.'_status';
+                    $stat = $dataVcb->$stat_name ;
+                    // return $stat;
+                }
             $dataVcb->update([
                 'total' => $total,
                 $name => $nameTotal,

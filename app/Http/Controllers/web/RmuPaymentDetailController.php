@@ -163,7 +163,7 @@ class RmuPaymentDetailController extends Controller
             $data = RmuPaymentDetailModel::find($id);
             if ($data) {
                 $dataVcb = RmuAeroSpendModel::find($data->rmu_id);
-
+                $created_at = $data->created_at ;
                 if ($data->status != 'work done but not payed') {
                     $total = $dataVcb->total - $data->amount;
                     $pending = $dataVcb->pending_payment;
@@ -175,12 +175,25 @@ class RmuPaymentDetailController extends Controller
                 $name = $data->pmt_name;
                 $nameTotal = $dataVcb->$name - $data->amount;
 
+                $stat = '';
+                $latestRecord = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest('created_at')->first();
+
                 $data->delete();
                 $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
                 $stat = '';
+               if ($latestRecord && $created_at == $latestRecord->created_at) {
+                // return "inside if";
+                $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
                 if ($status) {
+
                     $stat = $status->status;
                 }
+                }else{
+                    $stat_name = $name.'_status';
+                    $stat = $dataVcb->$stat_name ;
+                    // return $stat;
+                }
+            // return $nameTotal;
                 $dataVcb->update([
                     'total' => $total,
                     $name => $nameTotal,
