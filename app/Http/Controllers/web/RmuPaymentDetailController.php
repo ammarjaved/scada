@@ -7,8 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\RmuPaymentDetailModel;
 use App\Models\RmuAeroSpendModel;
 
-
-
 class RmuPaymentDetailController extends Controller
 {
     /**
@@ -41,32 +39,31 @@ class RmuPaymentDetailController extends Controller
     {
         //
         try {
-
-            $data =  RmuAeroSpendModel::find($request->id);
+            $data = RmuAeroSpendModel::find($request->id);
             if ($data) {
-                if($request->status!='work done but not payed'){
-                $total = $data->total + $request->amount;
-                $pending= $data->pending_payment;
-                }else{
+                if ($request->status != 'work done but not payed') {
+                    $total = $data->total + $request->amount;
+                    $pending = $data->pending_payment;
+                } else {
                     $total = $data->total;
-                    $pending = $data->pending_payment+$request->amount;;
+                    $pending = $data->pending_payment + $request->amount;
                 }
-                $name  = $request->pmt_name;
+                $name = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $mystatus=$name.'_status';
-                $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status,'pending_payment'=>  $pending]);
-            RmuPaymentDetailModel::create([
-                'pmt_name'      => $request->pmt_name,
-                'amount'        => $request->amount,
-                'status'        => $request->status,
-                'description'   => $request->description,
-                'rmu_id'        => $request->id,
-            ]);
-         }
-            return response()->json(['success'=>true, 'id'=>$data->id_rmu_budget], 200);
-
+                $mystatus = $name . '_status';
+                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
+                RmuPaymentDetailModel::create([
+                    'pmt_name' => $request->pmt_name,
+                    'amount' => $request->amount,
+                    'status' => $request->status,
+                    'description' => $request->description,
+                    'rmu_id' => $request->id,
+                    'pmt_date' => $request->pmt_date,
+                ]);
+            }
+            return response()->json(['success' => true, 'id' => $data->id_rmu_budget], 200);
         } catch (\Throwable $th) {
-            return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 200);
         }
     }
 
@@ -104,39 +101,53 @@ class RmuPaymentDetailController extends Controller
         //
 
         $res_data = [];
-        try{
-            $vcb_spend_data =  RmuPaymentDetailModel::find($id);
+        try {
+            $vcb_spend_data = RmuPaymentDetailModel::find($id);
 
             if ($vcb_spend_data) {
-
                 $data = RmuAeroSpendModel::find($vcb_spend_data->rmu_id);
 
                 $oldVal = $vcb_spend_data->amount;
 
-                $total = $data->total + $request->amount - $oldVal;
-                $name  = $vcb_spend_data->pmt_name;
-                $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $mystatus=$name.'_status';
+                $name = $vcb_spend_data->pmt_name;
+                $nameTotal = $data->$name + $request->amount - $vcb_spend_data->amount;
+
+                if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
+                    $pending = $data->pending_payment;
+                    $total = $data->total + $request->amount - $oldVal;
+                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
+                    $total = $data->total - $oldVal;
+                    $pending = $data->pending_payment + $request->amount;
+                } elseif ($request->status != 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
+                    $total = $data->total + $request->amount;
+                    $pending = $data->pending_payment - $oldVal;
+                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
+                    $total = $data->total  ;
+                    $pending = $data->pending_payment - $oldVal + $request->amount;
+                }
+
+                $mystatus = $name . '_status';
                 // return  $mystatus;
-                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
- 
+                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
+
                 $vcb_spend_data->update([
-                'amount'        => $request->amount,
-                'status'        => $request->status,
-                'description'   => $request->description,
-            ]);
-            }else{
-                return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
+                    'amount' => $request->amount,
+                    'status' => $request->status,
+                    'description' => $request->description,
+                    'pmt_date' => $request->pmt_date,
+                ]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'something is wrong'], 200);
             }
             $res_data['sub_total'] = $total;
             $res_data['total'] = $nameTotal;
             $res_data['name'] = $request->inp_name;
+            $res_data['pending_payment'] = $data->pending_payment;
 
-
-            return response()->json(['success'=>true, 'id'=>$data->id_rmu_budget , 'data'=>$res_data], 200);
-    } catch (\Throwable $th) {
-        return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
-    }
+            return response()->json(['success' => true, 'id' => $data->id_rmu_budget, 'data' => $res_data], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 500);
+        }
     }
 
     /**
@@ -148,25 +159,42 @@ class RmuPaymentDetailController extends Controller
     public function destroy($id)
     {
         $res_data = [];
-        try{
-          $data =  RmuPaymentDetailModel::find($id);
-          if ($data) {
+        try {
+            $data = RmuPaymentDetailModel::find($id);
+            if ($data) {
+                $dataVcb = RmuAeroSpendModel::find($data->rmu_id);
 
-            $dataVcb = RmuAeroSpendModel::find($data->rmu_id);
+                if ($data->status != 'work done but not payed') {
+                    $total = $dataVcb->total - $data->amount;
+                    $pending = $dataVcb->pending_payment;
+                } else {
+                    $total = $dataVcb->total;
+                    $pending = $dataVcb->pending_payment - $data->amount;
+                }
 
-            $total = $dataVcb->total - $data->amount ;
-            $name  = $data->pmt_name;
-            $nameTotal = $dataVcb->$name - $data->amount;
-            $dataVcb->update(['total'=>$total, $name => $nameTotal]);
-            $data->delete();
+                $name = $data->pmt_name;
+                $nameTotal = $dataVcb->$name - $data->amount;
 
-        }else{
-            // return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
+                $data->delete();
+                $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
+                $stat = '';
+                if ($status) {
+                    $stat = $status->status;
+                }
+                $dataVcb->update([
+                    'total' => $total,
+                    $name => $nameTotal,
+                    'pending_payment' => $pending,
+                    $name.'_status' => $stat,
+                ]);
+
+            } else {
+                // return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
+            }
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+            return redirect()->back();
         }
-        return redirect()->back();
-    } catch (\Throwable $th) {
-        return $th->getMessage();
-        return  redirect()->back();
-    }
     }
 }

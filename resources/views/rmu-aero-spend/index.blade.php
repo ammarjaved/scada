@@ -42,7 +42,7 @@
                                     <tbody>
 
                                         <tr>
-                                            
+
                                             @if ($data != "" && $data != [])
 
 
@@ -57,11 +57,11 @@
                                             <td class="text-center {{str_replace(' ', '_' , $data->tools_status )}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
                                             <td class="text-center {{str_replace(' ', '_' , $data->amt_store_rental_status )}}">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
                                             <td class="text-center {{str_replace(' ', '_' , $data->amt_transport_status )}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->total_status )}}">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>
+                                            <td class="text-center  ">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>
                                             <td class="text-center {{str_replace(' ', '_' , $data->total_status )}}">{{ $data->total == "" ? 0 : $data->total }}</td>
                                             <td class="text-center">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
 
-                                            
+
 
                                             <td class="text-center">
                                                 <button type="button" class="btn  " data-toggle="dropdown">

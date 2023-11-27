@@ -55,6 +55,10 @@
                             <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
+                            <th>TOTAL PENDING :</th>
+                            <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
                             <th>TOTAL PROFIT :</th>
                             <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
                         </tr>
@@ -70,7 +74,7 @@
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_kkb'],
                                 'arr_name' => 'amt_kkb',
                                 'name' => 'KKB',
@@ -78,7 +82,7 @@
                                 'action' => true
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_cfs'],
                                 'arr_name' => 'amt_cfs',
                                 'name' => 'CFS',
@@ -86,14 +90,14 @@
                                 'action' => true
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_bo'],
                                 'arr_name' => 'amt_bo',
                                 'name' => 'BO',
                                 'url' => 'csu',
                                 'action' => true
                             ])
-                             @include('vcb-aero-spend.detail-table', [
+                             @include('components.detail-table', [
                                 'arr' => $count['amt_rtu'],
                                 'arr_name' => 'amt_rtu',
                                 'name' => 'RTU',
@@ -104,7 +108,7 @@
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['tools'],
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
@@ -113,7 +117,7 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_store_rental'],
                                 'arr_name' => 'amt_store_rental',
                                 'name' => 'Store Rental',
@@ -122,14 +126,14 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_transport'],
                                 'arr_name' => 'amt_transport',
                                 'name' => 'Transport',
                                 'url' => 'csu',
                                 'action' => true
                             ])
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_salary'],
                                 'arr_name' => 'amt_salary',
                                 'name' => 'Salray',

@@ -64,6 +64,10 @@
                             <td><span class="subTotal">{{ $data->total }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
+                            <th>TOTAL PENDING :</th>
+                            <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
                             <th>TOTAL PROFIT :</th>
                             <td><span class="total_profit">{{ $data->profit }} </span><strong>%</strong></td>
                         </tr>
@@ -79,7 +83,7 @@
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_kkb'],
                                 'arr_name' => 'amt_kkb',
                                 'name' => 'KKB',
@@ -87,7 +91,7 @@
                                 'action' => true,
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_cfs'],
                                 'arr_name' => 'amt_cfs',
                                 'name' => 'CFS',
@@ -95,14 +99,14 @@
                                 'action' => true,
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_bo'],
                                 'arr_name' => 'amt_bo',
                                 'name' => 'BO',
                                 'url' => 'csu',
                                 'action' => true,
                             ])
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_rtu'],
                                 'arr_name' => 'amt_rtu',
                                 'name' => 'RTU',
@@ -113,7 +117,7 @@
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['tools'],
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
@@ -122,7 +126,7 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_store_rental'],
                                 'arr_name' => 'amt_store_rental',
                                 'name' => 'Store Rental',
@@ -131,14 +135,14 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_transport'],
                                 'arr_name' => 'amt_transport',
                                 'name' => 'Transport',
                                 'url' => 'csu',
                                 'action' => true,
                             ])
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_salary'],
                                 'arr_name' => 'amt_salary',
                                 'name' => 'Salray',
@@ -154,7 +158,7 @@
                         <tfoot style="background-color: #E4E3E3 !important">
 
                             <td colspan="2" class="text-end"><strong>Total : <span
-                                        id="subTotal">{{ $data->total }}</span></strong></td>
+                                        class="subTotal">{{ $data->total }}</span></strong></td>
                         </tfoot>
                     </table>
                 </div>
@@ -226,10 +230,14 @@
             $jq('.submit-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
 
-                    toastr.success('Spending update successfully!')
+                    if (status) {
+                        toastr.success('Spending update successfully!')
+                    var data =responseText.data;
 
-                    formSubmitted(responseText.data.name, responseText.data.sub_total, responseText.data
-                        .total)
+                    formSubmitted(data.name , data.sub_total , data.total, data.pending_payment)
+                    }else{
+                        toastr.error('Request failed. Please try again.')
+                    }
 
                 },
                 error: function(xhr, status, error, $form) {
@@ -254,6 +262,7 @@
             $(`#${id}-status`).removeClass('border-0');
             $(`#${id}-description`).removeAttr('disabled');
             $(`#${id}-description`).removeClass('border-0');
+            $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
 
             $(`#${id}-submit-button`).removeClass('d-none');
             $(`#${id}-edit-button`).addClass('d-none');
@@ -261,7 +270,7 @@
 
         }
 
-        function formSubmitted(param, subTotal, total) {
+        function formSubmitted(param, subTotal, total , pending) {
             $(`#${param}-amount`).attr('disabled', true);
             $(`#${param}-amount`).addClass('border-0');
             $(`#${param}-status`).attr('disabled', true);
@@ -271,8 +280,10 @@
 
             $(`#${param}-submit-button`).addClass('d-none');
             $(`#${param}-edit-button`).removeClass('d-none');
+            $(`#${param}-pmt_date`).addClass('border-0').attr('disabled',true);
 
             $(`.subTotal`).html(subTotal)
+            $(`.pending`).html(pending)
             $(`#${param}-total`).html(total)
             var  profit = (((budget - total)/fixProfit)*100).toFixed(2);
 

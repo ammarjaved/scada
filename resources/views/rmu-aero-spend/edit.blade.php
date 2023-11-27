@@ -1,22 +1,24 @@
 @extends('layouts.app')
 @section('css')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-<script src="https://malsup.github.io/jquery.form.js"></script>
-<script>
-    var $jq = $.noConflict(true);
-</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="https://malsup.github.io/jquery.form.js"></script>
+    <script>
+        var $jq = $.noConflict(true);
+    </script>
 
-      <!-- SweetAlert2 -->
-      <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-      <!-- Toastr -->
-      <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
-<style>
-    input ,textarea, select {
-    font-size: 15px !important;
-    padding: 0px 6px !important;
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+    <style>
+        input,
+        textarea,
+        select {
+            font-size: 15px !important;
+            padding: 0px 6px !important;
 
-}
-</style>
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -28,9 +30,10 @@
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index') }}">site data</a></li>
 
-                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index' ,   $data->RmuBudget->pe_name  ) }}">index</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="{{ route('rmu-budget-tnb.index', $data->RmuBudget->pe_name) }}">index</a></li>
                     <li class="breadcrumb-item active">edit</li>
                 </ol>
             </div>
@@ -53,15 +56,19 @@
                         </tr>
                         <tr>
                             <th>FIX PROFIT :</th>
-                            <td> {{$data->RmuBudget->fix_profit}} <strong>(RMB) </strong></td>
+                            <td> {{ $data->RmuBudget->fix_profit }} <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL SPENDING :</th>
-                            <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
+                            <td><span class="subTotal">{{ $data->total }}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL PENDING :</th>
+                            <td><span class="pending">{{ $data->pending_payment }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL PROFIT :</th>
-                            <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
+                            <td><span class="total_profit">{{ $data->profit }} </span><strong>%</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,7 +76,7 @@
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">
                             <th>NAME</th>
-                          <th class="text-center">DETAIL</th>
+                            <th class="text-center">DETAIL</th>
                         </thead>
                         <tbody>
 
@@ -79,95 +86,95 @@
                             @endforeach --}}
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_kkb'],
                                 'arr_name' => 'amt_kkb',
                                 'name' => 'KKB',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_pk'],
                                 'arr_name' => 'amt_pk',
                                 'name' => 'PK',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_ir'],
                                 'arr_name' => 'amt_ir',
                                 'name' => 'IR',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_bo'],
                                 'arr_name' => 'amt_bo',
                                 'name' => 'BO',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
-                             @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_piw'],
                                 'arr_name' => 'amt_piw',
                                 'name' => 'PIW',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
-@include('vcb-aero-spend.detail-table', [
-    'arr' => $count['amt_cable'],
-    'arr_name' => 'amt_cable',
-    'name' => 'Cable',
-    'url' => 'rmu',
-                                'action' => true
-])
+                            @include('components.detail-table', [
+                                'arr' => $count['amt_cable'],
+                                'arr_name' => 'amt_cable',
+                                'name' => 'Cable',
+                                'url' => 'rmu',
+                                'action' => true,
+                            ])
 
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_rtu'],
                                 'arr_name' => 'amt_rtu',
                                 'name' => 'RTU',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
-@include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_rtu_cable'],
                                 'arr_name' => 'amt_rtu_cable',
                                 'name' => 'RTU Cable',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['tools'],
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_store_rental'],
                                 'arr_name' => 'amt_store_rental',
                                 'name' => 'Store Rental',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_transport'],
                                 'arr_name' => 'amt_transport',
                                 'name' => 'Transport',
                                 'url' => 'rmu',
-                                'action' => true
+                                'action' => true,
                             ])
 
 
@@ -177,7 +184,8 @@
                         </tbody>
                         <tfoot style="background-color: #E4E3E3 !important">
 
-                            <td colspan="2" class="text-end"><strong>Total : <span id="subTotal">{{ $data->total }}</span></strong></td>
+                            <td colspan="2" class="text-end"><strong>Total : <span
+                                        class="subTotal">{{ $data->total }}</span></strong></td>
                         </tfoot>
                     </table>
                 </div>
@@ -215,14 +223,13 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
-<!-- SweetAlert2 -->
-<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<!-- Toastr -->
-<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
@@ -232,11 +239,11 @@
 
 
             var Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000
-      });
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000
+            });
 
             // $("#myForm").validate();
             $('#myModal').on('show.bs.modal', function(event) {
@@ -249,52 +256,64 @@
 
             $jq('.submit-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
-                    toastr.success('Spending update successfully!')
-                    formSubmitted(responseText.data.name , responseText.data.sub_total , responseText.data.total)
+                    if (status) {
+                        toastr.success('Spending update successfully!')
+                        var data = responseText.data;
+                        console.log(responseText);
+                        formSubmitted(data.name, data.sub_total, data.total, data.pending_payment)
+                    } else {
+                        toastr.error('Request failed. Please try again.')
+                    }
+
                 },
                 error: function(xhr, status, error, $form) {
                     toastr.error('Request failed. Please try again.')
                 }
             })
 
-            budget = {{ $data->RmuBudget->total != '' ?$data->RmuBudget->total : 0 }};
-            fixProfit = {{ $data->RmuBudget->fix_profit != '' ?  $data->RmuBudget->fix_profit : 0 }};
+            budget = {{ $data->RmuBudget->total != '' ? $data->RmuBudget->total : 0 }};
+            fixProfit = {{ $data->RmuBudget->fix_profit != '' ? $data->RmuBudget->fix_profit : 0 }};
 
 
         })
-        function editDetails(id){
-                $(`#${id}-amount`).removeAttr('disabled');
-                $(`#${id}-amount`).removeClass('border-0');
-                $(`#${id}-status`).removeAttr('disabled');
-                $(`#${id}-status`).removeClass('border-0');
-                $(`#${id}-description`).removeAttr('disabled');
-                $(`#${id}-description`).removeClass('border-0');
 
-                $(`#${id}-submit-button`).removeClass('d-none');
-                $(`#${id}-edit-button`).addClass('d-none');
+        function editDetails(id) {
+            $(`#${id}-amount`).removeAttr('disabled');
+            $(`#${id}-amount`).removeClass('border-0');
+            $(`#${id}-status`).removeAttr('disabled');
+            $(`#${id}-status`).removeClass('border-0');
+            $(`#${id}-description`).removeAttr('disabled');
+            $(`#${id}-description`).removeClass('border-0');
+            $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
 
 
-            }
 
-            function formSubmitted(param , subTotal , total){
-                $(`#${param}-amount`).attr('disabled',true);
-                $(`#${param}-amount`).addClass('border-0');
-                $(`#${param}-status`).attr('disabled',true);
-                $(`#${param}-status`).addClass('border-0');
-                $(`#${param}-description`).attr('disabled',true);
-                $(`#${param}-description`).addClass('border-0');
+            $(`#${id}-submit-button`).removeClass('d-none');
+            $(`#${id}-edit-button`).addClass('d-none');
 
-                $(`#${param}-submit-button`).addClass('d-none');
-                $(`#${param}-edit-button`).removeClass('d-none');
 
-                $(`.subTotal`).html(subTotal)
+        }
+
+        function formSubmitted(param, subTotal, total, pending) {
+            $(`#${param}-amount`).attr('disabled', true);
+            $(`#${param}-amount`).addClass('border-0');
+            $(`#${param}-status`).attr('disabled', true);
+            $(`#${param}-status`).addClass('border-0');
+            $(`#${param}-description`).attr('disabled', true);
+            $(`#${param}-description`).addClass('border-0');
+            $(`#${param}-pmt_date`).addClass('border-0').attr('disabled', true);
+
+            $(`#${param}-submit-button`).addClass('d-none');
+            $(`#${param}-edit-button`).removeClass('d-none');
+
+            $(`.subTotal`).html(subTotal)
             $(`#${param}-total`).html(total)
 
-
-            var  profit = (((budget - total)/fixProfit)*100).toFixed(2);
+            $(`.pending`).html(pending)
+            var profit = (((budget - total) / fixProfit) * 100).toFixed(2);
 
             $(`.total_profit`).html(profit)
 
-            }
+        }
     </script>
 @endsection

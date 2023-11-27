@@ -237,6 +237,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4"><label for="amount">Payment Date</label></div>
+                            <div class="col-md-8">
+                              <input type="date" name="pmt_date" id="pmt_date" class="form-control"   required>
+                            </div>
+                        </div>
 
                         <div class="row">
                             <div class="col-md-4"><label for="description">Description</label></div>
@@ -315,6 +321,7 @@
                 $('#spending-modal-pe-name').val('');
                 $('#description').val('');
                 $('#amount').val('');
+                $('#pmt_date').val('');
 
              });
 
@@ -326,7 +333,8 @@
                     showSpendDetails(responseText.id)
                 },
                 error: function(xhr, status, error, $form) {
-                    toastr.error('Request failed. Please try again.')
+                    console.log(xhr);
+                    toastr.error('Request failed.' + error)
             }
             })
 

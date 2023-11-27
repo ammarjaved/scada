@@ -31,6 +31,7 @@ class VcbAeroSpendModel extends Model
         'amt_transport_status',
         'id_vcb_budget',
         'total',
+        'pending_payment',
     ];
 
     public function SpendDetail() {

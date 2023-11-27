@@ -5,7 +5,7 @@
         <table class="table table-borderless" style="border: 0">
             <tbody>
             @foreach ($arr  as  $item)
-    
+
                 <tr>
                     <form action="{{route("$url-payment-details.update",$item->id)}}" class="submit-form" method="post">
                         @csrf
@@ -25,7 +25,7 @@
                             <input type="hidden" name="inp_name" value="{{$arr_name}}-{{$item->id}}" >
                         </td>
                         <td><textarea name="description" id="{{$arr_name}}-{{$item->id}}-description" placeholder="description ..." class="border-0" cols="20" rows="3"  disabled>{{ $item->description  }}</textarea> </td>
-                        <td>{{$item->created_at}}</td>
+                        <td><input type="date"   name="pmt_date" id="{{$arr_name}}-{{$item->id}}-pmt_date" class="border-0" value="{{ $item->pmt_date }}" disabled>  </td>
                         @if ($action)
                         <td>
 

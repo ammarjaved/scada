@@ -252,6 +252,13 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-4"><label for="amount">Payment Date</label></div>
+                            <div class="col-md-8">
+                              <input type="date" name="pmt_date" id="pmt_date" class="form-control"   required>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-4"><label for="description">Description</label></div>
                             <div class="col-md-8">
                                 <textarea name="description" id="description" cols="30" rows="8" class="form-control"></textarea>
@@ -321,6 +328,8 @@
                 $('#spending-modal-pe-name').val('');
                 $('#description').val('');
                 $('#amount').val('');
+                $('#pmt_date').val('');
+
 
              });
 

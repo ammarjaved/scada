@@ -55,6 +55,10 @@
                             <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
+                            <th>TOTAL PENDING :</th>
+                            <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
                             <th>TOTAL PROFIT :</th>
                             <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
                         </tr>
@@ -74,7 +78,7 @@
                             @endforeach --}}
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_kkb'],
                                 'arr_name' => 'amt_kkb',
                                 'name' => 'KKB',
@@ -82,7 +86,7 @@
                                 'action' => false
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_pk'],
                                 'arr_name' => 'amt_pk',
                                 'name' => 'PK',
@@ -90,9 +94,9 @@
                                 'action' => false
                             ])
 
-                          
 
-                            @include('vcb-aero-spend.detail-table', [
+
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_ir'],
                                 'arr_name' => 'amt_ir',
                                 'name' => 'IR',
@@ -100,14 +104,14 @@
                                 'action' => false
                             ])
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_bo'],
                                 'arr_name' => 'amt_bo',
                                 'name' => 'BO',
                                 'url' => 'rmu',
                                 'action' => false
                             ])
-                             @include('vcb-aero-spend.detail-table', [
+                             @include('components.detail-table', [
                                 'arr' => $count['amt_piw'],
                                 'arr_name' => 'amt_piw',
                                 'name' => 'PIW',
@@ -115,7 +119,7 @@
                                 'action' => false
                             ])
 
-@include('vcb-aero-spend.detail-table', [
+@include('components.detail-table', [
     'arr' => $count['amt_cable'],
     'arr_name' => 'amt_cable',
     'name' => 'Cable',
@@ -126,7 +130,7 @@
 
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_rtu'],
                                 'arr_name' => 'amt_rtu',
                                 'name' => 'RTU',
@@ -134,7 +138,7 @@
                                 'action' => false
                             ])
 
-@include('vcb-aero-spend.detail-table', [
+@include('components.detail-table', [
                                 'arr' => $count['amt_rtu_cable'],
                                 'arr_name' => 'amt_rtu_cable',
                                 'name' => 'RTU Cable',
@@ -143,7 +147,7 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['tools'],
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
@@ -152,14 +156,14 @@
                             ])
 
 
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_store_rental'],
                                 'arr_name' => 'amt_store_rental',
                                 'name' => 'Store Rental',
                                 'url' => 'rmu',
                                 'action' => false
                             ])
-                            @include('vcb-aero-spend.detail-table', [
+                            @include('components.detail-table', [
                                 'arr' => $count['amt_transport'],
                                 'arr_name' => 'amt_transport',
                                 'name' => 'Transport',
@@ -184,33 +188,6 @@
             </div>
         </div>
     </section>
-
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content ">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Remove Recored</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" id="remove-foam" method="POST">
-                    @method('DELETE')
-                    @csrf
-
-                    <div class="modal-body">
-                        Are You Sure ?
-                        <input type="hidden" name="id" id="modal-id">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+ 
 
 @endsection

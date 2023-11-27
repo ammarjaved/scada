@@ -34,6 +34,7 @@
                                             <th>TOOLS</th>
                                             <th>STORE RENTAL</th>
                                             <th>TRANSPORT</th>
+                                            <th>TOTAL PENDING</th>
                                             <th>TOTAL SPENDINGS</th>
                                             <th>PROFIT</th>
                                             <th>ACTION</th>
@@ -52,6 +53,7 @@
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_tools_status)}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_store_rental_status)}}">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_transport_status)}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
+                                                <td class="text-center  ">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_total_status)}}">{{ $data->total == "" ? 0 : $data->total }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_profit_status)}}">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
 

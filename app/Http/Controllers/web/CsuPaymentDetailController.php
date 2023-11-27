@@ -43,24 +43,32 @@ class CsuPaymentDetailController extends Controller
 
             $data =  CsuAeroSpendModel::find($request->id);
             if ($data) {
-                $total = $data->total + $request->amount;
+                if ($request->status != 'work done but not payed') {
+                    $total = $data->total + $request->amount;
+                    $pending = $data->pending_payment;
+                } else {
+                    $total = $data->total;
+                    $pending = $data->pending_payment + $request->amount;
+                }
                 $name  = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $nameTotal = $data->$name + $request->amount;
+               
                 $mystatus=$name.'_status';
-                $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status]);
+                $data->update(['total'=>$total, $name => $nameTotal,$mystatus=>$request->status,  'pending_payment' => $pending]);
             CsuPaymentDetailModel::create([
                 'pmt_name'      => $request->pmt_name,
                 'amount'        => $request->amount,
                 'status'        => $request->status,
                 'description'   => $request->description,
                 'csu_id'        => $request->id,
+                'pmt_date' => $request->pmt_date,
             ]);
          }
             return response()->json(['success'=>true, 'id'=>$data->id_csu_budget], 200);
 
         } catch (\Throwable $th) {
-            return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
+
+            return response()->json(['success'=>false, 'error'=>$th->getMessage()], 500);
         }
     }
 
@@ -107,17 +115,33 @@ class CsuPaymentDetailController extends Controller
 
                 $oldVal = $vcb_spend_data->amount;
 
-                $total = $data->total + $request->amount - $oldVal;
+
                 $name  = $vcb_spend_data->pmt_name;
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
                 $mystatus=$name.'_status';
-                
-                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status]);
- 
+
+                if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
+                    $pending = $data->pending_payment;
+                    $total = $data->total + $request->amount - $oldVal;
+                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
+                    $total = $data->total - $oldVal;
+                    $pending = $data->pending_payment + $request->amount;
+                } elseif ($request->status != 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
+                    $total = $data->total + $request->amount;
+                    $pending = $data->pending_payment - $oldVal;
+                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
+                    $total = $data->total  ;
+                    $pending = $data->pending_payment - $oldVal + $request->amount;
+                }
+
+
+                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status , 'pending_payment' => $pending]);
+
                 $vcb_spend_data->update([
                 'amount'        => $request->amount,
                 'status'        => $request->status,
                 'description'   => $request->description,
+                'pmt_date'      => $request->pmt_date,
             ]);
             }else{
                 return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
@@ -125,11 +149,13 @@ class CsuPaymentDetailController extends Controller
             $res_data['sub_total'] = $total;
             $res_data['total'] = $nameTotal;
             $res_data['name'] = $request->inp_name;
+            $res_data['pending_payment'] = $data->pending_payment;
+
 
 
             return response()->json(['success'=>true, 'id'=>$data->id_csu_budget , 'data'=>$res_data], 200);
     } catch (\Throwable $th) {
-        return response()->json(['success'=>false, 'error'=>$th->getMessage()], 200);
+        return response()->json(['success'=>false, 'error'=>$th->getMessage()], 500);
     }
     }
 
@@ -150,12 +176,28 @@ class CsuPaymentDetailController extends Controller
 
             $dataVcb = CsuAeroSpendModel::find($data->csu_id);
 
-            $total = $dataVcb->total - $data->amount ;
+            if ($data->status != 'work done but not payed') {
+                $total = $dataVcb->total - $data->amount;
+                $pending = $dataVcb->pending_payment;
+            } else {
+                $total = $dataVcb->total;
+                $pending = $dataVcb->pending_payment - $data->amount;
+            }
             $name  = $data->pmt_name;
             $nameTotal = $dataVcb->$name - $data->amount;
-            $dataVcb->update(['total'=>$total, $name => $nameTotal]);
-            $data->delete();
 
+            $data->delete();
+            $status = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+            $stat = '';
+            if ($status) {
+                $stat = $status->status;
+            }
+            $dataVcb->update([
+                'total' => $total,
+                $name => $nameTotal,
+                'pending_payment' => $pending,
+                $name.'_status' => $stat,
+            ]);
         }else{
             // return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
         }

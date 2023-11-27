@@ -29,6 +29,7 @@ class CsuAeroSpendModel extends Model
         'amt_salary_status',
         'id_csu_budget',
         'total',
+        'pending_payment',
 
     ];
 
