@@ -187,17 +187,16 @@ class CsuPaymentDetailController extends Controller
             }
             $name  = $data->pmt_name;
             $nameTotal = $dataVcb->$name - $data->amount;
-      
+
             $stat = '';
-            $latestRecord = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest('created_at')->first();
+            $latestRecord = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest('created_at')->first();
             $data->delete();
 
                 $stat = '';
                if ($latestRecord && $created_at == $latestRecord->created_at) {
                 // return "inside if";
-                $status = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+                $status = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest()->first();
                 if ($status) {
-
                     $stat = $status->status;
                 }
                 }else{
