@@ -118,7 +118,9 @@ class CsuPaymentDetailController extends Controller
 
                 $name  = $vcb_spend_data->pmt_name;
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $mystatus=$name.'_status';
+             
+
+                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
 
                 if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
                     $pending = $data->pending_payment;

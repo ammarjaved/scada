@@ -50,7 +50,8 @@ class RmuPaymentDetailController extends Controller
                 }
                 $name = $request->pmt_name;
                 $nameTotal = $data->$name + $request->amount;
-                $mystatus = $name . '_status';
+                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
+
                 $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
                 RmuPaymentDetailModel::create([
                     'pmt_name' => $request->pmt_name,
@@ -126,8 +127,8 @@ class RmuPaymentDetailController extends Controller
                     $pending = $data->pending_payment - $oldVal + $request->amount;
                 }
 
-                $mystatus = $name . '_status';
-                // return  $mystatus;
+                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
+
                 $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
 
                 $vcb_spend_data->update([
