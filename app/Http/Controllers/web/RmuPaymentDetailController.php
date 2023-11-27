@@ -179,7 +179,7 @@ class RmuPaymentDetailController extends Controller
                 $latestRecord = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest('created_at')->first();
 
                 $data->delete();
-                $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
+                // $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
                 $stat = '';
                if ($latestRecord && $created_at == $latestRecord->created_at) {
                 // return "inside if";

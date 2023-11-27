@@ -174,7 +174,9 @@ class CsuPaymentDetailController extends Controller
           $data =  CsuPaymentDetailModel::find($id);
           if ($data) {
 
+
             $dataVcb = CsuAeroSpendModel::find($data->csu_id);
+
             $created_at = $data->created_at ;
             if ($data->status != 'work done but not payed') {
                 $total = $dataVcb->total - $data->amount;
@@ -185,16 +187,15 @@ class CsuPaymentDetailController extends Controller
             }
             $name  = $data->pmt_name;
             $nameTotal = $dataVcb->$name - $data->amount;
-
+      
             $stat = '';
-            $latestRecord = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest('created_at')->first();
-
+            $latestRecord = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest('created_at')->first();
             $data->delete();
-            $status = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+
                 $stat = '';
                if ($latestRecord && $created_at == $latestRecord->created_at) {
                 // return "inside if";
-                $status = CsuAeroSpendModel::where('csu_id' ,$dataVcb->id)->latest()->first();
+                $status = CsuPaymentDetailModel::where('csu_id' ,$dataVcb->id)->latest()->first();
                 if ($status) {
 
                     $stat = $status->status;
