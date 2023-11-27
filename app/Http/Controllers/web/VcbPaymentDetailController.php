@@ -186,7 +186,7 @@ class VcbPaymentDetailController extends Controller
             $name  = $data->pmt_name;
             $nameTotal = $dataVcb->$name - $data->amount;
             $stat = '';
-            $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->latest('created_at')->first();
+            $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest('created_at')->first();
 
             $data->delete();
 
@@ -194,7 +194,7 @@ class VcbPaymentDetailController extends Controller
 
             if ($latestRecord && $created_at == $latestRecord->created_at) {
                 // return "inside if";
-                $status = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->latest()->first();
+                $status = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest()->first();
                 if ($status) {
 
                     $stat = $status->status;
