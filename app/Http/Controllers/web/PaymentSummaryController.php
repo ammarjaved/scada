@@ -37,9 +37,9 @@ class PaymentSummaryController extends Controller
          $total_arr['other_spend']= $other_payments;
 
 
-         $site_data['pe_csu'] = \App\Models\CsuBudgetTNBModel::with('CsuSpends')->get();
+       $site_data['pe_csu'] = \App\Models\CsuBudgetTNBModel::with('CsuSpends')->get();
          $site_data['pe_vcb'] = \App\Models\VcbBudgetTNBModel::with('VcbSpends')->get();
-         $site_data['pe_rmu'] = \App\Models\RmuBudgetTNBModel::with('RmuSpends')->get();
+        $site_data['pe_rmu'] = \App\Models\RmuBudgetTNBModel::with('RmuSpends')->get();
 
 
 
@@ -48,8 +48,7 @@ class PaymentSummaryController extends Controller
         // $vcb_profit = \App\Models\VcbBudgetTNBModel::sum('fix_profit');
         // $total_profit = $csu_profit + $vcb_profit + $vcb_profit;
 
-        //   $total_profit;
-
+        //   $total_profit; 
         return view('PaymentSummary.index', ['datas' => PaymentSummaryModel::all(),'summary'=>$total_arr , 'site_data'=>$site_data]);
     }
 
