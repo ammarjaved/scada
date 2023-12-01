@@ -190,7 +190,7 @@
                                 <div class="row">
 
                                     <div class="col-md-2">
-                                        <label for="search_type">Type : </label>
+                                        <label for="search_type">Type : </label><br>
                                         <select name="search_type" id="search_type">
                                             <option value="">all</option>
                                             <option value="claim">Claim</option>
@@ -200,15 +200,15 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="from_search">From : </label>
+                                        <label for="from_search">From : </label><br>
                                         <input type="date" name="from_search" id="from_search">
                                     </div>
 
                                     <div class="col-md-2">
-                                        <label for="to_search">To : </label>
+                                        <label for="to_search">To : </label><br>
                                         <input type="date" name="to_search" id="to_search">
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-1"><br>
                                         <button class="btn btn-sm btn-secondary" type="submit">FILTER</button>
                                     </div>
 
@@ -262,6 +262,7 @@
                                 <thead style="background-color: #E4E3E3 !important">
                                     <tr>
                                         <th>PE NAME</th>
+                                        <th>VENDOR NAME</th>
                                         <th>SWITCHGEAR</th>
                                         <th>KKB</th>
                                         <th>CFS</th>
@@ -290,6 +291,7 @@
                                 @foreach ($site_data['pe_csu'] as $csu)
                                     <tr>
                                         <td class="align-middle">{{ $csu->pe_name }}</td>
+                                        <td>{{$csu->vendor_name}}</td>
                                         <td class="align-middle">COMPACT</td>
                                         <td class="{{str_replace(' ', '_' , $csu->CsuSpends->amt_kkb_status  )}}">{{ $csu->CsuSpends->amt_kkb }}</td>
                                         <td class="{{str_replace(' ', '_' , $csu->CsuSpends->amt_cfs_status  )}}" >{{ $csu->CsuSpends->amt_cfs }}</td>
@@ -327,6 +329,8 @@
                                     @foreach ($site_data['pe_rmu'] as $rmu)
                                     <tr>
                                         <td class="align-middle">{{ $rmu->pe_name }}</td>
+                                        <td>{{$rmu->vendor_name}}</td>
+
                                         <td class="align-middle">RMU</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_kkb_status )}}">{{ $rmu->RmuSpends->amt_kkb }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_cfs_status )}}">{{ $rmu->RmuSpends->amt_cfs }}</td>
@@ -360,6 +364,8 @@
                                     @foreach ($site_data['pe_vcb'] as $vcb)
                                     <tr>
                                         <td class="align-middle">{{ $vcb->pe_name }}</td>
+                                        <td>{{$vcb->vendor_name}}</td>
+
                                         <td class="align-middle">COMPACT</td>
                                         <td>-</td>
                                         <td>-</td>
