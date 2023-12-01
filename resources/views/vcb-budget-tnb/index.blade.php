@@ -33,7 +33,6 @@
      }
      .work_done_partial_payment{
          background-color:yellow;
-         color:white;
      }
      .partial_work_done_partial_payment{
          background-color:#DAA520;
