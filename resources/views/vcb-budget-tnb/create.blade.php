@@ -33,7 +33,14 @@
                    <input type="text" name="pe_name" id="pe_name" value="{{$name}}" class="form-control" required readonly>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="vendor_name">Vendor Name</label>
+                </div>
+                <div class="col-md-4">
+                   <input type="text" name="vendor_name" id="vendor_name"  class="form-control" required  >
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-4">
                     <label for="rtu_status">RTU Status</label>

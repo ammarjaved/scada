@@ -51,6 +51,10 @@
                             <td>{{ $data->VcbBudget->pe_name }}</td>
                         </tr>
                         <tr>
+                            <th>VENDOR NAME : </th>
+                            <td>{{ $data->VcbBudget->vendor_name }}</td>
+                        </tr>
+                        <tr>
                             <th>BUDGET BY TNB : </th>
                             <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
                         </tr>
