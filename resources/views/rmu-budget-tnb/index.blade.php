@@ -156,126 +156,15 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content ">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Remove Recored</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" id="remove-foam" method="POST">
-                    @method('DELETE')
-                    @csrf
+    
+     {{-- remove modal --}}
+     <x-confirm-remove />
 
-                    <div class="modal-body">
-                        Are You Sure ?
-                        <input type="hidden" name="id" id="modal-id">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+     {{-- spending modal --}}
+    <x-add-spending-modal :url="route('rmu-payment-details.store')" />
 
 
-    <div class="modal fade" id="spendingModal">
-        <div class="modal-dialog">
-            <div class="modal-content " style="border-radius: 0px !important">
-
-
-                <div class="modal-header" style="background-color: #343A40 ; border-radius:0px ; ">
-                    <h6 class="modal-title text-white">Add Spending</h6>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="{{route('rmu-payment-details.store')}}" id="spendingForm" method="POST">
-
-                    @csrf
-
-                    <div class="modal-body">
-
-                        <input type="hidden" name="id" id="spending-modal-id">
-
-                        <div class="row">
-                            <div class="col-md-4"><label for="total">PE Name</label></div>
-                            <div class="col-md-8">
-                                <input type="text"  readonly  name="" id="spending-modal-pe-name" disabled class="form-control">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4"><label for="total">Name</label></div>
-                            <div class="col-md-8">
-                                <select name="pmt_name" id="pmt_name" class="form-control" required>
-                                    <option value="" hidden>select</option>
-                                    <option value="amt_kkb">KKB</option>
-
-                                    <option value="amt_ir">IR</option>
-                                    <option value="amt_pk">PK</option>
-                                    <option value="amt_bo">BO</option>
-                                    <option value="amt_piw">PIW</option>
-                                    <option value="amt_cable">CABLE</option>
-                                    <option value="amt_rtu">RTU</option>
-                                    <option value="amt_rtu_cable">RTU CABLE</option>
-                                    <option value="tools">TOOLS</option>
-                                    <option value="amt_store_rental">STORE RENTAL</option>
-                                    <option value="amt_transport">TRANSPORT</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4"><label for="amount">Amount</label></div>
-                            <div class="col-md-8">
-                              <input type="number" name="amount" id="amount" class="form-control" min="0" required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4"><label for="status">Status</label></div>
-                            <div class="col-md-8">
-                                <select name="status" id="status" class="form-control" required>
-                                    <option value="" hidden>select status</option>
-                                    <option value="work done and payed">work done and payed</option>
-                                    <option value="work done but not payed">work done but not payed</option>
-                                    <option value="work not done but payed">work not done but payed</option>
-                                    <option value="not work done and  not payed">not work done and not payed</option>
-                                    <option value="work done partial payment">work done partial payment</option>
-                                <option value="partial work done partial payment">partial work done partial payment</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4"><label for="amount">Payment Date</label></div>
-                            <div class="col-md-8">
-                              <input type="date" name="pmt_date" id="pmt_date" class="form-control"   required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4"><label for="description">Description</label></div>
-                            <div class="col-md-8">
-                                <textarea name="description" id="description" cols="30" rows="8" class="form-control"></textarea>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
 
 @endsection
 
@@ -290,68 +179,28 @@
 <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+    <script src="{{ asset('assets/js/add-spending-amount.js') }}"></script>
 
     <script>
+
+         const amtName = `  <option value="" hidden>select</option>
+                                    <option value="amt_kkb">KKB</option>
+
+                                    <option value="amt_ir">IR</option>
+                                    <option value="amt_pk">PK</option>
+                                    <option value="amt_bo">BO</option>
+                                    <option value="amt_piw">PIW</option>
+                                    <option value="amt_cable">CABLE</option>
+                                    <option value="amt_rtu">RTU</option>
+                                    <option value="amt_rtu_cable">RTU CABLE</option>
+                                    <option value="tools">TOOLS</option>
+                                    <option value="amt_store_rental">STORE RENTAL</option>
+                                    <option value="amt_transport">TRANSPORT</option>`;
         $(document).ready(function() {
-            // $('#myTable').DataTable();
 
+            showSpendDetails({{$data->id}});
+            $('#pmt_name').append(amtName);
 
-            var Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000
-      });
-
-            $("#spendingForm").validate();
-
-            $('#myModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                var modal = $(this);
-                var url = button.data('url');
-                $('#remove-foam').attr('action', '/'+url + '/' + id)
-            });
-
-            $('#spendingModal').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget);
-                var id = button.data('id');
-                var peName = button.data('name')
-                var modal = $(this);
-                $('#spending-modal-id').val(id);
-                $('#spending-modal-pe-name').val(peName);
-             });
-
-             $('#spendingModal').on('hide.bs.modal', function(event) {
-
-                $('#spending-modal-id').val('');
-                $('#spending-modal-pe-name').val('');
-                $('#description').val('');
-                $('#amount').val('');
-                $('#pmt_date').val('');
-
-
-             });
-
-             $jq('#spendingForm').ajaxForm({
-                success: function(responseText, status, xhr, $form) {
-                    toastr.success('Spending update successfully!')
-                    $('#spendingModal').modal('hide');
-                    showSpendDetails(responseText.id)
-                },
-                error: function(xhr, status, error, $form) {
-                    toastr.error('Request failed. Please try again.')
-
-            }
-
-});
-
-
-            $("#example2").DataTable({
-                "lengthChange": false,
-                "autoWidth": false,
-            })
-            showSpendDetails({{$data->id}})
         })
 
         function showSpendDetails(id){

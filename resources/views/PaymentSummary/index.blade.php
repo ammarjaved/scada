@@ -225,6 +225,18 @@
                                     <tr>
                                         <th>PE NAME</th>
                                         <th>SWITCHGEAR</th>
+                                        <th>KKB</th>
+                                        <th>CFS</th>
+                                        <th>BO</th>
+                                        <th>PIW</th>
+                                        <th>CABLE</th>
+                                        <th>RTU</th>
+                                        <th>RTU CABLE</th>
+                                        <th>TOOLS</th>
+                                        <th>TRANSDUCER</th>
+                                        <th>STORE RENTAL</th>
+                                        <th>TRANSPORT</th>
+                                        <th>SALARY</th>
                                         <th>BUDGET</th>
                                         <th>FIX PROFIT</th>
                                         <th>TOTAL SPEND</th>
@@ -241,6 +253,22 @@
                                     <tr>
                                         <td class="align-middle">{{ $csu->pe_name }}</td>
                                         <td class="align-middle">COMPACT</td>
+                                        <td>{{ $csu->CsuSpends->amt_kkb }}</td>
+                                        <td>{{ $csu->CsuSpends->amt_cfs }}</td>
+                                        <td>{{ $csu->CsuSpends->amt_bo }}</td>
+                                        <td>-</td>
+                                        <td>-</td>
+
+                                        <td>{{ $csu->CsuSpends->amt_rtu }}</td>
+                                        <td>-</td>
+                                        <td>{{ $csu->CsuSpends->tools }}</td>
+                                        <td>-</td>
+                                        <td>{{ $csu->CsuSpends->amt_store_rental }}</td>
+                                        <td>{{ $csu->CsuSpends->amt_transport }}</td>
+                                        <td>{{ $csu->CsuSpends->amt_salary }}</td>
+
+
+
                                         <td class="align-middle">{{ $csu->total }}</td>
                                         <td>{{$csu->fix_profit}}</td>
                                         <td class="align-middle">{{ $csu->CsuSpends->total }}
@@ -262,6 +290,18 @@
                                     <tr>
                                         <td class="align-middle">{{ $rmu->pe_name }}</td>
                                         <td class="align-middle">RMU</td>
+                                        <td>{{ $rmu->RmuSpends->amt_kkb }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_cfs }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_bo }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_piw }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_cable }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_rtu }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_rtu_cable }}</td>
+                                        <td>{{ $rmu->RmuSpends->tools }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_transducer }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_store_rental }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_transport }}</td>
+                                        <td>{{ $rmu->RmuSpends->amt_salary }}</td>
                                         <td class="align-middle">{{ $rmu->total }}</td>
                                         <td>{{$rmu->fix_profit}}</td>
                                         <td class="align-middle">{{ $rmu->RmuSpends->total }}
@@ -283,6 +323,18 @@
                                     <tr>
                                         <td class="align-middle">{{ $vcb->pe_name }}</td>
                                         <td class="align-middle">COMPACT</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>{{ $vcb->VcbSpends->amt_bo }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_piw }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_cable }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_rtu }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_rtu_cable }}</td>
+                                        <td>{{ $vcb->VcbSpends->tools }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_transducer }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_store_rental }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_transport }}</td>
+                                        <td>{{ $vcb->VcbSpends->amt_salary }}</td>
                                         <td class="align-middle">{{ $vcb->total }}</td>
                                         <td>{{$vcb->fix_profit}}</td>
                                         <td class="align-middle">{{ $vcb->VcbSpends->total }}

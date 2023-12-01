@@ -128,8 +128,13 @@ class RmuPaymentDetailController extends Controller
                 }
 
                 $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
+                $latestRecord = RmuPaymentDetailModel::where('rmu_id' ,$data->id)->where('pmt_name' , $vcb_spend_data-> pmt_name)->latest('created_at')->first();
+                $status = $request->status;
+                if ($latestRecord && $vcb_spend_data->created_at != $latestRecord->created_at) {
 
-                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
+                        $status = $data->$mystatus;
+                }
+                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $status, 'pending_payment' => $pending]);
 
                 $vcb_spend_data->update([
                     'amount' => $request->amount,
@@ -174,6 +179,8 @@ class RmuPaymentDetailController extends Controller
                 }
 
                 $name = $data->pmt_name;
+                $stat_name=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
+
                 $nameTotal = $dataVcb->$name - $data->amount;
 
                 $stat = '';
@@ -190,7 +197,6 @@ class RmuPaymentDetailController extends Controller
                     $stat = $status->status;
                 }
                 }else{
-                    $stat_name = $name.'_status';
                     $stat = $dataVcb->$stat_name ;
                     // return $stat;
                 }
@@ -199,16 +205,16 @@ class RmuPaymentDetailController extends Controller
                     'total' => $total,
                     $name => $nameTotal,
                     'pending_payment' => $pending,
-                    $name.'_status' => $stat,
+                    $stat_name => $stat,
                 ]);
 
             } else {
-                // return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
+                return  redirect()->back()->with('failed','Request Success');
             }
-            return redirect()->back();
+            return redirect()->back()->with('success','Request Success');
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            return redirect()->back();
+            // return $th->getMessage();
+            return  redirect()->back()->with('failed','Request Success');
         }
     }
 }

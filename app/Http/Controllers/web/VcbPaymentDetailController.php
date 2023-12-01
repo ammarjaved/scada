@@ -64,7 +64,7 @@ class VcbPaymentDetailController extends Controller
                 'status'        => $request->status,
                 'description'   => $request->description,
                 'vcb_id'        => $request->id,
-                'pmt_date' => $request->pmt_date,
+                'pmt_date'      => $request->pmt_date,
             ]);
          }
             return response()->json(['success'=>true, 'id'=>$data->id_vcb_budget], 200);
@@ -121,6 +121,7 @@ class VcbPaymentDetailController extends Controller
                 $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
                 $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
 
+
                 if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
                     $pending = $data->pending_payment;
                     $total = $data->total + $request->amount - $oldVal;
@@ -134,8 +135,13 @@ class VcbPaymentDetailController extends Controller
                     $total = $data->total  ;
                     $pending = $data->pending_payment - $oldVal + $request->amount;
                 }
+                $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$data->id)->where('pmt_name' , $vcb_spend_data-> pmt_name)->latest('created_at')->first();
+                $status = $request->status;
+                if ($latestRecord && $vcb_spend_data->created_at != $latestRecord->created_at) {
 
-                 $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status , 'pending_payment' => $pending]);
+                        $status = $data->$mystatus;
+                }
+                $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$status , 'pending_payment' => $pending]);
 
                 $vcb_spend_data->update([
                 'amount'        => $request->amount,
@@ -186,6 +192,8 @@ class VcbPaymentDetailController extends Controller
                 $pending = $dataVcb->pending_payment - $data->amount;
             }
             $name  = $data->pmt_name;
+            $stat_name=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
+
             $nameTotal = $dataVcb->$name - $data->amount;
             $stat = '';
             $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest('created_at')->first();
@@ -202,7 +210,6 @@ class VcbPaymentDetailController extends Controller
                     $stat = $status->status;
                 }
             }else{
-                $stat_name = $name.'_status';
                 $stat = $dataVcb->$stat_name ;
                 // return $stat;
             }
@@ -211,19 +218,19 @@ class VcbPaymentDetailController extends Controller
                 'total' => $total,
                 $name => $nameTotal,
                 'pending_payment' => $pending,
-                $name.'_status' => $stat,
+                $stat_name => $stat,
             ]);
 
 
 
 
         }else{
-            // return response()->json(['success'=>false, 'message'=>"something is wrong"], 200);
+            return  redirect()->back()->with('failed','Request Success');
         }
-        return redirect()->back();
+        return redirect()->back()->with('success','Request Success');
     } catch (\Throwable $th) {
-        return $th->getMessage();
-        return  redirect()->back();
+        // return $th->getMessage();
+        return  redirect()->back()->with('failed','Request Success');
     }
-    }
+}
 }
