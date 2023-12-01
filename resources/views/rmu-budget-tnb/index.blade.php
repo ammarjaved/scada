@@ -91,6 +91,8 @@
                                         <tr>
 
                                             <th>PE NAME</th>
+                                            <th>VENDOR NAME</th>
+
                                             <th>RTU STATUS</th>
                                             <th>COAST KKB PK</th>
                                             <th>CFS</th>
@@ -106,6 +108,8 @@
                                         {{-- @foreach ($datas as $data) --}}
                                             <tr>
                                                 <td class="align-middle"> <button class="btn" onclick="showSpendDetails({{$data->id}})">{{ $data->pe_name}} </button> </td>
+                                                <td>{{$data->vendor_name}}</td>
+
                                                 <td>{{$data->rtu_status}}</td>
                                                 <td>{{$data->amt_kkb_pk}}</td>
                                                 <td>{{$data->cfs}}</td>
@@ -157,7 +161,7 @@
         </div>
     </section>
 
-    
+
      {{-- remove modal --}}
      <x-confirm-remove />
 

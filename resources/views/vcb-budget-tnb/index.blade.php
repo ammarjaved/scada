@@ -91,6 +91,8 @@
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
                                             <th>PE NAME</th>
+                                            <th>VENDOR NAME</th>
+
                                             <th>RTU STATUS</th>
                                             <th>CFS</th>
                                             <th>SCADA</th>
@@ -106,6 +108,8 @@
                                             <tr>
 
                                                 <td class="align-middle"> <button class="btn" onclick="showSpendDetails({{$data->id}})">{{ $data->pe_name}} </button> </td>
+                                                <td>{{$data->vendor_name}}</td>
+
                                                 <td>{{$data->rtu_status}}</td>
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>

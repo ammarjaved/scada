@@ -42,6 +42,10 @@
                             <td>{{ $data->RmuBudget->pe_name }}</td>
                         </tr>
                         <tr>
+                            <th>VENDOR NAME : </th>
+                            <td>{{ $data->RmuBudget->vendor_name }}</td>
+                        </tr>
+                        <tr>
                             <th>BUDGET BY TNB : </th>
 
                             <td><span id="budget"> {{ $data->RmuBudget->total }} </span><strong> (RMB)</strong></td>
@@ -188,6 +192,6 @@
             </div>
         </div>
     </section>
- 
+
 
 @endsection

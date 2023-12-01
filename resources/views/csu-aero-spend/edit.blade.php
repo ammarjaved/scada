@@ -51,6 +51,10 @@
                             <td>{{ $data->CsuBudget->pe_name }}</td>
                         </tr>
                         <tr>
+                            <th>VENDOR NAME : </th>
+                            <td>{{ $data->CsuBudget->vendor_name }}</td>
+                        </tr>
+                        <tr>
                             <th>BUDGET BY TNB : </th>
 
                             <td><span id="budget"> {{ $data->CsuBudget->total }} </span><strong>
