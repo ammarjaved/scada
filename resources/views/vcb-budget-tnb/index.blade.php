@@ -112,7 +112,8 @@
                                                 <td>{{$data->rtu_status}}</td>
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>
-                                                <td class="align-middle">{{ $data->total }}</td>
+                                                <td class="align-middle">{{ number_format($data->total,2) }}</td>
+
                                                 <td class="align-middle">{{ $data->fix_profit }}</td>
 
                                                 <td class="text-center">

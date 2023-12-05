@@ -91,7 +91,7 @@
                                     <thead style="background-color: #E4E3E3 !important">
                                         <tr>
                                             <th>PE NAME</th>
-                                            <th>VENDOR NAME</th>
+
                                             <th>KKB</th>
                                             <th>CFS</th>
                                             <th>SCADA</th>
@@ -105,11 +105,12 @@
                                         {{-- @foreach ($datas as $data) --}}
                                             <tr>
                                                 <td class="align-middle"> <button class="btn" onclick="showSpendDetails({{$data->id}})">{{ $data->pe_name}} </button> </td>
-                                                <td>{{$data->vendor_name}}</td>
+
                                                 <td>{{$data->kkb}}</td>
                                                 <td>{{$data->cfs}}</td>
                                                 <td>{{$data->scada}}</td>
-                                                <td class="align-middle">{{ $data->total }}</td>
+                                                <td class="align-middle">{{ number_format($data->total,2) }}</td>
+
                                                 <td class="align-middle">{{ $data->fix_profit }}</td>
 
                                                 <td class="text-center">
