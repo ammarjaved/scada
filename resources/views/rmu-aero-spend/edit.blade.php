@@ -51,10 +51,7 @@
                             <th>PE NAME : </th>
                             <td>{{ $data->RmuBudget->pe_name }}</td>
                         </tr>
-                        <tr>
-                            <th>VENDOR NAME : </th>
-                            <td>{{ $data->RmuBudget->vendor_name }}</td>
-                        </tr>
+                       
                         <tr>
                             <th>BUDGET BY TNB : </th>
 
