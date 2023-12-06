@@ -18,6 +18,19 @@
             color: red
         }
 
+        #site-data td{
+            text-align: center!important;
+            vertical-align: middle!important;
+            font-size: 14px !important;
+        }
+        #site-data th{
+
+            font-size: 15px !important;
+        }
+        #site-data th::after , #site-data th::before{
+            right: 0 !important;
+            content: "" !important;
+        }
         tr {}
 
         #payment-table td {
@@ -279,8 +292,10 @@
                                         <th>BUDGET</th>
                                         <th>FIX PROFIT</th>
                                         <th>TOTAL SPEND</th>
-                                        <th>TOTAL PROFIT( IF ANY)</th>
-                                        <th>TOTAL LOSS( IF ANY)</th>
+                                        <th>TOTAL PENDING</th>
+                                        <th>TOTAL OUTSTANDING</th>
+                                        <th>TOTAL PROFIT  </th>
+                                        <th>TOTAL LOSS </th>
 
 
 
@@ -313,6 +328,8 @@
                                         <td>{{$csu->fix_profit}}</td>
                                         <td class="align-middle">{{ $csu->CsuSpends->total }}
                                         </td>
+                                        <td>{{ $csu->CsuSpends->pending_payment }}</td>
+                                        <td>{{$csu->CsuSpends->outstanding_balance}}</td>
                                        @php
                                             try {
                                                 $csu->fix_profit = $csu->fix_profit == '' ? 1 : $csu->fix_profit;
@@ -348,6 +365,8 @@
                                         <td>{{$rmu->fix_profit}}</td>
                                         <td class="align-middle">{{ $rmu->RmuSpends->total }}
                                         </td>
+                                        <td>{{ $rmu->RmuSpends->pending_payment }}</td>
+                                        <td>{{$rmu->RmuSpends->outstanding_balance}}</td>
                                        @php
                                             try {
                                                 $rmu->fix_profit = $rmu->fix_profit == '' ? 1 : $rmu->fix_profit;
@@ -383,6 +402,8 @@
                                         <td>{{$vcb->fix_profit}}</td>
                                         <td class="align-middle">{{ $vcb->VcbSpends->total }}
                                         </td>
+                                        <td>{{ $vcb->VcbSpends->pending_payment }}</td>
+                                        <td>{{$vcb->VcbSpends->outstanding_balance}}</td>
                                        @php
                                             try {
                                                 $vcb->fix_profit = $vcb->fix_profit == '' ? 1 : $vcb->fix_profit;
