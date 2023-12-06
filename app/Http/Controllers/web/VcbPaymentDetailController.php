@@ -41,36 +41,18 @@ class VcbPaymentDetailController extends Controller
         //
 
         try {
-
-            $data =  VcbAeroSpendModel::find($request->id);
+            $data = VcbAeroSpendModel::find($request->p_id);
             if ($data) {
-                if ($request->status != 'work done but not payed') {
-                    $total = $data->total + $request->amount;
-                    $pending = $data->pending_payment;
-                } else {
-                    $total = $data->total;
-                    $pending = $data->pending_payment + $request->amount;
-                }
-                $name  = $request->pmt_name;
-                $nameTotal = $data->$name + $request->amount;
-                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
 
-               // return  $mystatus;
-                $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$request->status , 'pending_payment' => $pending]);
+                $request['vcb_id'] = $request->p_id;
+                VcbPaymentDetailModel::create($request->all());
+                $this->updatePayments($request->p_id);
 
-            VcbPaymentDetailModel::create([
-                'pmt_name'      => $request->pmt_name,
-                'amount'        => $request->amount,
-                'status'        => $request->status,
-                'description'   => $request->description,
-                'vcb_id'        => $request->id,
-                'pmt_date'      => $request->pmt_date,
-            ]);
-         }
-            return response()->json(['success'=>true, 'id'=>$data->id_vcb_budget], 200);
 
+            }
+            return response()->json(['success' => true, 'id' => $data->id_vcb_budget], 200);
         } catch (\Throwable $th) {
-            return response()->json(['success'=>false, 'error'=>$th->getMessage()], 500);
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 200);
         }
     }
 
@@ -106,65 +88,34 @@ class VcbPaymentDetailController extends Controller
     public function update(Request $request, $id)
     {
 
+
         $res_data = [];
-        try{
-            $vcb_spend_data =  VcbPaymentDetailModel::find($id);
+        try {
+            $payment_detail = VcbPaymentDetailModel::find($id);
+                // get payment detail recored and check if exist
+            if ($payment_detail) {
 
-            if ($vcb_spend_data) {
+                $payment_detail->update($request->all());
 
-                $data = VcbAeroSpendModel::find($vcb_spend_data->vcb_id);
+                    $this->updatePayments($payment_detail->vcb_id);
 
-                $oldVal = $vcb_spend_data->amount;
+                    $data = VcbAeroSpendModel::find($payment_detail->vcb_id); // get spend table recored
+                $nameTotal =$data->{$request->pmt_name};
 
-                $total = $data->total + $request->amount - $oldVal;
-                $name  = $vcb_spend_data->pmt_name;
-                $nameTotal = $data->$name + $request->amount  - $vcb_spend_data->amount;
-                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
-
-
-                if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
-                    $pending = $data->pending_payment;
-                    $total = $data->total + $request->amount - $oldVal;
-                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
-                    $total = $data->total - $oldVal;
-                    $pending = $data->pending_payment + $request->amount;
-                } elseif ($request->status != 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
-                    $total = $data->total + $request->amount;
-                    $pending = $data->pending_payment - $oldVal;
-                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
-                    $total = $data->total  ;
-                    $pending = $data->pending_payment - $oldVal + $request->amount;
-                }
-                $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$data->id)->where('pmt_name' , $vcb_spend_data-> pmt_name)->latest('created_at')->first();
-                $status = $request->status;
-                if ($latestRecord && $vcb_spend_data->created_at != $latestRecord->created_at) {
-
-                        $status = $data->$mystatus;
-                }
-                $data->update(['total'=>$total, $name => $nameTotal, $mystatus=>$status , 'pending_payment' => $pending]);
-
-                $vcb_spend_data->update([
-                'amount'        => $request->amount,
-                'status'        => $request->status,
-                'description'   => $request->description,
-                'pmt_date' => $request->pmt_date,
-            ]);
-
-
-            }else{
-                return response()->json(['success'=>false, 'message'=>"something is wrong"], 500);
+            } else {
+                return response()->json(['success' => false, 'message' => 'something is wrong'], 200);
             }
-            $res_data['sub_total'] = $total;
+            $res_data['sub_total'] = $data->total;
             $res_data['total'] = $nameTotal;
             $res_data['name'] = $request->inp_name;
             $res_data['pending_payment'] = $data->pending_payment;
+            $res_data['outstanding'] = $data->outstanding_balance;
 
 
-
-            return response()->json(['success'=>true, 'id'=>$data->id_vcb_budget , 'data'=>$res_data], 200);
-    } catch (\Throwable $th) {
-        return response()->json(['success'=>false, 'error'=>$th->getMessage()], 500);
-    }
+            return response()->json(['success' => true, 'id' => $data->id_vcb_budget, 'data' => $res_data], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 500);
+        }
     }
 
     /**
@@ -175,62 +126,63 @@ class VcbPaymentDetailController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $res_data = [];
-        try{
-          $data =  VcbPaymentDetailModel::find($id);
-          if ($data) {
 
-            $dataVcb = VcbAeroSpendModel::find($data->vcb_id);
-            $created_at = $data->created_at ;
 
-            if ($data->status != 'work done but not payed') {
-                $total = $dataVcb->total - $data->amount;
-                $pending = $dataVcb->pending_payment;
+        try {
+            $data = VcbPaymentDetailModel::find($id);
+            if ($data) {
+                $data->delete();
+                $this->updatePayments($data->vcb_id);
+
+
+
             } else {
-                $total = $dataVcb->total;
-                $pending = $dataVcb->pending_payment - $data->amount;
+                return  redirect()->back()->with('failed','Request Success');
             }
-            $name  = $data->pmt_name;
-            $stat_name=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
-
-            $nameTotal = $dataVcb->$name - $data->amount;
-            $stat = '';
-            $latestRecord = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest('created_at')->first();
-
-            $data->delete();
-
-
-
-            if ($latestRecord && $created_at == $latestRecord->created_at) {
-                // return "inside if";
-                $status = VcbPaymentDetailModel::where('vcb_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest()->first();
-                if ($status) {
-
-                    $stat = $status->status;
-                }
-            }else{
-                $stat = $dataVcb->$stat_name ;
-                // return $stat;
-            }
-            // return $nameTotal;
-            $dataVcb->update([
-                'total' => $total,
-                $name => $nameTotal,
-                'pending_payment' => $pending,
-                $stat_name => $stat,
-            ]);
-
-
-
-
-        }else{
+            return redirect()->back()->with('success','Request Success');
+        } catch (\Throwable $th) {
+            // return $th->getMessage();
             return  redirect()->back()->with('failed','Request Success');
         }
-        return redirect()->back()->with('success','Request Success');
-    } catch (\Throwable $th) {
-        // return $th->getMessage();
-        return  redirect()->back()->with('failed','Request Success');
     }
-}
+
+
+    public function updatePayments($id)
+    {
+
+
+
+        VcbAeroSpendModel::where('id', $id)
+        ->update([
+            'amt_transducer' => VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->sum('amount'),
+            'amt_transducer_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->latest('created_at')->value('status'),
+
+            'amt_bo' => VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->sum('amount'),
+            'amt_bo_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->latest('created_at')->value('status'),
+
+            'amt_rtu' => VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->sum('amount'),
+            'amt_rtu_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->latest('created_at')->value('status'),
+
+            'amt_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->sum('amount'),
+            'amt_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->latest('created_at')->value('status'),
+
+
+
+            'amt_transport'=> VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->sum('amount'),
+            'amt_transport_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->latest('created_at')->value('status'),
+
+            'amt_store_rental'=> VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->sum('amount'),
+            'amt_store_rental_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->latest('created_at')->value('status'),
+
+            'tools'=>VcbPaymentDetailModel::where('pmt_name', 'tools')->sum('amount'),
+            'amt_tools_status' =>VcbPaymentDetailModel::where('pmt_name', 'tools')->latest('created_at')->value('status'),
+
+            'amt_rtu_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->sum('amount'),
+            'amt_rtu_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->latest('created_at')->value('status'),
+            'total'=>VcbPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('status','!=', 'work done but not payed')->sum('amount'),
+            'pending_payment'=>VcbPaymentDetailModel::where('status',  'not work done and  not payed')->sum('amount'),
+            'outstanding_balance'=>VcbPaymentDetailModel::where('status', 'work done but not payed')->sum('amount'),
+
+    ]);
+    }
 }

@@ -18,6 +18,8 @@ class VcbPaymentDetailModel extends Model
         'description',
         'vcb_id',
         'pmt_date',
+        'vendor_name',
+
 
     ];
 

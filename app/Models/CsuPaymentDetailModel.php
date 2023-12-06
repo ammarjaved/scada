@@ -18,7 +18,7 @@ class CsuPaymentDetailModel extends Model
         'description',
         'csu_id',
         'pmt_date',
-
+        'vendor_name',
     ];
 
     public function SpendDetail() {

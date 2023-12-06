@@ -32,6 +32,7 @@ class VcbAeroSpendModel extends Model
         'id_vcb_budget',
         'total',
         'pending_payment',
+        'outstanding_balance',
     ];
 
     public function SpendDetail() {

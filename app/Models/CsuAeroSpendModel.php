@@ -30,6 +30,7 @@ class CsuAeroSpendModel extends Model
         'id_csu_budget',
         'total',
         'pending_payment',
+        'outstanding_balance'
 
     ];
 

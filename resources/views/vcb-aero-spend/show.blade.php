@@ -40,7 +40,7 @@
                             <th>PE NAME : </th>
                             <td>{{ $data->VcbBudget->pe_name }}</td>
                         </tr>
-                        
+
                         <tr>
                             <th>BUDGET BY TNB : </th>
                             <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
@@ -56,6 +56,10 @@
                         <tr>
                             <th>TOTAL PENDING :</th>
                             <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL OUTSTANDING :</th>
+                            <td><span class="outstanding">{{ $data->outstanding_balance }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL PROFIT :</th>
@@ -114,6 +118,13 @@
                                 'url' => 'vcb',
                                 'action' => false
                             ])
+@include('components.detail-table', [
+    'arr' => $count['amt_rtu_cable'],
+    'arr_name' => 'amt_rtu_cable',
+    'name' => 'RTU Cable',
+    'url' => 'vcb',
+    'action' => true,
+])
 
 
                             @include('components.detail-table', [

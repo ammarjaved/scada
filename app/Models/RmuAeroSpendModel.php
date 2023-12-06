@@ -36,7 +36,8 @@ class RmuAeroSpendModel extends Model
         'allocated_budget',
         'amt_pk',
         'amt_pk_status',
-        'pending_payment'
+        'pending_payment',
+        'outstanding_balance'
 
     ];
 

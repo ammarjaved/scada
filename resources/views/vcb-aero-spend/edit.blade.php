@@ -50,7 +50,7 @@
                             <th>PE NAME : </th>
                             <td>{{ $data->VcbBudget->pe_name }}</td>
                         </tr>
-                         
+
                         <tr>
                             <th>BUDGET BY TNB : </th>
                             <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
@@ -67,6 +67,10 @@
                         <tr>
                             <th>TOTAL PENDING :</th>
                             <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL OUTSTANDING :</th>
+                            <td><span class="outstanding">{{ $data->outstanding_balance }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL PROFIT :</th>
@@ -131,6 +135,15 @@
                                 'arr' => $count['tools'],
                                 'arr_name' => 'tools',
                                 'name' => 'Tools',
+                                'url' => 'vcb',
+                                'action' => true,
+                            ])
+
+
+                            @include('components.detail-table', [
+                                'arr' => $count['amt_rtu_cable'],
+                                'arr_name' => 'amt_rtu_cable',
+                                'name' => 'RTU Cable',
                                 'url' => 'vcb',
                                 'action' => true,
                             ])
@@ -257,10 +270,12 @@
             $(`#${id}-status`).removeClass('border-0');
             $(`#${id}-description`).removeAttr('disabled');
             $(`#${id}-description`).removeClass('border-0');
+            $(`#${id}-vendor_name`).removeClass('border-0').removeAttr('disabled');
 
             $(`#${id}-submit-button`).removeClass('d-none');
             $(`#${id}-edit-button`).addClass('d-none');
             $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
+
 
 
 
@@ -277,9 +292,11 @@
             $(`#${param}-submit-button`).addClass('d-none');
             $(`#${param}-edit-button`).removeClass('d-none');
             $(`#${param}-pmt_date`).addClass('border-0').attr('disabled', true);
+            $(`#${param}-vendor_name`).addClass('border-0').attr('disabled', true);
 
             $(`.subTotal`).html(subTotal)
             $(`.pending`).html(pending)
+            $('.outstanding').html(outstanding)
 
             $(`#${param}-total`).html(total)
             var  profit = (((budget - total)/fixProfit)*100).toFixed(2);

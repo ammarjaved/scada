@@ -5,6 +5,8 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RmuAeroSpendModel;
+use App\Models\RmuPaymentDetailModel;
+
 use Exception;
 
 class RmuAeroSpendController extends Controller
@@ -17,6 +19,7 @@ class RmuAeroSpendController extends Controller
     public function index($id)
     {
         //
+
         $data = RmuAeroSpendModel::where('id_rmu_budget', $id)
             ->with('RmuBudget')
             ->first();
@@ -27,7 +30,7 @@ class RmuAeroSpendController extends Controller
             $data['profit'] = number_format($profit , 2);
         } catch (\Throwable $th) {
             $data['profit'] = "#error!";
-        }
+            }
         // return $datas;
         return view('rmu-aero-spend.index', ['data' => $data])->render();
     }
@@ -75,21 +78,11 @@ class RmuAeroSpendController extends Controller
      */
     public function show($id)
     {
-        //
-        // return $data = RmuAeroSpendModel::where('id',$id)
-        //                 ->with([
-        //                     'RmuBudget',
-        //                     'RmuSpendDetail as abc' => function ($query) {
-        //                         $query->where('pmt_name', 'amt_kkb');
-        //                     },
-        //                     'RmuSpendDetail as bbc' => function ($query) {
-        //                         $query->where('pmt_name', 'amt_ir');
-        //                     },
-        //                 ])->first();
+
         $data = RmuAeroSpendModel::where('id', $id)
             ->with(['RmuBudget', 'RmuSpendDetail'])
             ->first();
-       // return $data;   
+       // return $data;
             $count = [];
             $count['amt_kkb'] = [];
             $count['amt_ir'] = [];
@@ -129,6 +122,8 @@ class RmuAeroSpendController extends Controller
     public function edit($id)
     {
         //
+ 
+
         $count = [];
         $data = RmuAeroSpendModel::where('id', $id)
             ->with(['RmuBudget', 'RmuSpendDetail'])

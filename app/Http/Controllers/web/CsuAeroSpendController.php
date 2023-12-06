@@ -17,9 +17,11 @@ class CsuAeroSpendController extends Controller
     public function index($id)
     {
         //
+
         $data = CsuAeroSpendModel::where('id_csu_budget', $id)
             ->with('CsuBudget')
             ->first();
+      
         try {
             $profit = (($data->CsuBudget->total - $data->total) / $data->CsuBudget->fix_profit) * 100;
 

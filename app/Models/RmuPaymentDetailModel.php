@@ -17,6 +17,8 @@ class RmuPaymentDetailModel extends Model
         'description',
         'rmu_id',
         'pmt_date',
+        'vendor_name',
+
 
     ];
 

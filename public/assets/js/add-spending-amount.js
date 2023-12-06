@@ -57,6 +57,7 @@ $(document).ready(function() {
         $('#description').val('');
         $('#amount').val('');
         $('#pmt_date').val('');
+        $('#vendor_name').val('');
         $('#status option:eq(0)').prop('selected', true)
         $('#pmt_name option:eq(0)').prop('selected', true)
         if (!$('#pmt_date').attr('required')) {

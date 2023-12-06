@@ -33,6 +33,8 @@
                                             <th>TRANSPORT</th>
                                             <th>SALARY</th>
                                             <th>TOTAL PENDING</th>
+                                            <th>TOTAL OUTSTANDING</th>
+
                                             <th>TOTAL SPENDINGS</th>
                                             <th>PROFIT</th>
                                             <th>ACTION</th>
@@ -53,6 +55,8 @@
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_transport_status )}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->amt_salary_status )}}">{{$data->amt_salary == "" ? 0 : $data->amt_salary }}</td>
                                                 <td class="text-center  ">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>
+                                            <td class="text-center">{{ $data->outstanding_balance == "" ? 0 : $data->outstanding_balance }}</td>
+
                                                 <td class="text-center {{str_replace(' ', '_' , $data->total_status )}}">{{ $data->total == "" ? 0 : $data->total }}</td>
                                                 <td class="text-center {{str_replace(' ', '_' , $data->profit_status )}}">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
 

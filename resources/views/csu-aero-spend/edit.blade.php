@@ -50,7 +50,7 @@
                             <th>PE NAME : </th>
                             <td>{{ $data->CsuBudget->pe_name }}</td>
                         </tr>
-                        
+
                         <tr>
                             <th>BUDGET BY TNB : </th>
 
@@ -68,6 +68,10 @@
                         <tr>
                             <th>TOTAL PENDING :</th>
                             <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL OUTSTANDING :</th>
+                            <td><span class="outstanding">{{ $data->outstanding_balance }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL PROFIT :</th>
@@ -265,6 +269,7 @@
             $(`#${id}-description`).removeAttr('disabled');
             $(`#${id}-description`).removeClass('border-0');
             $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
+            $(`#${id}-vendor_name`).removeClass('border-0').removeAttr('disabled');
 
             $(`#${id}-submit-button`).removeClass('d-none');
             $(`#${id}-edit-button`).addClass('d-none');
@@ -283,9 +288,12 @@
             $(`#${param}-submit-button`).addClass('d-none');
             $(`#${param}-edit-button`).removeClass('d-none');
             $(`#${param}-pmt_date`).addClass('border-0').attr('disabled',true);
+            $(`#${param}-vendor_name`).addClass('border-0').attr('disabled', true);
 
             $(`.subTotal`).html(subTotal)
             $(`.pending`).html(pending)
+            $('.outstanding').html(outstanding)
+
             $(`#${param}-total`).html(total)
             var  profit = (((budget - total)/fixProfit)*100).toFixed(2);
 

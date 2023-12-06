@@ -13,7 +13,7 @@
 
                 <div class="modal-body">
 
-                    <input type="hidden" name="id" id="spending-modal-id">
+                    <input type="hidden" name="p_id" id="spending-modal-id">
 
                     <div class="row">
                         <div class="col-md-4"><label for="total">PE Name</label></div>
@@ -27,6 +27,14 @@
                             <select name="pmt_name" id="pmt_name" class="form-control" required>
 
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4"><label for="total">Vendor Name</label></div>
+                        <div class="col-md-8">
+                            <input name="vendor_name" type="text" id="vendor_name" class="form-control" required>
+
                         </div>
                     </div>
 

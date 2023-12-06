@@ -39,28 +39,14 @@ class RmuPaymentDetailController extends Controller
     {
         //
         try {
-            $data = RmuAeroSpendModel::find($request->id);
+            $data = RmuAeroSpendModel::find($request->p_id);
             if ($data) {
-                if ($request->status != 'work done but not payed') {
-                    $total = $data->total + $request->amount;
-                    $pending = $data->pending_payment;
-                } else {
-                    $total = $data->total;
-                    $pending = $data->pending_payment + $request->amount;
-                }
-                $name = $request->pmt_name;
-                $nameTotal = $data->$name + $request->amount;
-                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
 
-                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $request->status, 'pending_payment' => $pending]);
-                RmuPaymentDetailModel::create([
-                    'pmt_name' => $request->pmt_name,
-                    'amount' => $request->amount,
-                    'status' => $request->status,
-                    'description' => $request->description,
-                    'rmu_id' => $request->id,
-                    'pmt_date' => $request->pmt_date,
-                ]);
+                $request['rmu_id'] = $request->p_id;
+                RmuPaymentDetailModel::create($request->all());
+                $this->updatePayments($request->p_id);
+
+
             }
             return response()->json(['success' => true, 'id' => $data->id_rmu_budget], 200);
         } catch (\Throwable $th) {
@@ -103,52 +89,26 @@ class RmuPaymentDetailController extends Controller
 
         $res_data = [];
         try {
-            $vcb_spend_data = RmuPaymentDetailModel::find($id);
+            $payment_detail = RmuPaymentDetailModel::find($id);
+                // get payment detail recored and check if exist
+            if ($payment_detail) {
 
-            if ($vcb_spend_data) {
-                $data = RmuAeroSpendModel::find($vcb_spend_data->rmu_id);
+                $payment_detail->update($request->all());
 
-                $oldVal = $vcb_spend_data->amount;
+                    $this->updatePayments($payment_detail->rmu_id);
 
-                $name = $vcb_spend_data->pmt_name;
-                $nameTotal = $data->$name + $request->amount - $vcb_spend_data->amount;
+                    $data = RmuAeroSpendModel::find($payment_detail->rmu_id); // get spend table recored
+                $nameTotal =$data->{$request->pmt_name};
 
-                if ($request->status != 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
-                    $pending = $data->pending_payment;
-                    $total = $data->total + $request->amount - $oldVal;
-                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status != 'work done but not payed') {
-                    $total = $data->total - $oldVal;
-                    $pending = $data->pending_payment + $request->amount;
-                } elseif ($request->status != 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
-                    $total = $data->total + $request->amount;
-                    $pending = $data->pending_payment - $oldVal;
-                } elseif ($request->status == 'work done but not payed' && $vcb_spend_data->status == 'work done but not payed') {
-                    $total = $data->total  ;
-                    $pending = $data->pending_payment - $oldVal + $request->amount;
-                }
-
-                $mystatus=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
-                $latestRecord = RmuPaymentDetailModel::where('rmu_id' ,$data->id)->where('pmt_name' , $vcb_spend_data-> pmt_name)->latest('created_at')->first();
-                $status = $request->status;
-                if ($latestRecord && $vcb_spend_data->created_at != $latestRecord->created_at) {
-
-                        $status = $data->$mystatus;
-                }
-                $data->update(['total' => $total, $name => $nameTotal, $mystatus => $status, 'pending_payment' => $pending]);
-
-                $vcb_spend_data->update([
-                    'amount' => $request->amount,
-                    'status' => $request->status,
-                    'description' => $request->description,
-                    'pmt_date' => $request->pmt_date,
-                ]);
             } else {
                 return response()->json(['success' => false, 'message' => 'something is wrong'], 200);
             }
-            $res_data['sub_total'] = $total;
+            $res_data['sub_total'] = $data->total;
             $res_data['total'] = $nameTotal;
             $res_data['name'] = $request->inp_name;
             $res_data['pending_payment'] = $data->pending_payment;
+            $res_data['outstanding'] = $data->outstanding_balance;
+
 
             return response()->json(['success' => true, 'id' => $data->id_rmu_budget, 'data' => $res_data], 200);
         } catch (\Throwable $th) {
@@ -164,49 +124,14 @@ class RmuPaymentDetailController extends Controller
      */
     public function destroy($id)
     {
-        $res_data = [];
+
         try {
             $data = RmuPaymentDetailModel::find($id);
             if ($data) {
-                $dataVcb = RmuAeroSpendModel::find($data->rmu_id);
-                $created_at = $data->created_at ;
-                if ($data->status != 'work done but not payed') {
-                    $total = $dataVcb->total - $data->amount;
-                    $pending = $dataVcb->pending_payment;
-                } else {
-                    $total = $dataVcb->total;
-                    $pending = $dataVcb->pending_payment - $data->amount;
-                }
-
-                $name = $data->pmt_name;
-                $stat_name=  $name == 'tools' ? 'amt_'.$name.'_status' : $name.'_status';
-
-                $nameTotal = $dataVcb->$name - $data->amount;
-
-                $stat = '';
-                $latestRecord = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest('created_at')->first();
-
                 $data->delete();
-                // $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->latest()->first();
-                $stat = '';
-               if ($latestRecord && $created_at == $latestRecord->created_at) {
-                // return "inside if";
-                $status = RmuPaymentDetailModel::where('rmu_id' ,$dataVcb->id)->where('pmt_name' , $data-> pmt_name)->latest()->first();
-                if ($status) {
+                $this->updatePayments($data->rmu_id);
 
-                    $stat = $status->status;
-                }
-                }else{
-                    $stat = $dataVcb->$stat_name ;
-                    // return $stat;
-                }
-            // return $nameTotal;
-                $dataVcb->update([
-                    'total' => $total,
-                    $name => $nameTotal,
-                    'pending_payment' => $pending,
-                    $stat_name => $stat,
-                ]);
+
 
             } else {
                 return  redirect()->back()->with('failed','Request Success');
@@ -216,5 +141,49 @@ class RmuPaymentDetailController extends Controller
             // return $th->getMessage();
             return  redirect()->back()->with('failed','Request Success');
         }
+    }
+
+    public function updatePayments($id)
+    {
+
+        RmuAeroSpendModel::where('id', $id)
+        ->update([
+            'amt_kkb' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->sum('amount'),
+            'amt_kkb_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->latest('created_at')->value('status'),
+
+            'amt_ir' => RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->sum('amount'),
+            'amt_ir_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->latest('created_at')->value('status'),
+
+            'amt_bo' => RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->sum('amount'),
+            'amt_bo_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->latest('created_at')->value('status'),
+
+            'amt_rtu' => RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->sum('amount'),
+            'amt_rtu_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->latest('created_at')->value('status'),
+
+            'amt_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->sum('amount'),
+            'amt_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->latest('created_at')->value('status'),
+
+            'amt_piw' => RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->sum('amount'),
+            'amt_piw_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->latest('created_at')->value('status'),
+
+            'amt_pk'=> RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->sum('amount'),
+            'amt_pk_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->latest('created_at')->value('status'),
+
+            'amt_transport'=> RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->sum('amount'),
+            'amt_transport_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->latest('created_at')->value('status'),
+
+            'amt_store_rental'=> RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->sum('amount'),
+            'amt_store_rental_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->latest('created_at')->value('status'),
+
+            'tools'=>RmuPaymentDetailModel::where('pmt_name', 'tools')->sum('amount'),
+            'amt_tools_status' =>RmuPaymentDetailModel::where('pmt_name', 'tools')->latest('created_at')->value('status'),
+
+            'amt_rtu_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->sum('amount'),
+            'amt_rtu_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->latest('created_at')->value('status'),
+            'total'=>RmuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('status','!=', 'work done but not payed')->sum('amount'),
+            'pending_payment'=>RmuPaymentDetailModel::where('status',  'not work done and  not payed')->sum('amount'),
+            'outstanding_balance'=>RmuPaymentDetailModel::where('status', 'work done but not payed')->sum('amount'),
+
+    ]);
     }
 }

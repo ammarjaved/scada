@@ -12,6 +12,7 @@
                         @method('PATCH')
 
                         <td><input type="number" step="any" name="amount" id="{{$arr_name}}-{{$item->id}}-amount" class="border-0" value="{{ $item->amount }}" disabled> </td>
+                        <td><input type="text" name="vendor_name" id="{{$arr_name}}-{{$item->id}}-vendor_name" class="border-0" value="{{$item->vendor_name}}" disabled></td>
                         <td>
                             <select name="status" id="{{$arr_name}}-{{$item->id}}-status"  class="border-0" disabled required>
                                 <option value="{{ $item->status }}" hidden>{{ $item->status }}</option>
@@ -43,7 +44,7 @@
             @endforeach
             @if (  $arr != [])
                 <tr>
-                    <td colspan="{{$action ? '4' : '3'}}" class="text-end"><strong>Total </strong></td>
+                    <td colspan="{{$action ? '5' : '4'}}" class="text-end"><strong>Total </strong></td>
                     <td class="text-center"><strong id="{{$arr_name}}-{{$item->id}}-total">{{ number_format($data->$arr_name, 2, '.', ',')}} </strong></td>
 
                 </tr>

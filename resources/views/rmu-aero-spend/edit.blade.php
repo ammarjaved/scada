@@ -51,7 +51,7 @@
                             <th>PE NAME : </th>
                             <td>{{ $data->RmuBudget->pe_name }}</td>
                         </tr>
-                       
+
                         <tr>
                             <th>BUDGET BY TNB : </th>
 
@@ -68,6 +68,10 @@
                         <tr>
                             <th>TOTAL PENDING :</th>
                             <td><span class="pending">{{ $data->pending_payment }}</span> <strong>(RMB) </strong></td>
+                        </tr>
+                        <tr>
+                            <th>TOTAL OUTSTANDING :</th>
+                            <td><span class="outstanding">{{ $data->outstanding_balance }}</span> <strong>(RMB) </strong></td>
                         </tr>
                         <tr>
                             <th>TOTAL PROFIT :</th>
@@ -263,7 +267,7 @@
                         toastr.success('Spending update successfully!')
                         var data = responseText.data;
                         console.log(responseText);
-                        formSubmitted(data.name, data.sub_total, data.total, data.pending_payment)
+                        formSubmitted(data.name, data.sub_total, data.total, data.pending_payment , data.outstanding)
                     } else {
                         toastr.error('Request failed. Please try again.')
                     }
@@ -288,6 +292,8 @@
             $(`#${id}-description`).removeAttr('disabled');
             $(`#${id}-description`).removeClass('border-0');
             $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
+            $(`#${id}-vendor_name`).removeClass('border-0').removeAttr('disabled');
+
 
 
 
@@ -297,7 +303,7 @@
 
         }
 
-        function formSubmitted(param, subTotal, total, pending) {
+        function formSubmitted(param, subTotal, total, pending , outstanding) {
             $(`#${param}-amount`).attr('disabled', true);
             $(`#${param}-amount`).addClass('border-0');
             $(`#${param}-status`).attr('disabled', true);
@@ -305,6 +311,8 @@
             $(`#${param}-description`).attr('disabled', true);
             $(`#${param}-description`).addClass('border-0');
             $(`#${param}-pmt_date`).addClass('border-0').attr('disabled', true);
+            $(`#${param}-vendor_name`).addClass('border-0').attr('disabled', true);
+
 
             $(`#${param}-submit-button`).addClass('d-none');
             $(`#${param}-edit-button`).removeClass('d-none');
@@ -313,6 +321,7 @@
             $(`#${param}-total`).html(total)
 
             $(`.pending`).html(pending)
+            $('.outstanding').html(outstanding)
             var profit = (((budget - total) / fixProfit) * 100).toFixed(2);
 
             $(`.total_profit`).html(profit)
