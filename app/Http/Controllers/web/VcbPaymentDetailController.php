@@ -154,34 +154,34 @@ class VcbPaymentDetailController extends Controller
 
         VcbAeroSpendModel::where('id', $id)
         ->update([
-            'amt_transducer' => VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->sum('amount'),
-            'amt_transducer_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->latest('created_at')->value('status'),
+            'amt_transducer' => VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->where('vcb_id',$id)->sum('amount'),
+            'amt_transducer_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transducer')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'amt_bo' => VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->sum('amount'),
-            'amt_bo_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->latest('created_at')->value('status'),
+            'amt_bo' => VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->where('vcb_id',$id)->sum('amount'),
+            'amt_bo_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_bo')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'amt_rtu' => VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->sum('amount'),
-            'amt_rtu_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->latest('created_at')->value('status'),
+            'amt_rtu' => VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('vcb_id',$id)->sum('amount'),
+            'amt_rtu_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'amt_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->sum('amount'),
-            'amt_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->latest('created_at')->value('status'),
+            'amt_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->where('vcb_id',$id)->sum('amount'),
+            'amt_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_cable')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
 
 
-            'amt_transport'=> VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->sum('amount'),
-            'amt_transport_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->latest('created_at')->value('status'),
+            'amt_transport'=> VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->where('vcb_id',$id)->sum('amount'),
+            'amt_transport_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_transport')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'amt_store_rental'=> VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->sum('amount'),
-            'amt_store_rental_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->latest('created_at')->value('status'),
+            'amt_store_rental'=> VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('vcb_id',$id)->sum('amount'),
+            'amt_store_rental_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'tools'=>VcbPaymentDetailModel::where('pmt_name', 'tools')->sum('amount'),
-            'amt_tools_status' =>VcbPaymentDetailModel::where('pmt_name', 'tools')->latest('created_at')->value('status'),
+            'tools'=>VcbPaymentDetailModel::where('pmt_name', 'tools')->where('vcb_id',$id)->sum('amount'),
+            'amt_tools_status' =>VcbPaymentDetailModel::where('pmt_name', 'tools')->where('vcb_id',$id)->latest('created_at')->value('status'),
 
-            'amt_rtu_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->sum('amount'),
-            'amt_rtu_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->latest('created_at')->value('status'),
-            'total'=>VcbPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('status','!=', 'work done but not payed')->sum('amount'),
-            'pending_payment'=>VcbPaymentDetailModel::where('status',  'not work done and  not payed')->sum('amount'),
-            'outstanding_balance'=>VcbPaymentDetailModel::where('status', 'work done but not payed')->sum('amount'),
+            'amt_rtu_cable'=> VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->where('vcb_id',$id)->sum('amount'),
+            'amt_rtu_cable_status' =>VcbPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->where('vcb_id',$id)->latest('created_at')->value('status'),
+            'total'=>VcbPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('vcb_id',$id)->where('status','!=', 'work done but not payed')->sum('amount'),
+            'pending_payment'=>VcbPaymentDetailModel::where('status',  'not work done and  not payed')->where('vcb_id',$id)->sum('amount'),
+            'outstanding_balance'=>VcbPaymentDetailModel::where('status', 'work done but not payed')->where('vcb_id',$id)->sum('amount'),
 
     ]);
     }

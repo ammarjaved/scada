@@ -148,41 +148,41 @@ class RmuPaymentDetailController extends Controller
 
         RmuAeroSpendModel::where('id', $id)
         ->update([
-            'amt_kkb' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->sum('amount'),
-            'amt_kkb_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->latest('created_at')->value('status'),
+            'amt_kkb' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('rmu_id',$id)->sum('amount'),
+            'amt_kkb_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_ir' => RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->sum('amount'),
-            'amt_ir_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->latest('created_at')->value('status'),
+            'amt_ir' => RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->where('rmu_id',$id)->sum('amount'),
+            'amt_ir_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_ir')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_bo' => RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->sum('amount'),
-            'amt_bo_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->latest('created_at')->value('status'),
+            'amt_bo' => RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('rmu_id',$id)->sum('amount'),
+            'amt_bo_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_rtu' => RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->sum('amount'),
-            'amt_rtu_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->latest('created_at')->value('status'),
+            'amt_rtu' => RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('rmu_id',$id)->sum('amount'),
+            'amt_rtu_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->sum('amount'),
-            'amt_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->latest('created_at')->value('status'),
+            'amt_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->where('rmu_id',$id)->sum('amount'),
+            'amt_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_cable')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_piw' => RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->sum('amount'),
-            'amt_piw_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->latest('created_at')->value('status'),
+            'amt_piw' => RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->where('rmu_id',$id)->sum('amount'),
+            'amt_piw_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_piw')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_pk'=> RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->sum('amount'),
-            'amt_pk_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->latest('created_at')->value('status'),
+            'amt_pk'=> RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->where('rmu_id',$id)->sum('amount'),
+            'amt_pk_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_pk')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_transport'=> RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->sum('amount'),
-            'amt_transport_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->latest('created_at')->value('status'),
+            'amt_transport'=> RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('rmu_id',$id)->sum('amount'),
+            'amt_transport_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_store_rental'=> RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->sum('amount'),
-            'amt_store_rental_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->latest('created_at')->value('status'),
+            'amt_store_rental'=> RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('rmu_id',$id)->sum('amount'),
+            'amt_store_rental_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'tools'=>RmuPaymentDetailModel::where('pmt_name', 'tools')->sum('amount'),
-            'amt_tools_status' =>RmuPaymentDetailModel::where('pmt_name', 'tools')->latest('created_at')->value('status'),
+            'tools'=>RmuPaymentDetailModel::where('pmt_name', 'tools')->where('rmu_id',$id)->sum('amount'),
+            'amt_tools_status' =>RmuPaymentDetailModel::where('pmt_name', 'tools')->where('rmu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_rtu_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->sum('amount'),
-            'amt_rtu_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->latest('created_at')->value('status'),
-            'total'=>RmuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('status','!=', 'work done but not payed')->sum('amount'),
-            'pending_payment'=>RmuPaymentDetailModel::where('status',  'not work done and  not payed')->sum('amount'),
-            'outstanding_balance'=>RmuPaymentDetailModel::where('status', 'work done but not payed')->sum('amount'),
+            'amt_rtu_cable'=> RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->where('rmu_id',$id)->sum('amount'),
+            'amt_rtu_cable_status' =>RmuPaymentDetailModel::where('pmt_name', 'amt_rtu_cable')->where('rmu_id',$id)->latest('created_at')->value('status'),
+            'total'=>RmuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('rmu_id',$id)->where('status','!=', 'work done but not payed')->sum('amount'),
+            'pending_payment'=>RmuPaymentDetailModel::where('status',  'not work done and  not payed')->where('rmu_id',$id)->sum('amount'),
+            'outstanding_balance'=>RmuPaymentDetailModel::where('status', 'work done but not payed')->where('rmu_id',$id)->sum('amount'),
 
     ]);
     }

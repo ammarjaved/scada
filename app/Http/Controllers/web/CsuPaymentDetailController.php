@@ -153,37 +153,37 @@ class CsuPaymentDetailController extends Controller
 
         CsuAeroSpendModel::where('id',$id)
         ->update([
-            'amt_kkb' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->sum('amount'),
-            'amt_kkb_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->latest('created_at')->value('status'),
+            'amt_kkb' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('csu_id',$id)->sum('amount'),
+            'amt_kkb_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('csu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_cfs' => CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->sum('amount'),
-            'amt_cfs_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->latest('created_at')->value('status'),
+            'amt_cfs' => CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->where('csu_id',$id)->sum('amount'),
+            'amt_cfs_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->where('csu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_bo' => CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->sum('amount'),
-            'amt_bo_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->latest('created_at')->value('status'),
+            'amt_bo' => CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('csu_id',$id)->sum('amount'),
+            'amt_bo_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('csu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_rtu' => CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->sum('amount'),
-            'amt_rtu_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->latest('created_at')->value('status'),
-
-
-            'amt_store_rental' => CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->sum('amount'),
-            'amt_store_rental_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->latest('created_at')->value('status'),
+            'amt_rtu' => CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('csu_id',$id)->where('csu_id',$id)->sum('amount'),
+            'amt_rtu_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('csu_id',$id)->latest('created_at')->value('status'),
 
 
-
-            'amt_transport' => CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->sum('amount'),
-            'amt_transport_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->latest('created_at')->value('status'),
+            'amt_store_rental' => CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('csu_id',$id)->sum('amount'),
+            'amt_store_rental_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('csu_id',$id)->latest('created_at')->value('status'),
 
 
 
-            'tools'=>CsuPaymentDetailModel::where('pmt_name', 'tools')->sum('amount'),
-            'amt_tools_status' =>CsuPaymentDetailModel::where('pmt_name', 'tools')->latest('created_at')->value('status'),
+            'amt_transport' => CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('csu_id',$id)->sum('amount'),
+            'amt_transport_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('csu_id',$id)->latest('created_at')->value('status'),
 
-            'amt_salary'=> CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->sum('amount'),
-            'amt_salary_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->latest('created_at')->value('status'),
-            'total'=>CsuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('status','!=', 'work done but not payed')->sum('amount'),
-            'pending_payment'=>CsuPaymentDetailModel::where('status',  'not work done and  not payed')->sum('amount'),
-            'outstanding_balance'=>CsuPaymentDetailModel::where('status', 'work done but not payed')->sum('amount'),
+
+
+            'tools'=>CsuPaymentDetailModel::where('pmt_name', 'tools')->where('csu_id',$id)->sum('amount'),
+            'amt_tools_status' =>CsuPaymentDetailModel::where('pmt_name', 'tools')->where('csu_id',$id)->latest('created_at')->value('status'),
+
+            'amt_salary'=> CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->where('csu_id',$id)->sum('amount'),
+            'amt_salary_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->where('csu_id',$id)->latest('created_at')->value('status'),
+            'total'=>CsuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('csu_id',$id)->where('status','!=', 'work done but not payed')->sum('amount'),
+            'pending_payment'=>CsuPaymentDetailModel::where('status',  'not work done and  not payed')->where('csu_id',$id)->sum('amount'),
+            'outstanding_balance'=>CsuPaymentDetailModel::where('status', 'work done but not payed')->where('csu_id',$id)->sum('amount'),
 
     ]);
     }

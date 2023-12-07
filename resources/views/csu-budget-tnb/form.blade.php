@@ -5,14 +5,17 @@
 
         <div class="row mb-2" style="flex-wrap:nowrap">
             <div class="col-sm-6">
-                <h3>RMU Budget TNB</h3>
+                <h3>CSU Budget TNB</h3>
             </div>
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
 
-                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index', $data->pe_name) }}">index</a></li>
-                    <li class="breadcrumb-item active">edit</li>
+                    @if (isset($item))
+                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index', $item->pe_name) }}">csu budget index</a></li>
+
+                    @endif
+                    <li class="breadcrumb-item active">create</li>
                 </ol>
             </div>
         </div>
@@ -23,41 +26,30 @@
     <div class="container bg-white  shadow my-4 " style="border-radius: 10px">
 
 
-        <form action="{{ route('rmu-budget-tnb.update' ,$data->id) }}" id="myForm" method="post">
+        <form action="{{ route('csu-budget-tnb.store') }}" id="myForm" method="post">
             @csrf
-            @method('PATCH')
+
 
             <div class="row">
                 <div class="col-md-4">
                     <label for="pe_name">Pe Name</label>
                 </div>
                 <div class="col-md-4">
-                   <input  value="{{$data->pe_name}}" type="text" name="pe_name" id="pe_name" class="form-control" required readonly >
+                   <input type="text" name="pe_name" id="pe_name"  class="form-control" required  readonly
+                    value="{{ old('pe_name', isset($item) ? $item->pe_name :  $name ) }}"
+                    {{ isset($disabled) ? 'readonly' : '' }}
+                    >
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-md-4">
-                    <label for="vendor_name">Vendor Name</label>
-                </div>
-                <div class="col-md-4">
-                   <input type="text" name="vendor_name" value="{{$data->vendor_name}}" id="vendor_name"  class="form-control" required  >
-                </div>
-            </div> -->
-            <div class="row">
-                <div class="col-md-4">
-                    <label for="rtu_status">RTU Status</label>
-                </div>
-                <div class="col-md-4">
-                   <input value="{{$data->rtu_status}}" type="text" name="rtu_status" id="rtu_status" class="form-control" required >
-                </div>
-            </div>
+            <input type="hidden" name="id" id="id" value="{{isset($item)? $item->id : ''}}">
+
 
             <div class="row">
                 <div class="col-md-4">
-                    <label for="amt_kkb_pk">AMT KKB PK</label>
+                    <label for="kkb">KKB</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->amt_kkb_pk}}" type="number" name="amt_kkb_pk" id="amt_kkb_pk" class="form-control" required>
+                    <input type="number" name="kkb" id="kkb" class="form-control" required value="{{ old('kkb', isset($item) ? $item->kkb :'' ) }}" {{ isset($disabled) ? 'readonly' : '' }}>
                 </div>
             </div>
 
@@ -68,7 +60,7 @@
                     <label for="cfs">CFS</label>
                 </div>
                 <div class="col-md-4">
-                   <input value="{{$data->cfs}}" type="number" name="cfs" id="cfs" class="form-control" required>
+                   <input type="number" name="cfs" id="cfs" class="form-control" required value="{{ old('cfs', isset($item) ? $item->cfs :  '' ) }}"  {{ isset($disabled) ? 'readonly' : '' }}>
                 </div>
             </div>
 
@@ -79,52 +71,49 @@
                     <label for="scada">Scada</label>
                 </div>
                 <div class="col-md-4">
-                    <input value="{{$data->scada}}" type="number" name="scada" id="scada" class="form-control" required>
+                    <input type="number" name="scada" id="scada" class="form-control" required value="{{ old('scada', isset($item) ? $item->scada :  '' ) }}" {{ isset($disabled) ? 'readonly' : '' }}>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-md-4">
                     <label for="total">Total Budget by TNB</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" name="total" id="total" class="form-control"  value="{{$data->total}}" readonly>
+                    <input type="number" name="total" id="total" class="form-control" readonly value="{{ old('total', isset($item) ? $item->total :  '' ) }}"  {{ isset($disabled) ? 'readonly' : '' }}>
                 </div>
             </div>
 
-            {{-- <div class="row">
-                <div class="col-md-4">
-                    <label for="pe name">Total Budget by Aerosynergy</label>
-                </div>
-                <div class="col-md-4">
-                    <input type="number" name="allocated_budget" id="allocated_budget"  value="{{$data->allocated_budget}}"
-                        class="form-control" required>
-                </div>
-            </div> --}}
 
             <div class="row">
                 <div class="col-md-4">
                     <label for="pe name">Fix Profit Aerosynergy</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="number" name="fix_profit" id="fix_profit"  value="{{$data->fix_profit}}"
+                    <input type="number" name="fix_profit" id="fix_profit" value="{{ old('fix_profit', isset($item) ? $item->fix_profit :  '' ) }}"  {{ isset($disabled) ? 'readonly' : '' }}
                         class="form-control" required>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-4">
                     <label for="date_time">Date Time</label>
                 </div>
                 <div class="col-md-4">
-                    <input type="datetime-local" name="date_time" id="date_time" class="form-control" value="{{$data->date_time}}">
+                    <input type="datetime-local" name="date_time" id="date_time" class="form-control" value="{{ old('date_time', isset($item) ? $item->date_time :  '') }}"  {{ isset($disabled) ? 'readonly' : '' }}>
                 </div>
             </div>
 
+
+
+
+            @if (!isset($disabled))
+
+
             <div class="text-center">
-                <button class="btn btn-success mt-4" style="cursor: pointer !important" type="submit">Update</button>
+                <button class="btn btn-success mt-4" style="cursor: pointer !important" type="submit">Submit</button>
             </div>
+            @endif
+
 
         </form>
     </div>
@@ -135,7 +124,7 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>
     <script>
-       var total = 0;
+      var total = 0;
         var pre = 0;
         $(document).ready(function() {
 
@@ -149,18 +138,20 @@
                 }
 
             })
-            total = $('#total').val() == "" ? 0 : parseFloat($('#total').val());
+
 
 
             $("input[type='number']").on('change', function() {
-                if(this.id!='fix_profit'){
-                var changeVal = 0;
-                if (this.value !== "") {
-                    changeVal = parseFloat(this.value);
+                if (this.id != 'fix_profit') {
+                    var kkb = parseFloat($('#kkb').val()) || 0;
+                    var csf = parseFloat($('#cfs').val()) || 0;
+                    var scada = parseFloat($('#scada').val()) || 0;
+
+                    var total = kkb + csf + scada;
+                    console.log(total);
+
+                    $('#total').val(total.toFixed(2));
                 }
-                total = total + changeVal - pre;
-                $('#total').val(total);
-            }
             });
 
 

@@ -8,6 +8,7 @@ use App\Models\RmuBudgetTNBModel;
 use Exception;
 use App\Models\RmuAeroSpendModel;
 use App\Models\RmuPaymentDetailModel;
+use Illuminate\Support\Facades\Session;
 
 class RmuBudgetTNBController extends Controller
 {
@@ -42,7 +43,7 @@ class RmuBudgetTNBController extends Controller
     public function create($name)
     {
         //
-        return view('rmu-budget-tnb.create', ['name' => $name]);
+        return view('rmu-budget-tnb.form', ['name' => $name]);
     }
 
     /**
@@ -53,24 +54,28 @@ class RmuBudgetTNBController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try {
-            //code...
+            if ($request->id == '' && !RmuBudgetTNBModel::where('pe_name', $request->pe_name)->first()) {
+                $storeBudget = RmuBudgetTNBModel::create($request->all());
 
-            $storeBudget = RmuBudgetTNBModel::create($request->all());
-            if ($storeBudget) {
-                RmuAeroSpendModel::create(['id_rmu_budget' => $storeBudget->id]);
+                if ($storeBudget) {
+                    RmuAeroSpendModel::create(['id_rmu_budget' => $storeBudget->id]);
+                }
+            } else {
+                $rec = RmuBudgetTNBModel::find($request->id);
+                if ($rec) {
+                    $rec->update($request->all());
+                }
+                Session::flash('failed', 'Request Failed');
+                return redirect()->back();
             }
-
-            return redirect()
-                ->route('rmu-budget-tnb.index', $request->pe_name)
-                ->with('success', 'Form Submitted');
         } catch (\Throwable $th) {
-            return $th->getMessage();
-            return redirect()
-                ->route('rmu-budget-tnb.index', $request->pe_name)
-                ->with('failed', 'Request Failed');
+            Session::flash('failed', 'Request Failed');
+            return redirect()->back();
         }
+
+        Session::flash('success', 'Request Success');
+        return redirect()->route('rmu-budget-tnb.index', $request->pe_name);
     }
 
     /**
@@ -83,7 +88,7 @@ class RmuBudgetTNBController extends Controller
     {
         //
         $data = RmuBudgetTNBModel::find($id);
-        return $data ? view('rmu-budget-tnb.show', ['data' => $data]) : abrot(404);
+        return $data ? view('rmu-budget-tnb.form', ['item' => $data, 'disabled' => true]) : abrot(404);
     }
 
     /**
@@ -96,7 +101,7 @@ class RmuBudgetTNBController extends Controller
     {
         //
         $data = RmuBudgetTNBModel::find($id);
-        return $data ? view('rmu-budget-tnb.edit', ['data' => $data]) : abrot(404);
+        return $data ? view('rmu-budget-tnb.form', ['item' => $data]) : abrot(404);
     }
 
     /**
@@ -108,19 +113,6 @@ class RmuBudgetTNBController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        try {
-            //code...
-
-            $data = RmuBudgetTNBModel::find($id)->update($request->all());
-            return redirect()
-                ->route('rmu-budget-tnb.index', $request->pe_name)
-                ->with('success', 'Form update');
-        } catch (\Throwable $th) {
-            return redirect()
-                ->route('rmu-budget-tnb.index', $request->pe_name)
-                ->with('failed', 'Request Failed');
-        }
     }
 
     /**
@@ -146,15 +138,13 @@ class RmuBudgetTNBController extends Controller
                 }
                 $data->delete();
             }
-
-            return redirect()
-                ->route('site-data-collection.index')
-                ->with('success', 'Record Removed');
-        } catch (Exception $e) {
-            return $e->getMessage();
-            return redirect()
-                ->route('site-data-collection.index')
-                ->with('failed', 'Request failed');
+        } catch (\Throwable $th) {
+            Session::flash('failed', 'Request Failed');
+            return redirect()->back();
         }
+
+        Session::flash('success', 'Request Success');
+
+        return redirect()->route('site-data-collection.index');
     }
 }
