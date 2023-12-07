@@ -164,7 +164,7 @@
                     changeVal = parseFloat(this.value);
                 }
                 total = total + changeVal - pre;
-                $('#total').val(total);
+                $('#total').val(total.toFixed(2));
             }
             });
 
