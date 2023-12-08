@@ -19,7 +19,7 @@ class CsuAeroSpendModel extends Model
         'amt_bo_status',
         'amt_rtu',
         'amt_rtu_status',
-        'tools',
+        'amt_tools',
         'amt_tools_status',
         'amt_store_rental',
         'amt_store_rental_status',

@@ -23,7 +23,7 @@ class VcbAeroSpendModel extends Model
         'amt_rtu_status',
         'amt_rtu_cable',
         'amt_rtu_cable_status',
-        'tools',
+        'amt_tools',
         'amt_tools_status',
         'amt_store_rental',
         'amt_store_rental_status',

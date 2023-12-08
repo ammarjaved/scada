@@ -52,7 +52,7 @@
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_transducer_status)}}">{{$data->amt_transducer == "" ? 0 : $data->amt_transducer }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_rtu_status)}}">{{$data->amt_rtu == "" ? 0 : $data->amt_rtu }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_rtu_cable_status)}}">{{$data->amt_rtu_cable == "" ? 0 : $data->amt_rtu_cable }}</td>
-                                                <td class="text-center {{str_replace(' ','_',$data->amt_tools_status)}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
+                                                <td class="text-center {{str_replace(' ','_',$data->amt_tools_status)}}">{{$data->amt_tools == "" ? 0 : $data->amt_tools }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_store_rental_status)}}">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
                                                 <td class="text-center {{str_replace(' ','_',$data->amt_transport_status)}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
                                                 <td class="text-center  ">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>

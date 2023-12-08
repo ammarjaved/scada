@@ -47,21 +47,21 @@
                                             @if ($data != "" && $data != [])
 
 
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_kkb_status )}}">{{$data->amt_kkb == "" ? 0 : $data->amt_kkb }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_pk_status )}}">{{$data->amt_pk == "" ? 0 : $data->amt_pk }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_ir_status )}}">{{$data->amt_ir == "" ? 0 : $data->amt_ir }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_bo_status )}}">{{$data->amt_bo == "" ? 0 : $data->amt_bo }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_piw_status )}}">{{$data->amt_piw == "" ? 0 : $data->amt_piw }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_cable_status )}}">{{$data->amt_cable == "" ? 0 : $data->amt_cable }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_rtu_status )}}">{{$data->amt_rtu == "" ? 0 : $data->amt_rtu }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_rtu_cable_status )}}">{{$data->amt_rtu_cable == "" ? 0 : $data->amt_rtu_cable }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_tools_status )}}">{{$data->tools == "" ? 0 : $data->tools }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_store_rental_status )}}">{{$data->amt_store_rental == "" ? 0 : $data->amt_store_rental }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_transport_status )}}">{{$data->amt_transport == "" ? 0 : $data->amt_transport }}</td>
-                                            <td class="text-center  ">{{ $data->pending_payment == "" ? 0 : $data->pending_payment }}</td>
-                                            <td class="text-center">{{ $data->outstanding_balance == "" ? 0 : $data->outstanding_balance }}</td>
-                                            <td class="text-center {{str_replace(' ', '_' , $data->total_status )}}">{{ $data->total == "" ? 0 : $data->total }}</td>
-                                            <td class="text-center">{{ $data->profit == "" ? "-" : $data->profit }} %</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_kkb_status )}}">{{$data->amt_kkb ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_pk_status )}}">{{$data->amt_pk ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_ir_status )}}">{{$data->amt_ir   ?? 0 }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_bo_status )}}">{{$data->amt_bo ?? 0}}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_piw_status )}}">{{$data->amt_piw ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_cable_status )}}">{{$data->amt_cable ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_rtu_status )}}">{{$data->amt_rtu ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_rtu_cable_status )}}">{{$data->amt_rtu_cable ?? 0}}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_tools_status )}}">{{$data->amt_tools ?? 0  }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_store_rental_status )}}">{{$data->amt_store_rental ?? 0 }}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->amt_transport_status )}}">{{$data->amt_transport ?? 0 }}</td>
+                                            <td class="text-center  ">{{ $data->pending_payment ?? 0 }}</td>
+                                            <td class="text-center">{{ $data->outstanding_balance ?? 0}}</td>
+                                            <td class="text-center {{str_replace(' ', '_' , $data->total_status )}}">{{ $data->total ?? 0 }}</td>
+                                            <td class="text-center">{{ $data->profit ??"-" }} %</td>
 
 
 

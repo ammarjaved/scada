@@ -25,7 +25,7 @@ class RmuAeroSpendModel extends Model
         'amt_rtu_status',
         'amt_rtu_cable',
         'amt_rtu_cable_status',
-        'tools',
+        'amt_tools',
         'amt_tools_status',
         'amt_store_rental',
         'amt_store_rental_status',
@@ -46,7 +46,7 @@ class RmuAeroSpendModel extends Model
         return $this->belongsTo(RmuBudgetTNBModel::class, 'id_rmu_budget');
     }
 
-    public function RmuSpendDetail() {
+    public function SpendDetail() {
         return $this->hasMany(RmuPaymentDetailModel::class, 'rmu_id');
     }
 

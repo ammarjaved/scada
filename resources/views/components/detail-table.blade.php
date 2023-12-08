@@ -10,9 +10,11 @@
                     <form action="{{route("$url-payment-details.update",$item->id)}}" class="submit-form" method="post">
                         @csrf
                         @method('PATCH')
-
+                                {{-- detail first column amount --}}
                         <td><input type="number" step="any" name="amount" id="{{$arr_name}}-{{$item->id}}-amount" class="border-0" value="{{ $item->amount }}" disabled> </td>
+                            {{-- 2 column vendor name --}}
                         <td><input type="text" name="vendor_name" id="{{$arr_name}}-{{$item->id}}-vendor_name" class="border-0" value="{{$item->vendor_name}}" disabled></td>
+                            {{-- 3 amount status --}}
                         <td>
                             <select name="status" id="{{$arr_name}}-{{$item->id}}-status"  class="border-0" disabled required>
                                 <option value="{{ $item->status }}" hidden>{{ $item->status }}</option>
@@ -25,8 +27,14 @@
                             </select>
                             <input type="hidden" name="inp_name" value="{{$arr_name}}-{{$item->id}}" >
                         </td>
+
+                            {{-- 4 description --}}
                         <td><textarea name="description" id="{{$arr_name}}-{{$item->id}}-description" placeholder="description ..." class="border-0" cols="20" rows="3"  disabled>{{ $item->description  }}</textarea> </td>
+                            {{-- 5 date column --}}
                         <td><input type="date"   name="pmt_date" id="{{$arr_name}}-{{$item->id}}-pmt_date" class="border-0" value="{{ $item->pmt_date }}" disabled>  </td>
+
+
+                            {{-- 6 action button --}}
                         @if ($action)
                         <td>
 
@@ -42,6 +50,7 @@
                     </form>
                 </tr>
             @endforeach
+            {{-- totoal of array     --}}
             @if (  $arr != [])
                 <tr>
                     <td colspan="{{$action ? '5' : '4'}}" class="text-end"><strong>Total </strong></td>

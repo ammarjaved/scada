@@ -8,6 +8,9 @@ use App\Models\RmuAeroSpendModel;
 use App\Models\RmuPaymentDetailModel;
 
 use Exception;
+use App\Traits\SpendDetailsTrait;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class RmuAeroSpendController extends Controller
 {
@@ -16,23 +19,23 @@ class RmuAeroSpendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use SpendDetailsTrait;
+
+
     public function index($id)
     {
-        //
+        try {
+            $data = RmuAeroSpendModel::where('id_rmu_budget', $id)
+                ->with('RmuBudget')
+                ->firstOrFail();
 
-        $data = RmuAeroSpendModel::where('id_rmu_budget', $id)
-            ->with('RmuBudget')
-            ->first();
-            try {
-                //code...
-
-                $profit = (($data->RmuBudget->total - $data->total) / $data->RmuBudget->fix_profit) * 100;
-            $data['profit'] = number_format($profit , 2);
+            $data->profit = $this->calculateProfit($data->RmuBudget->total, $data->total, $data->RmuBudget->fix_profit);
         } catch (\Throwable $th) {
-            $data['profit'] = "#error!";
-            }
-        // return $datas;
-        return view('rmu-aero-spend.index', ['data' => $data])->render();
+            Log::error($th);
+            $data = (object)['profit' => '#error!'];
+        }
+
+        return view('rmu-aero-spend.index', compact('data'))->render();
     }
 
     /**
@@ -54,19 +57,21 @@ class RmuAeroSpendController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try {
-            //code...
+            $spendModel = RmuAeroSpendModel::create($request->all());
 
-            RmuAeroSpendModel::create($request->all());
-            return redirect()
-                ->route('rmu-budget-tnb.index')
-                ->with('success', 'Form Submitted');
+            if ($spendModel) {
+                Session::flash('success', 'Form submitted successfully');
+            } else {
+                Session::flash('failed', 'Failed to create form');
+            }
+
+            return redirect()->route('rmu-budget-tnb.index');
         } catch (\Throwable $th) {
-            // return $th->getMessage();
-            return redirect()
-                ->route('rmu-budget-tnb.index')
-                ->with('failed', 'Request Failed');
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
+
+            return redirect()->back();
         }
     }
 
@@ -78,39 +83,7 @@ class RmuAeroSpendController extends Controller
      */
     public function show($id)
     {
-
-        $data = RmuAeroSpendModel::where('id', $id)
-            ->with(['RmuBudget', 'RmuSpendDetail'])
-            ->first();
-       // return $data;
-            $count = [];
-            $count['amt_kkb'] = [];
-            $count['amt_ir'] = [];
-            $count['amt_bo'] = [];
-            $count['amt_piw'] = [];
-            $count['amt_cable'] = [];
-            $count['amt_rtu'] = [];
-            $count['amt_rtu_cable'] = [];
-            $count['tools'] = [];
-            $count['amt_store_rental'] = [];
-            $count['amt_transport'] = [];
-            $count['amt_pk'] = [];
-        try {
-            //code...
-            $profit = (($data->RmuBudget->total - $data->total) / $data->RmuBudget->fix_profit) * 100;
-            //return $profit;
-
-
-        $data['profit'] = number_format($profit , 2);
-    } catch (\Throwable $th) {
-        $data['profit'] = "#error!";
-    }
-        foreach ($data->RmuSpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-
-        }
-
-        return $data ? view('rmu-aero-spend.show', ['data' => $data, 'count' => $count]) : abrot(404);
+        return $this->getSpendDetailsView($id, false);
     }
 
     /**
@@ -121,40 +94,9 @@ class RmuAeroSpendController extends Controller
      */
     public function edit($id)
     {
-        //
- 
-
-        $count = [];
-        $data = RmuAeroSpendModel::where('id', $id)
-            ->with(['RmuBudget', 'RmuSpendDetail'])
-            ->first();
-        $count = [];
-        $count['amt_kkb'] = [];
-        $count['amt_ir'] = [];
-        $count['amt_bo'] = [];
-        $count['amt_piw'] = [];
-        $count['amt_cable'] = [];
-        $count['amt_rtu'] = [];
-        $count['amt_rtu_cable'] = [];
-        $count['tools'] = [];
-        $count['amt_store_rental'] = [];
-        $count['amt_transport'] = [];
-        $count['amt_pk'] = [];
-        try {
-            //code...
-            $profit = (($data->RmuBudget->total - $data->total) / $data->RmuBudget->fix_profit) * 100;
 
 
-        $data['profit'] = number_format($profit , 2);
-    } catch (\Throwable $th) {
-        $data['profit'] = "#error!";
-    }
-        foreach ($data->RmuSpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-
-        }
-
-        return $data ? view('rmu-aero-spend.edit', ['data' => $data , 'count'=>$count]) : abrot(404);
+        return $this->getSpendDetailsView($id, true);
     }
 
     /**
@@ -166,19 +108,20 @@ class RmuAeroSpendController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        try {
-            //code...
 
-            $data = RmuAeroSpendModel::find($id)->update($request->all());
-            return redirect()
-                ->route('rmu-budget-tnb.index')
-                ->with('success', 'Form update');
+
+
+        try {
+            $spendModel = CsuAeroSpendModel::findOrFail($id);
+            $spendModel->update($request->all());
+
+            Session::flash('success', 'Form updated');
         } catch (\Throwable $th) {
-            return redirect()
-                ->route('rmu-budget-tnb.index')
-                ->with('failed', 'Request Failed');
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
         }
+
+        return redirect()->route('csu-budget-tnb.index');
     }
 
     /**
@@ -202,5 +145,31 @@ class RmuAeroSpendController extends Controller
                 ->route('rmu-budget-tnb.index')
                 ->with('failed', 'Request failed');
         }
+    }
+
+    private function getSpendDetailsView($id, $action)
+    {
+
+        $data = RmuAeroSpendModel::where('id', $id)
+            ->with(['RmuBudget', 'SpendDetail'])
+            ->first();
+
+
+        if (!$data) {
+            abort(404);
+        }
+
+        // Calculate profit
+        $data->profit = $this->calculateProfit($data->RmuBudget->total, $data->total, $data->RmuBudget->fix_profit);
+
+
+        // Group spend details by payment name
+        $spendDetails = $this->groupSpendDetails($data->SpendDetail);
+
+        return view('rmu-aero-spend.edit', [
+            'data' => $data,
+            'spendDetails' => $spendDetails,
+            'action' => $action,
+        ]);
     }
 }

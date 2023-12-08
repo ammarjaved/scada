@@ -5,181 +5,106 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VcbAeroSpendModel;
+use App\Models\VcbPaymentDetailModel;
+
 use Exception;
-
-
+use App\Traits\SpendDetailsTrait;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class VcbAeroSpendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use SpendDetailsTrait;
+
+
     public function index($id)
     {
-        $data = VcbAeroSpendModel::where('id_vcb_budget', $id)
-            ->with('VcbBudget')
-            ->first();
-            try {
-                $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
+        try {
+            $data = VcbAeroSpendModel::where('id_vcb_budget', $id)
+                ->with('VcbBudget')
+                ->firstOrFail();
 
+            $data->profit = $this->calculateProfit($data->VcbBudget->total, $data->total, $data->VcbBudget->fix_profit);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            $data = (object)['profit' => '#error!'];
+        }
 
-            $data['profit'] = number_format($profit , 2);
-            } catch (\Throwable $th) {
-                $data['profit'] = "#error!";
-            }
-
-        // return $id;
-        return view('vcb-aero-spend.index', ['data' => $data])->render();
-
+        return view('vcb-aero-spend.index', compact('data'))->render();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
-     public function create($id, $pe_name)
+
+
+    public function create($id, $pe_name)
     {
-        //
         return view('vcb-aero-spend.create', ['id_tnb' => $id, 'pe_name' => $pe_name]);
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
-        //
         try {
-            //code...
+            $spendModel = VcbAeroSpendModel::create($request->all());
 
-        VcbAeroSpendModel::create($request->all());
-        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form Submitted");
-    } catch (\Throwable $th) {
-        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
+            if ($spendModel) {
+                Session::flash('success', 'Form submitted successfully');
+            } else {
+                Session::flash('failed', 'Failed to create form');
+            }
 
+            return redirect()->route('vcb-budget-tnb.index');
+        } catch (\Throwable $th) {
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
+
+            return redirect()->back();
+        }
     }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function show($id)
     {
-        //
-        $data = VcbAeroSpendModel::where('id', $id)
-            ->with(['VcbBudget', 'SpendDetail'])
-            ->first();
-        $count = [];
-        $count['amt_bo'] = [];
-        $count['amt_piw'] = [];
-        $count['amt_cable'] = [];
-        $count['amt_transducer'] = [];
-        $count['amt_rtu'] = [];
-        $count['amt_rtu_cable'] = [];
-        $count['tools'] = [];
-        $count['amt_store_rental'] = [];
-        $count['amt_transport'] = [];
-
-        try {
-            $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
-
-
-
-        $data['profit'] = number_format($profit , 2);
-        } catch (\Throwable $th) {
-            $datas['profit'] = "#error!";
-        }
-
-        foreach ($data->SpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-
-        }
-        return $data ? view('vcb-aero-spend.show',['data'=>$data,'count'=>$count]) : abrot(404);
+       return $this->getSpendDetailsView($id, false);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function edit($id)
     {
-        //
 
-        $data = VcbAeroSpendModel::where('id', $id)
-            ->with(['VcbBudget', 'SpendDetail'])
-            ->first();
-        $count = [];
-
-        $count['amt_bo'] = [];
-        $count['amt_piw'] = [];
-        $count['amt_cable'] = [];
-        $count['amt_transducer'] = [];
-        $count['amt_rtu'] = [];
-        $count['amt_rtu_cable'] = [];
-        $count['tools'] = [];
-        $count['amt_store_rental'] = [];
-        $count['amt_transport'] = [];
-
-        try {
-         $profit = (($data->VcbBudget->total - $data->total) / $data->VcbBudget->fix_profit) * 100;
-
-
-        $data['profit'] = number_format($profit , 2);
-        } catch (\Throwable $th) {
-            $datas['profit'] = "#error!";
-        }
-
-        foreach ($data->SpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-
-        }
-        return $data ? view('vcb-aero-spend.edit',['data'=>$data,'count'=>$count]) : abrot(404);
+       
+        return $this->getSpendDetailsView($id, true);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function update(Request $request, $id)
     {
-        //
+
+
+
         try {
-            //code...
+            $spendModel = VcbAeroSpendModel::findOrFail($id);
+            $spendModel->update($request->all());
 
-        $data = VcbAeroSpendModel::find($id)->update($request->all());
-        return redirect()->route('vcb-budget-tnb.index')->with('success',"Form update");
-    } catch (\Throwable $th) {
-        return redirect()->route('vcb-budget-tnb.index')->with('failed',"Request Failed");
+            Session::flash('success', 'Form updated');
+        } catch (\Throwable $th) {
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
+        }
 
+        return redirect()->route('vcb-budget-tnb.index');
     }
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
     public function destroy($id)
     {
-        //
-
         try {
             VcbAeroSpendModel::find($id)->delete();
 
@@ -192,4 +117,33 @@ class VcbAeroSpendController extends Controller
                 ->with('failed', 'Request failed');
         }
     }
+
+
+
+
+    private function getSpendDetailsView($id, $action)
+    {
+        $data = VcbAeroSpendModel::where('id', $id)
+            ->with(['VcbBudget', 'SpendDetail'])
+            ->first();
+
+        if (!$data) {
+            abort(404);
+        }
+
+        // Calculate profit
+        $data->profit = $this->calculateProfit($data->VcbBudget->total, $data->total, $data->VcbBudget->fix_profit);
+
+
+        // Group spend details by payment name
+        $spendDetails = $this->groupSpendDetails($data->SpendDetail);
+
+        return view('vcb-aero-spend.edit', [
+            'data' => $data,
+            'spendDetails' => $spendDetails,
+            'action' => $action,
+        ]);
+    }
+
+
 }

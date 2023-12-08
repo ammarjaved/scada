@@ -184,7 +184,7 @@
                             <option value="amt_cfs">CFS</option>
                             <option value="amt_bo">BO</option>
                             <option value="amt_rtu">RTU</option>
-                            <option value="tools">TOOLS</option>
+                            <option value="amt_tools">TOOLS</option>
                             <option value="amt_store_rental">STORE RENTAL</option>
                             <option value="amt_transport">TRANSPORT</option>
                             <option value="amt_salary">SALARY</option>`;

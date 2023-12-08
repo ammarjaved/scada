@@ -22,6 +22,8 @@
 @endsection
 
 @section('content')
+
+            {{-- BreadCrumb start --}}
     <section class="content-header">
 
         <div class="row mb-2" style="flex-wrap:nowrap">
@@ -31,53 +33,32 @@
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$data->VcbBudget->pe_name) }}">index</a></li>
-                    <li class="breadcrumb-item active">edit</li>
+                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$data->VcbBudget->pe_name) }}">vcb budget index</a></li>
+                    <li class="breadcrumb-item active">vcb payment detail</li>
                 </ol>
             </div>
         </div>
 
     </section>
-    @include('components.script-messages')
+
+    {{--   bread crumb end  --}}
+
+
+
 
     <section class="content">
         <div class="container-fluid">
             <div class="container- p-5 m-4 bg-white  shadow my-4 " style="border-radius: 10px">
 
-                <table class=" mb-3 table-borderless col-md-3">
-                    <tbody>
-                        <tr>
-                            <th>PE NAME : </th>
-                            <td>{{ $data->VcbBudget->pe_name }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>BUDGET BY TNB : </th>
-                            <td><span id="budget"> {{ $data->VcbBudget->total }} </span><strong> (RMB)</strong></td>
-                        </tr>
-                        <tr>
-                            <th>FIX PROFIT :</th>
-                            <td> {{$data->VcbBudget->fix_profit}}  <strong>(RMB) </strong></td>
-                        </tr>
-
-                        <tr>
-                            <th>TOTAL SPENDING :</th>
-                            <td><span class="subTotal">{{$data->total}}</span> <strong>(RMB) </strong></td>
-                        </tr>
-                        <tr>
-                            <th>TOTAL PENDING :</th>
-                            <td><span class="pending">{{$data->pending_payment}}</span> <strong>(RMB) </strong></td>
-                        </tr>
-                        <tr>
-                            <th>TOTAL OUTSTANDING :</th>
-                            <td><span class="outstanding">{{ $data->outstanding_balance }}</span> <strong>(RMB) </strong></td>
-                        </tr>
-                        <tr>
-                            <th>TOTAL PROFIT :</th>
-                            <td><span class="total_profit">{{$data->profit}} </span><strong>%</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <x-payment-detail-header-table
+                :name="$data->VcbBudget->pe_name"
+                :budget="$data->VcbBudget->total"
+                :fixprofit="$data->VcbBudget->fix_profit"
+                :spending="$data->total"
+                :pending="$data->pending_payment"
+                :outstanding="$data->outstanding_balance"
+                :profit="$data->profit"
+            />
                 <div class="table-responsive">
                     <table id="example2" class="table table-bordered ">
                         <thead style="background-color: #E4E3E3 !important">
@@ -86,94 +67,21 @@
                         </thead>
                         <tbody>
 
-
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_bo'],
-                                'arr_name' => 'amt_bo',
-                                'name' => 'BO',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_piw'],
-                                'arr_name' => 'amt_piw',
-                                'name' => 'PIW',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_cable'],
-                                'arr_name' => 'amt_cable',
-                                'name' => 'Cable',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_transducer'],
-                                'arr_name' => 'amt_transducer',
-                                'name' => 'Transducer',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-
-
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_rtu'],
-                                'arr_name' => 'amt_rtu',
-                                'name' => 'RTU',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-
-                            @include('components.detail-table', [
-                                'arr' => $count['tools'],
-                                'arr_name' => 'tools',
-                                'name' => 'Tools',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_rtu_cable'],
-                                'arr_name' => 'amt_rtu_cable',
-                                'name' => 'RTU Cable',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_store_rental'],
-                                'arr_name' => 'amt_store_rental',
-                                'name' => 'Store Rental',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-                            @include('components.detail-table', [
-                                'arr' => $count['amt_transport'],
-                                'arr_name' => 'amt_transport',
-                                'name' => 'Transport',
-                                'url' => 'vcb',
-                                'action' => true,
-                            ])
-
-
-
-
+                            @foreach ($spendDetails as $paymentType => $details)
+                                @include('components.detail-table', [
+                                    'arr' => $details,
+                                    'arr_name' => "amt_{$paymentType}",
+                                    'name' => strtoupper(str_replace('_' , ' ',$paymentType)),
+                                    'url' => 'vcb',
+                                    'action' => $action,
+                                ])
+                            @endforeach
 
                         </tbody>
                         <tfoot style="background-color: #E4E3E3 !important">
 
                             <td colspan="2" class="text-end"><strong>Total : <span
                                         class="subTotal">{{ $data->total }}</span></strong></td>
-                            {{-- <td colspan="2" class="text-end"><strong>Budget : {{$data->VcbBudget->allocated_budget}}</strong></td> --}}
                         </tfoot>
                     </table>
                 </div>
@@ -184,33 +92,7 @@
         </div>
     </section>
 
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content ">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Remove Recored</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" id="remove-foam" method="POST">
-                    @method('DELETE')
-                    @csrf
-
-                    <div class="modal-body">
-                        Are You Sure ?
-                        <input type="hidden" name="id" id="modal-id">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+    <x-confirm-remove />
 @endsection
 
 @section('script')
@@ -241,67 +123,44 @@
                 $('#remove-foam').attr('action', '/vcb-payment-details/' + id)
             });
 
+
+            // submit form
             $jq('.submit-form').ajaxForm({
                 success: function(responseText, status, xhr, $form) {
-
-                        toastr.success('Spending update successfully!')
+                    toastr.success('Spending update successfully!')
                     var data =responseText.data;
-                    console.log(responseText);
-                    formSubmitted(data.name , data.sub_total , data.total, data.pending_payment)
-
+                    formSubmitted(data.name , data.sub_total , data.total, data.pending_payment , data.outstanding)
                 },
                 error: function(xhr, status, error, $form) {
                     toastr.error('Request failed. Please try again.')
-
                 }
             })
 
-            budget = {{ $data->VcbBudget->total != '' ?$data->VcbBudget->total : 0 }};
-            fixProfit = {{ $data->VcbBudget->fix_profit != '' ?  $data->VcbBudget->fix_profit : 0 }};
+
+            budget = {{ $data->VcbBudget->total ?? 0 }};
+            fixProfit = {{ $data->VcbBudget->fix_profit ?? 0 }};
 
 
 
         })
 
         function editDetails(id) {
-            $(`#${id}-amount`).removeAttr('disabled');
-            $(`#${id}-amount`).removeClass('border-0');
-            $(`#${id}-status`).removeAttr('disabled');
-            $(`#${id}-status`).removeClass('border-0');
-            $(`#${id}-description`).removeAttr('disabled');
-            $(`#${id}-description`).removeClass('border-0');
-            $(`#${id}-vendor_name`).removeClass('border-0').removeAttr('disabled');
-
+            $(`#${id}-amount, #${id}-vendor_name, #${id}-status, #${id}-description, #${id}-pmt_date`).removeAttr('disabled').removeClass('border-0');
             $(`#${id}-submit-button`).removeClass('d-none');
             $(`#${id}-edit-button`).addClass('d-none');
-            $(`#${id}-pmt_date`).removeClass('border-0').removeAttr('disabled');
-
-
-
 
         }
 
-        function formSubmitted(param, subTotal, total ,pending) {
-            $(`#${param}-amount`).attr('disabled', true);
-            $(`#${param}-amount`).addClass('border-0');
-            $(`#${param}-status`).attr('disabled', true);
-            $(`#${param}-status`).addClass('border-0');
-            $(`#${param}-description`).attr('disabled', true);
-            $(`#${param}-description`).addClass('border-0');
-
+        function formSubmitted(param, subTotal, total ,pending , outstanding) {
+            $(`#${param}-amount, #${param}-status, #${param}-description, #${param}-vendor_name, #${param}-pmt_date`).attr('disabled', true).addClass('border-0');
             $(`#${param}-submit-button`).addClass('d-none');
             $(`#${param}-edit-button`).removeClass('d-none');
-            $(`#${param}-pmt_date`).addClass('border-0').attr('disabled', true);
-            $(`#${param}-vendor_name`).addClass('border-0').attr('disabled', true);
-
-            $(`.subTotal`).html(subTotal)
-            $(`.pending`).html(pending)
-            $('.outstanding').html(outstanding)
-
-            $(`#${param}-total`).html(total)
-            var  profit = (((budget - total)/fixProfit)*100).toFixed(2);
-
-            $(`.total_profit`).html(profit)
+            $(`.subTotal`).html(subTotal);
+            $(`.pending`).html(pending);
+            $('.outstanding').html(outstanding);
+            $(`#${param}-total`).html(total);
+            var profit = (((budget - total) / fixProfit) * 100).toFixed(2);
+            $(`.total_profit`).html(profit);
 
         }
     </script>

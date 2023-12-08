@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\CsuPaymentDetailModel;
 use Exception;
 use App\Models\CsuAeroSpendModel;
+use App\Repositories\PaymentDetail;
+
+
 
 class CsuPaymentDetailController extends Controller
 {
+
+
+    protected $PaymentDetailTnb;
+
+    public function __construct(PaymentDetail $PaymentDetailTnb)
+    {
+        $this->PaymentDetailTnb = $PaymentDetailTnb;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -38,21 +51,21 @@ class CsuPaymentDetailController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try {
             $data = CsuAeroSpendModel::find($request->p_id);
-            if ($data) {
 
-                $request['csu_id'] = $request->p_id;
-                CsuPaymentDetailModel::create($request->all());
-                $this->updatePayments($request->p_id);
-
-
+            if (!$data) {
+                return response()->json(['success' => false, 'error' => 'Reqest Falied'], 500);
             }
-            return response()->json(['success' => true, 'id' => $data->id_csu_budget], 200);
+                $request['csu_id'] = $request->p_id;
+                $paymentDetail = CsuPaymentDetailModel::create($request->all());
+                $this->PaymentDetailTnb->updatePayments($request->p_id , 'csu');
+
         } catch (\Throwable $th) {
-            return response()->json(['success' => false, 'error' => $th->getMessage()], 200);
+
+            return response()->json(['success' => false, 'error' => $th->getMessage()], 500);
         }
+        return response()->json(['success' => true, 'id' => $data->id_csu_budget], 200);
     }
 
     /**
@@ -86,7 +99,6 @@ class CsuPaymentDetailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
 
 
         $res_data = [];
@@ -96,11 +108,11 @@ class CsuPaymentDetailController extends Controller
             if ($payment_detail) {
 
                 $payment_detail->update($request->all());
+                $this->PaymentDetailTnb->updatePayments($payment_detail->csu_id , 'csu');
 
-                    $this->updatePayments($payment_detail->csu_id);
 
-                    $data = CsuAeroSpendModel::find($payment_detail->csu_id); // get spend table recored
-                $nameTotal =$data->{$request->pmt_name};
+                $data = CsuAeroSpendModel::find($payment_detail->csu_id); // get spend table recored
+                $nameTotal =$data->total;
 
             } else {
                 return response()->json(['success' => false, 'message' => 'something is wrong'], 200);
@@ -126,65 +138,28 @@ class CsuPaymentDetailController extends Controller
      */
     public function destroy($id)
     {
-        //
 
 
         try {
             $data = CsuPaymentDetailModel::find($id);
             if ($data) {
                 $data->delete();
-                $this->updatePayments($data->csu_id);
+                CsuAeroSpendModel::find($data->csu_id)->update([
+                    $data->pmt_name.'_status'=>'',
+                    $data->pmt_name =>0,
+                ]);
 
-
+                $this->PaymentDetailTnb->updatePayments($data->csu_id , 'csu');
 
             } else {
-                return  redirect()->back()->with('failed','Request Success');
+                return  redirect()->back()->with('failed','Request Failed');
             }
             return redirect()->back()->with('success','Request Success');
         } catch (\Throwable $th) {
             // return $th->getMessage();
-            return  redirect()->back()->with('failed','Request Success');
+            return  redirect()->back()->with('failed','Request Failed');
         }
     }
 
-    public function updatePayments($id)
-    {
 
-
-        CsuAeroSpendModel::where('id',$id)
-        ->update([
-            'amt_kkb' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('csu_id',$id)->sum('amount'),
-            'amt_kkb_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_kkb')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-            'amt_cfs' => CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->where('csu_id',$id)->sum('amount'),
-            'amt_cfs_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_cfs')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-            'amt_bo' => CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('csu_id',$id)->sum('amount'),
-            'amt_bo_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_bo')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-            'amt_rtu' => CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('csu_id',$id)->where('csu_id',$id)->sum('amount'),
-            'amt_rtu_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_rtu')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-
-            'amt_store_rental' => CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('csu_id',$id)->sum('amount'),
-            'amt_store_rental_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_store_rental')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-
-
-            'amt_transport' => CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('csu_id',$id)->sum('amount'),
-            'amt_transport_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_transport')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-
-
-            'tools'=>CsuPaymentDetailModel::where('pmt_name', 'tools')->where('csu_id',$id)->sum('amount'),
-            'amt_tools_status' =>CsuPaymentDetailModel::where('pmt_name', 'tools')->where('csu_id',$id)->latest('created_at')->value('status'),
-
-            'amt_salary'=> CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->where('csu_id',$id)->sum('amount'),
-            'amt_salary_status' =>CsuPaymentDetailModel::where('pmt_name', 'amt_salary')->where('csu_id',$id)->latest('created_at')->value('status'),
-            'total'=>CsuPaymentDetailModel::where('status','!=', 'not work done and  not payed')->where('csu_id',$id)->where('status','!=', 'work done but not payed')->sum('amount'),
-            'pending_payment'=>CsuPaymentDetailModel::where('status',  'not work done and  not payed')->where('csu_id',$id)->sum('amount'),
-            'outstanding_balance'=>CsuPaymentDetailModel::where('status', 'work done but not payed')->where('csu_id',$id)->sum('amount'),
-
-    ]);
-    }
 }

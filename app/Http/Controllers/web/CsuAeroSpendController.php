@@ -6,167 +6,132 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CsuAeroSpendModel;
 use Exception;
+use App\Traits\SpendDetailsTrait;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+
 
 class CsuAeroSpendController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    use SpendDetailsTrait;
+
+
     public function index($id)
     {
-        //
-
-        $data = CsuAeroSpendModel::where('id_csu_budget', $id)
-            ->with('CsuBudget')
-            ->first();
-      
         try {
-            $profit = (($data->CsuBudget->total - $data->total) / $data->CsuBudget->fix_profit) * 100;
+            $data = CsuAeroSpendModel::where('id_csu_budget', $id)
+                ->with('CsuBudget')
+                ->firstOrFail();
 
-            $data['profit'] = number_format($profit, 2);
+            $data->profit = $this->calculateProfit($data->CsuBudget->total, $data->total, $data->CsuBudget->fix_profit);
         } catch (\Throwable $th) {
-            $data['profit'] = '#error!';
+            Log::error($th);
+            $data = (object)['profit' => '#error!'];
         }
-        return view('csu-aero-spend.index', ['data' => $data])->render();
+
+        return view('csu-aero-spend.index', compact('data'))->render();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
     public function create($id, $pe_name)
     {
         //
         return view('csu-aero-spend.create', ['id_tnb' => $id, 'pe_name' => $pe_name]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
     public function store(Request $request)
     {
-        //
         try {
-            //code...
+            $spendModel = CsuAeroSpendModel::create($request->all());
 
-            CsuAeroSpendModel::create($request->all());
-            return redirect()
-                ->route('csu-budget-tnb.index')
-                ->with('success', 'Form Submitted');
+            if ($spendModel) {
+                Session::flash('success', 'Form submitted successfully');
+            } else {
+                Session::flash('failed', 'Failed to create form');
+            }
+
+            return redirect()->route('csu-budget-tnb.index');
         } catch (\Throwable $th) {
-            return redirect()
-                ->route('csu-budget-tnb.index')
-                ->with('failed', 'Request Failed');
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
+
+            return redirect()->back();
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
+
     public function show($id)
     {
-        //
-
-        $data = CsuAeroSpendModel::where('id', $id)
-            ->with(['CsuBudget', 'SpendDetail'])
-            ->first();
-        $count = [];
-        $count['amt_kkb'] = [];
-        $count['amt_cfs'] = [];
-        $count['amt_bo'] = [];
-        $count['amt_rtu'] = [];
-        $count['tools'] = [];
-        $count['amt_store_rental'] = [];
-        $count['amt_transport'] = [];
-        $count['amt_salary'] = [];
-        try {
-            $profit = (($data->CsuBudget->total - $data->total) / $data->CsuBudget->fix_profit) * 100;
-
-            $data['profit'] = number_format($profit, 2);
-        } catch (\Throwable $th) {
-            $data['profit'] = '#error!';
-        }
-        foreach ($data->SpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-        }
-
-        return $data ? view('csu-aero-spend.show', ['data' => $data, 'count' => $count]) : abrot(404);
+       return $this->getSpendDetailsView($id, false);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
     public function edit($id)
     {
-        //
-        $data = CsuAeroSpendModel::where('id', $id)
-            ->with(['CsuBudget', 'SpendDetail'])
-            ->first();
-        $count = [];
-        $count['amt_kkb'] = [];
-        $count['amt_cfs'] = [];
-        $count['amt_bo'] = [];
-        $count['amt_rtu'] = [];
-        $count['tools'] = [];
-        $count['amt_store_rental'] = [];
-        $count['amt_transport'] = [];
-        $count['amt_salary'] = [];
-        try {
-            $profit = (($data->CsuBudget->total - $data->total) / $data->CsuBudget->fix_profit) * 100;
 
 
-            $data['profit'] = number_format($profit, 2);
-        } catch (\Throwable $th) {
-            $data['profit'] = '#error!';
-        }
-        foreach ($data->SpendDetail as $key => $value) {
-            array_push($count[$value->pmt_name], $value);
-        }
-
-        return $data ? view('csu-aero-spend.edit', ['data' => $data, 'count' => $count]) : abrot(404);
+        return $this->getSpendDetailsView($id, true);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
     public function update(Request $request, $id)
     {
-        try {
-            //code...
 
-            $data = CsuAeroSpendModel::find($id)->update($request->all());
-            return redirect()
-                ->route('csu-budget-tnb.index')
-                ->with('success', 'Form update');
+
+
+        try {
+            $spendModel = CsuAeroSpendModel::findOrFail($id);
+            $spendModel->update($request->all());
+
+            Session::flash('success', 'Form updated');
         } catch (\Throwable $th) {
-            return redirect()
-                ->route('csu-budget-tnb.index')
-                ->with('failed', 'Request Failed');
+            \Log::error($th);
+            Session::flash('failed', 'Request failed');
         }
+
+        return redirect()->route('csu-budget-tnb.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+
+
+
+
+
     public function destroy($id)
     {
         //
@@ -182,5 +147,31 @@ class CsuAeroSpendController extends Controller
                 ->route('csu-budget-tnb.index')
                 ->with('failed', 'Request failed');
         }
+    }
+
+
+
+    private function getSpendDetailsView($id, $action)
+    {
+        $data = CsuAeroSpendModel::where('id', $id)
+            ->with(['CsuBudget', 'SpendDetail'])
+            ->first();
+
+        if (!$data) {
+            abort(404);
+        }
+
+        // Calculate profit
+        $data->profit = $this->calculateProfit($data->CsuBudget->total, $data->total, $data->CsuBudget->fix_profit);
+
+
+        // Group spend details by payment name
+        $spendDetails = $this->groupSpendDetails($data->SpendDetail);
+
+        return view('csu-aero-spend.edit', [
+            'data' => $data,
+            'spendDetails' => $spendDetails,
+            'action' => $action,
+        ]);
     }
 }
