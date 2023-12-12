@@ -33,7 +33,7 @@
             <div class="col-sm-6 text-right">
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$data->VcbBudget->pe_name) }}">vcb budget index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$data->VcbBudget->id) }}">vcb budget index</a></li>
                     <li class="breadcrumb-item active">vcb payment detail</li>
                 </ol>
             </div>

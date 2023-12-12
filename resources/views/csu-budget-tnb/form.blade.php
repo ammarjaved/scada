@@ -12,7 +12,7 @@
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
 
                     @if (isset($item))
-                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index', $item->pe_name) }}">csu budget index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('csu-budget-tnb.index', $item->id) }}">csu budget index</a></li>
 
                     @endif
                     <li class="breadcrumb-item active">create</li>

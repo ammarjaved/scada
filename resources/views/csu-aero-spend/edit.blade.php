@@ -33,7 +33,7 @@
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index') }}">site data</a></li>
 
                     <li class="breadcrumb-item"><a
-                            href="{{ route('csu-budget-tnb.index', $data->CsuBudget->pe_name) }}">csu budget index</a></li>
+                            href="{{ route('csu-budget-tnb.index', $data->CsuBudget->id) }}">csu budget index</a></li>
                     <li class="breadcrumb-item active">csu payment detail</li>
                 </ol>
             </div>

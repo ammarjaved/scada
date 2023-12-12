@@ -8,6 +8,7 @@ use App\Models\CsuBudgetTNBModel;
 use Exception;
 use App\Models\CsuAeroSpendModel;
 use App\Models\CsuPaymentDetailModel;
+use App\Models\SiteDataCollection;
 use Illuminate\Support\Facades\Session;
 
 
@@ -18,17 +19,17 @@ class CsuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name)
+    public function index($id)
     {
         //
-        $data = CsuBudgetTNBModel::where('pe_name', $name)
+        $data = CsuBudgetTNBModel::find($id)
             ->withCount('CsuSpends')
             ->with(['CsuSpends'])
             ->first();
         if ($data) {
             return view('csu-budget-tnb.index', ['data' => $data]);
-        }
-        return redirect()->route('csu-budget-tnb.create', ['name' => $name]);
+        }  
+        return redirect()->back();
     }
 
     /**
@@ -36,11 +37,18 @@ class CsuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($name)
+    public function create($id)
     {
         //
-
-        return view('csu-budget-tnb.form', ['name' => $name]);
+        $data = SiteDataCollection::find($id);
+        if ($data) {
+            $check = CsuBudgetTNBModel::where('pe_name', $data->nama_pe)->first();
+            if ($check) {
+                return redirect()->route('csu-budget-tnb.index', $check->id);
+            }
+        }
+        return view('csu-budget-tnb.form', ['name' => $data->nama_pe]);
+        
     }
 
     /**
@@ -64,7 +72,7 @@ class CsuBudgetTNBController extends Controller
 
                 // If the budget record is successfully created, create a corresponding AeroSpendModel record
                 if ($storeBudget) {
-                    CsuAeroSpendModel::create(['id_csu_budget' => $storeBudget->id]);
+                 $rec=   CsuAeroSpendModel::create(['id_csu_budget' => $storeBudget->id]);
                 }
             } else {
                 // If it's an existing record, find and update it
@@ -85,7 +93,8 @@ class CsuBudgetTNBController extends Controller
 
         // If everything is successful, return with a success message
         Session::flash('success', 'Request Success');
-        return redirect()->route('csu-budget-tnb.index', $request->pe_name);
+        return redirect()->route('csu-budget-tnb.index', $rec->id);
+
     }
 
 

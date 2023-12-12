@@ -33,7 +33,7 @@
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index') }}">site data</a></li>
 
                     <li class="breadcrumb-item"><a
-                            href="{{ route('rmu-budget-tnb.index', $data->RmuBudget->pe_name) }}">rmu budget index</a></li>
+                            href="{{ route('rmu-budget-tnb.index', $data->RmuBudget->id) }}">rmu budget index</a></li>
                     <li class="breadcrumb-item active">rmu payment detail</li>
                 </ol>
             </div>

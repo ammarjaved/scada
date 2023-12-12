@@ -95,11 +95,11 @@
 
 
                                                     @if($data->switchgear=='RMU')
-                                                        <a class="btn btn-primary btn-sm" href="{{ route('rmu-budget-tnb.index',$data->nama_pe ) }}">ADD COST</a>
+                                                        <a class="btn btn-primary btn-sm" href="{{ route('rmu-budget-tnb.create',$data->id ) }}">ADD COST</a>
                                                     @elseif($data->switchgear=='VCB')
-                                                    <a class="btn btn-primary btn-sm" href="{{ route('vcb-budget-tnb.index', $data->nama_pe ) }}">ADD COST</a>
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('vcb-budget-tnb.create', $data->id ) }}">ADD COST</a>
                                                     @elseif($data->switchgear=='COMPACT')
-                                                    <a class="btn btn-primary btn-sm" href="{{ route('csu-budget-tnb.index',$data->nama_pe ) }}">ADD COST</a>
+                                                    <a class="btn btn-primary btn-sm" href="{{ route('csu-budget-tnb.create',$data->id ) }}">ADD COST</a>
                                                     @endif
                                                     @endif
                                                 </td>

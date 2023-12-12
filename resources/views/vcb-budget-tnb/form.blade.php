@@ -11,7 +11,7 @@
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index' ) }}">site data</a></li>
                        @isset($item)
-                       <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$item->pe_name) }}">vcb budget index</a></li>
+                       <li class="breadcrumb-item"><a href="{{ route('vcb-budget-tnb.index',$item->id) }}">vcb budget index</a></li>
 
                     @endisset
 

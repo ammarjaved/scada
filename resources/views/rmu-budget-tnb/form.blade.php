@@ -11,7 +11,7 @@
                 <ol class="breadcrumb float-right">
                     <li class="breadcrumb-item"><a href="{{ route('site-data-collection.index') }}">site data</a></li>
                     @if (isset($item))
-                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index', $item->pe_name) }}">rmu budgte index</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('rmu-budget-tnb.index', $item->id) }}">rmu budgte index</a></li>
 
                     @endif
                     <li class="breadcrumb-item active">create</li>

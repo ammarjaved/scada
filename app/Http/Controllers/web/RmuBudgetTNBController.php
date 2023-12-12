@@ -8,6 +8,7 @@ use App\Models\RmuBudgetTNBModel;
 use Exception;
 use App\Models\RmuAeroSpendModel;
 use App\Models\RmuPaymentDetailModel;
+use App\Models\SiteDataCollection;
 use Illuminate\Support\Facades\Session;
 
 class RmuBudgetTNBController extends Controller
@@ -17,19 +18,19 @@ class RmuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name)
+    public function index($id)
     {
         try {
             //code...
 
-            $data = RmuBudgetTNBModel::where('pe_name', $name)
+            $data = RmuBudgetTNBModel::find($id)
                 ->withCount('RmuSpends')
                 ->with(['RmuSpends'])
                 ->first();
             if ($data) {
                 return view('rmu-budget-tnb.index', ['data' => $data]);
             }
-            return redirect()->route('rmu-budget-tnb.create', ['name' => $name]);
+            
         } catch (\Throwable $th) {
             return redirect()->back();
         }
@@ -40,10 +41,17 @@ class RmuBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($name)
+    public function create($id)
     {
         //
-        return view('rmu-budget-tnb.form', ['name' => $name]);
+        $data = SiteDataCollection::find($id);
+        if ($data) {
+            $check = RmuBudgetTNBModel::where('pe_name', $data->nama_pe)->first();
+            if ($check) {
+                return redirect()->route('rmu-budget-tnb.index', $check->id);
+            }
+        }
+        return view('rmu-budget-tnb.form', ['name' => $data->nama_pe]);
     }
 
     /**
@@ -59,7 +67,7 @@ class RmuBudgetTNBController extends Controller
                 $storeBudget = RmuBudgetTNBModel::create($request->all());
 
                 if ($storeBudget) {
-                    RmuAeroSpendModel::create(['id_rmu_budget' => $storeBudget->id]);
+                   $rec= RmuAeroSpendModel::create(['id_rmu_budget' => $storeBudget->id]);
                 }
             } else {
                 $rec = RmuBudgetTNBModel::find($request->id);
@@ -75,7 +83,7 @@ class RmuBudgetTNBController extends Controller
         }
 
         Session::flash('success', 'Request Success');
-        return redirect()->route('rmu-budget-tnb.index', $request->pe_name);
+        return redirect()->route('rmu-budget-tnb.index', $rec->id);
     }
 
     /**
@@ -147,4 +155,7 @@ class RmuBudgetTNBController extends Controller
 
         return redirect()->route('site-data-collection.index');
     }
+
+     
+
 }

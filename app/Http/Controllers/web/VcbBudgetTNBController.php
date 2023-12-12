@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\SiteDataCollection;
 use Illuminate\Http\Request;
 use App\Models\VcbBudgetTNBModel;
 use Exception;
@@ -18,19 +19,18 @@ class VcbBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($name)
+    public function index($id)
     {
         try {
             //code...
 
-            $data = VcbBudgetTNBModel::where('pe_name', $name)
+            $data = VcbBudgetTNBModel::find($id)
                 ->withCount('VcbSpends')
                 ->with(['VcbSpends'])
                 ->first();
             if ($data) {
                 return view('vcb-budget-tnb.index', ['data' => $data]);
-            }
-            return redirect()->route('vcb-budget-tnb.create', ['name' => $name]);
+            } 
         } catch (\Throwable $th) {
             return redirect()->back();
         }
@@ -43,10 +43,19 @@ class VcbBudgetTNBController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($name)
+    public function create($id)
     {
         //
-        return view('vcb-budget-tnb.form',['name'=>$name]);
+
+        $data = SiteDataCollection::find($id);
+        if ($data) { 
+            $check = VcbBudgetTNBModel::where('pe_name', $data->nama_pe)->first();
+            if ($check) {
+                return redirect()->route('vcb-budget-tnb.index', $check->id);
+            }
+        }
+        return view('vcb-budget-tnb.form', ['name' => $data->nama_pe]);
+ 
     }
 
     /**
@@ -72,7 +81,7 @@ class VcbBudgetTNBController extends Controller
 
                 // If the budget record is successfully created, create a corresponding AeroSpendModel record
                 if ($storeBudget) {
-                    VcbAeroSpendModel::create(['id_vcb_budget' => $storeBudget->id]);
+                 $rec  =   VcbAeroSpendModel::create(['id_vcb_budget' => $storeBudget->id]);
                 }
             } else {
                 // If it's an existing record, find and update it
@@ -93,7 +102,7 @@ class VcbBudgetTNBController extends Controller
 
         // If everything is successful, return with a success message
         Session::flash('success', 'Request Success');
-        return redirect()->route('vcb-budget-tnb.index', $request->pe_name);
+        return redirect()->route('vcb-budget-tnb.index', $rec->id);
     }
 
 
