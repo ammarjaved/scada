@@ -356,15 +356,14 @@
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_cable_status )}}">{{ $rmu->RmuSpends->amt_cable }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_rtu_status )}}">{{ $rmu->RmuSpends->amt_rtu }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_rtu_cable_status )}}">{{ $rmu->RmuSpends->amt_rtu_cable }}</td>
-                                        <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->tools_status )}}">{{ $rmu->RmuSpends->tools }}</td>
+                                        <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_tools_status )}}">{{ $rmu->RmuSpends->amt_tools }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_transducer_status )}}">{{ $rmu->RmuSpends->amt_transducer }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_store_rental_status )}}">{{ $rmu->RmuSpends->amt_store_rental }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_transport_status )}}">{{ $rmu->RmuSpends->amt_transport }}</td>
                                         <td class="{{str_replace(' ', '_' , $rmu->RmuSpends->amt_salary_status )}}">{{ $rmu->RmuSpends->amt_salary }}</td>
                                         <td class="align-middle">{{ $rmu->total }}</td>
                                         <td>{{$rmu->fix_profit}}</td>
-                                        <td class="align-middle">{{ $rmu->RmuSpends->total }}
-                                        </td>
+                                        <td class="align-middle">{{ $rmu->RmuSpends->total }}</td>
                                         <td>{{ $rmu->RmuSpends->pending_payment }}</td>
                                         <td>{{$rmu->RmuSpends->outstanding_balance}}</td>
                                        @php
@@ -393,7 +392,7 @@
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_cable_status  )}}">{{ $vcb->VcbSpends->amt_cable }}</td>
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_rtu_status  )}}">{{ $vcb->VcbSpends->amt_rtu }}</td>
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_rtu_cable_status  )}}">{{ $vcb->VcbSpends->amt_rtu_cable }}</td>
-                                        <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_tools_status  )}}">{{ $vcb->VcbSpends->tools }}</td>
+                                        <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_tools_status  )}}">{{ $vcb->VcbSpends->amt_tools }}</td>
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_transducer_status  )}}">{{ $vcb->VcbSpends->amt_transducer }}</td>
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_transport_status  )}}">{{ $vcb->VcbSpends->amt_store_rental }}</td>
                                         <td class="{{str_replace(' ', '_' , $vcb->VcbSpends->amt_transport_status  )}}">{{ $vcb->VcbSpends->amt_transport }}</td>
