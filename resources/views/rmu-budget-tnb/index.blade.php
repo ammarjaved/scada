@@ -196,7 +196,7 @@
                                     <option value="amt_cable">CABLE</option>
                                     <option value="amt_rtu">RTU</option>
                                     <option value="amt_rtu_cable">RTU CABLE</option>
-                                    <option value="tools">TOOLS</option>
+                                    <option value="amt_tools">TOOLS</option>
                                     <option value="amt_store_rental">STORE RENTAL</option>
                                     <option value="amt_transport">TRANSPORT</option>`;
         $(document).ready(function() {
